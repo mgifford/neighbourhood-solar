@@ -23,7 +23,7 @@ No client-side JavaScript. No external fonts. No analytics. No cookies. Output i
 ```
 neighbourhood-solar/
 ├── configs/
-│   └── ottawa.yaml          # Ottawa-specific configuration
+│   └── neighbourhood.yaml   # Default configuration (Ottawa pilot)
 ├── templates/
 │   ├── base.html            # Shared layout: head, nav, footer
 │   ├── index.html           # Residents page
@@ -54,7 +54,7 @@ Open `_site/index.html` in a browser to preview.
 1. Copy the Ottawa config:
 
    ```bash
-   cp configs/ottawa.yaml configs/yourcity.yaml
+   cp configs/neighbourhood.yaml configs/yourcity.yaml
    ```
 
 2. Edit `configs/yourcity.yaml`. At minimum, set:
@@ -77,7 +77,7 @@ Open `_site/index.html` in a browser to preview.
 Edit `.github/workflows/deploy.yml` and change:
 
 ```yaml
-run: python build.py --config configs/ottawa.yaml --output _site
+run: python build.py --config configs/neighbourhood.yaml --output _site
 ```
 
 to:
@@ -88,7 +88,7 @@ run: python build.py --config configs/yourcity.yaml --output _site
 
 ## Config reference
 
-See `configs/ottawa.yaml` for a fully commented example. Key fields:
+See `configs/neighbourhood.yaml` for a fully commented example. Key fields:
 
 | Field | Required | Description |
 |---|---|---|

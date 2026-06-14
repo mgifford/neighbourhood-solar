@@ -1,21 +1,68 @@
 # Neighbourhood Solar & Energy Initiative
 
-Static website for GitHub Pages.
+**Resident-led. Vendor-neutral. No commission. Fork for your street.**
 
-## Pages
+→ [Live Ottawa pilot site](https://mgifford.github.io/neighbourhood-solar/)
 
-- `index.html`: residents
-- `contractors.html`: contractors
-- `community-leaders.html`: community leaders
-- `styles.css`: shared styling
+---
 
-## Setup
+## Why this exists
 
-1. Create a GitHub repository.
-2. Upload these files to the repository root.
-3. In GitHub, go to Settings > Pages.
-4. Set source to `Deploy from a branch`.
-5. Choose the `main` branch and `/root`.
-6. Replace `hello@example.ca` links with the real contact email.
-7. Replace the registration call to action with a Google Form, Airtable form, or other signup form.
-# neighbourhood-solar
+Energy decisions are getting complicated. Solar panels, battery backup, heat pumps, EV chargers, utility rules, financing programs, warranties — and every homeowner is expected to figure it all out alone.
+
+That's inefficient. And it's unfair.
+
+When neighbours coordinate, contractors can reduce their soft costs, homeowners get better information, and the whole process becomes less opaque. This project is a simple, open tool to make that coordination happen — without anyone taking a cut.
+
+No sales commission. No vendor lock-in. No JavaScript. No tracking. Just neighbours helping neighbours make better decisions about home energy.
+
+## What it is
+
+A static website template for community-led neighbourhood solar and home energy upgrade pilots. One YAML config file per city. Fork it, fill in your details, and you have a site for your neighbourhood in under an hour.
+
+**Live pages:**
+- [Residents](https://mgifford.github.io/neighbourhood-solar/) — what's in it for homeowners
+- [Contractors](https://mgifford.github.io/neighbourhood-solar/contractors.html) — how to participate in group bids
+- [Community Leaders](https://mgifford.github.io/neighbourhood-solar/community-leaders.html) — how to run a neighbourhood pilot
+- [Printable flyer](https://mgifford.github.io/neighbourhood-solar/pamphlet.html) — half-sheet you can print, cut, and drop in mailboxes
+
+## How you can help
+
+**I'm a resident interested in solar or batteries** — [register your interest](https://mgifford.github.io/neighbourhood-solar/) for the Ottawa pilot. No purchase commitment.
+
+**I'm a contractor** — [read the contractor page](https://mgifford.github.io/neighbourhood-solar/contractors.html). We're looking for installers willing to quote transparently for groups.
+
+**I want to run this in my city** — fork this repo, copy `configs/neighbourhood.yaml`, update the values for your location, and push to GitHub Pages. See [README-build.md](README-build.md) for step-by-step instructions.
+
+**I'm a developer** — issues and pull requests are welcome. The codebase is small on purpose: Python + Jinja2 + plain HTML/CSS. No framework. No build complexity beyond what's needed.
+
+**I'm a community organizer or councillor** — [read the community leaders page](https://mgifford.github.io/neighbourhood-solar/community-leaders.html) and get in touch.
+
+## The problem this solves
+
+Most homeowners who want solar or a battery don't act because:
+
+- They don't know who to trust
+- Quotes are hard to compare
+- Incentive programs are confusing
+- The upfront cost feels like a leap of faith
+
+A neighbourhood group approach changes that. When 10–20 nearby homes are interested together, contractors can schedule efficiently and offer better terms. Residents can compare proposals side by side. And one person's research benefits the whole street.
+
+This site is the organizing layer that makes that possible.
+
+## Principles
+
+- **Resident-led.** No vendor or contractor runs this process.
+- **Transparent.** Proposals are shared with the group, not negotiated in private.
+- **No obligation.** Every household decides for themselves. No pressure.
+- **Open source.** Everything is forkable. Lessons learned are shared publicly.
+- **Low footprint.** No JavaScript, no CDN, no tracking, no cookies. Fast on any connection.
+
+## Technical setup
+
+See [README-build.md](README-build.md) for installation, local build, config reference, and GitHub Actions deployment.
+
+## Licence
+
+MIT. Fork freely. Drop a link back if you find it useful.
