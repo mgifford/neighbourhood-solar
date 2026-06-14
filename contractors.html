@@ -1,36 +1,26 @@
-<!doctype html>
-<html lang="en-CA">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>For Contractors | Neighbourhood Solar</title>
-  <meta name="description" content="A proposal for contractors interested in a neighbourhood-scale solar and battery deployment pilot.">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="index.html">Neighbourhood Solar</a>
-  <nav aria-label="Main navigation">
-    <a href="index.html">Residents</a>
-    <a href="contractors.html" aria-current="page">Contractors</a>
-    <a href="community-leaders.html">Community Leaders</a>
-  </nav>
-</header>
+{% extends "base.html" %}
 
-<main>
-  <section class="hero compact">
+{% block title %}For Contractors | {{ site.short_title }}{% endblock %}
+{% block description %}A proposal for contractors interested in a neighbourhood-scale solar and battery deployment pilot in {{ location.city }}.{% endblock %}
+{% block og_title %}For Contractors | {{ site.short_title }}{% endblock %}
+{% block og_description %}A proposal for contractors interested in a neighbourhood-scale solar and battery deployment pilot in {{ location.city }}.{% endblock %}
+
+{% block main %}
+
+<section class="hero">
+  <div>
     <p class="eyebrow">For solar and home energy contractors</p>
     <h1>A pilot to reduce acquisition costs and deploy neighbourhood-scale solar faster.</h1>
-    <p class="lede">We are exploring a transparent community procurement model that brings together qualified homeowners in a concentrated geographic area.</p>
-  </section>
+    <p class="lede">We are exploring a transparent community procurement model that brings together qualified homeowners in a concentrated geographic area in {{ location.region_label }}.</p>
+  </div>
+</section>
 
-  <section>
-    <h2>The business case</h2>
-    <p>Residential solar is often slowed by customer acquisition, education, scheduling, and site-by-site sales work. A neighbourhood cohort can reduce friction before a contractor spends time producing detailed proposals.</p>
-    <p>The intent is not to demand an unrealistic discount. The intent is to identify real operational savings and share part of that value with homeowners.</p>
-  </section>
+<section id="business-case">
+  <h2>The business case</h2>
+  <p>Residential solar is often slowed by customer acquisition, education, scheduling, and site-by-site sales work. A neighbourhood cohort can reduce friction before a contractor spends time producing detailed proposals.</p>
+  <p>The intent is not to demand an unrealistic discount. The intent is to identify real operational savings and share part of that value with homeowners.</p>
 
-  <section class="grid two">
+  <div class="grid two">
     <div class="card">
       <h3>Potential value for contractors</h3>
       <ul>
@@ -47,7 +37,7 @@
       <h3>What residents may request</h3>
       <ul>
         <li>Transparent price per watt</li>
-        <li>Group pricing thresholds for 5, 10, and 20 homes</li>
+        <li>Group pricing thresholds for {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes</li>
         <li>Premium panel and inverter options</li>
         <li>Battery backup package options</li>
         <li>Longer workmanship warranty</li>
@@ -55,30 +45,48 @@
         <li>Plain-language financing support</li>
       </ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <h2>Proposed opening ask</h2>
-    <p>For a qualified neighbourhood cohort, we would like contractors to consider:</p>
-    <ul>
-      <li>Upgraded equipment option, such as premium panels and high-quality inverter architecture</li>
-      <li>10% group discount as an opening position</li>
-      <li>10-year workmanship warranty</li>
-      <li>Battery backup options designed around critical loads</li>
-      <li>Publicly documented aggregate results after installation</li>
-    </ul>
-    <p>The expected compromise may be closer to upgraded equipment, a 5% reduction, and an extended workmanship warranty. Contractors are invited to explain what is operationally realistic.</p>
-  </section>
+<section id="opening-ask">
+  <h2>Proposed opening ask</h2>
+  <p>For a qualified neighbourhood cohort, we would like contractors to consider:</p>
+  <ul>
+    <li>Upgraded equipment option, such as premium panels and high-quality inverter architecture</li>
+    <li>{{ cohort.opening_ask.discount_percent }}% group discount as an opening position</li>
+    <li>{{ cohort.opening_ask.workmanship_warranty_years }}-year workmanship warranty</li>
+    <li>Battery backup options designed around critical loads</li>
+    <li>Publicly documented aggregate results after installation</li>
+  </ul>
+  <p>The expected compromise may be closer to upgraded equipment, a {{ cohort.expected_compromise.discount_percent }}% reduction, and a {{ cohort.expected_compromise.workmanship_warranty_years }}-year workmanship warranty. Contractors are invited to explain what is operationally realistic.</p>
+</section>
 
-  <section class="cta">
-    <h2>Interested in discussing the pilot?</h2>
-    <p>Contact us to discuss how a neighbourhood deployment model could work for your company and local homeowners.</p>
-    <a class="button" href="mailto:hello@example.ca?subject=Contractor%20Interest%20in%20Neighbourhood%20Solar">Contact the organizers</a>
-  </section>
-</main>
+{% if contractors %}
+<section id="onboarded-contractors">
+  <h2>Contractors participating in the pilot</h2>
+  <p>The following contractors have reviewed and agreed to the pilot terms.</p>
+  <ul class="contractor-list">
+    {% for c in contractors %}
+    {% if c.onboarded %}
+    <li>
+      {% if c.url %}<a href="{{ c.url }}" rel="noopener">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}
+      {% if c.service_area %}<span class="service-area">{{ c.service_area }}</span>{% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 
-<footer>
-  <p>Neighbourhood Solar & Energy Initiative. Resident-led. Open process. No commission.</p>
-</footer>
-</body>
-</html>
+<section id="contact" class="cta">
+  <h2>Interested in discussing the pilot?</h2>
+  <p>Contact us to discuss how a neighbourhood deployment model could work for your company and local homeowners in {{ location.city }}.</p>
+  {% if contact.email %}
+  <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.contractor | urlencode }}">Contact the organizers</a>
+  {% endif %}
+  {% if contact.contact_form_url %}
+  <a class="button secondary" href="{{ contact.contact_form_url }}">Use the contact form</a>
+  {% endif %}
+</section>
+
+{% endblock %}

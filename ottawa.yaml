@@ -1,0 +1,141 @@
+# Neighbourhood Solar & Energy Initiative — Ottawa Configuration
+# ---------------------------------------------------------------
+# To adapt this for another city:
+#   1. Copy this file: cp configs/ottawa.yaml configs/yourcity.yaml
+#   2. Edit every value below.
+#   3. Run: python build.py --config configs/yourcity.yaml
+#
+# Fields marked REQUIRED must be filled before deploying.
+# Fields marked OPTIONAL can be left blank; the template handles the fallback.
+
+# ---------------------------------------------------------------
+# IDENTITY
+# ---------------------------------------------------------------
+
+site:
+  title: "Neighbourhood Solar & Energy Initiative — Ottawa"
+  short_title: "Neighbourhood Solar"
+  tagline: "Resident-led. Open process. No commission."
+  description: >
+    A resident-led effort to make solar, battery backup, and home energy
+    upgrades easier, cheaper, and more transparent in Ottawa, Ontario.
+  language: "en"       # ISO 639-1
+  locale: "en-CA"      # BCP 47; affects lang= attribute on <html>
+  base_url: "https://mgifford.github.io/neighbourhood-solar"  # No trailing slash. REQUIRED.
+  output_dir: "_site"  # Where built HTML files go. Relative to repo root.
+
+# ---------------------------------------------------------------
+# LOCATION
+# ---------------------------------------------------------------
+
+location:
+  city: "Ottawa"
+  province_or_state: "Ontario"
+  country: "Canada"
+  country_code: "CA"
+  # Used in prose wherever a longer description is needed
+  region_label: "Ottawa–Gatineau region"
+
+# ---------------------------------------------------------------
+# CONTACT
+# ---------------------------------------------------------------
+
+contact:
+  # REQUIRED before deploying. Shown on all three pages.
+  email: "hello@example.ca"
+  # Pre-filled mailto: subject lines per audience
+  mailto_subjects:
+    resident: "Neighbourhood Solar Interest"
+    contractor: "Contractor Interest in Neighbourhood Solar"
+    community_leader: "Community Leader Interest in Neighbourhood Solar"
+  # OPTIONAL: public contact form instead of or alongside email
+  contact_form_url: ""
+
+# ---------------------------------------------------------------
+# REGISTRATION
+# ---------------------------------------------------------------
+
+registration:
+  # REQUIRED before deploying. Google Form, Airtable, GitHub issue, etc.
+  form_url: ""
+  form_label: "Register your interest"
+  # OPTIONAL: link to a public anonymized spreadsheet of registered interest
+  spreadsheet_url: ""
+  spreadsheet_label: "View registered interest (anonymized)"
+
+# ---------------------------------------------------------------
+# INCENTIVE PROGRAMS
+# Listed on index.html to help residents understand available funding.
+# Set active: false to hide a program without deleting the entry.
+# ---------------------------------------------------------------
+
+programs:
+  - name: "Canada Greener Homes Grant"
+    url: "https://www.nrcan.gc.ca/energy-efficiency/homes/canada-greener-homes-grant/23441"
+    jurisdiction: "Federal"
+    active: true
+  - name: "Ontario Electricity Rebate"
+    url: "https://www.ontario.ca/page/electricity-rebates-and-incentives"
+    jurisdiction: "Provincial"
+    active: true
+  - name: "Enbridge Home Efficiency Rebate Plus"
+    url: "https://www.enbridgegas.com/home/rebates-and-savings/home-efficiency-rebate-plus"
+    jurisdiction: "Utility"
+    active: true
+  - name: "Ottawa Community Energy Plan"
+    url: "https://ottawa.ca/en/residents/environment-and-sustainability/community-energy-plan"
+    jurisdiction: "Municipal"
+    active: true
+
+# ---------------------------------------------------------------
+# CONTRACTORS
+# Listed on contractors.html once they have agreed to the pilot terms.
+# Leave empty until a contractor has given consent to be listed.
+# ---------------------------------------------------------------
+
+contractors: []
+# Example — uncomment when ready:
+# - name: "Example Solar Co."
+#   url: "https://examplesolar.ca"
+#   service_area: "Ottawa and surrounding area"
+#   onboarded: true
+#   contact_email: ""
+
+# ---------------------------------------------------------------
+# COHORT THRESHOLDS
+# Used in index.html and contractors.html prose.
+# ---------------------------------------------------------------
+
+cohort:
+  thresholds: [5, 10, 20]
+  opening_ask:
+    discount_percent: 10
+    workmanship_warranty_years: 10
+  expected_compromise:
+    discount_percent: 5
+    workmanship_warranty_years: 7
+
+# ---------------------------------------------------------------
+# OPTIONAL CONTENT OVERRIDES
+# Short text blocks that are location-specific.
+# Leave blank to use the default text in the template.
+# ---------------------------------------------------------------
+
+content:
+  local_context: >
+    Ottawa homeowners face real complexity across federal, provincial,
+    and municipal incentive programs. A neighbourhood approach can help
+    cut through that confusion and reduce soft costs for contractors.
+  local_climate_note: >
+    The City of Ottawa has committed to net-zero by 2050. Neighbourhood
+    solar and electrification pilots directly support that target and
+    make climate action visible at the street level.
+
+# ---------------------------------------------------------------
+# MAINTAINER (not rendered on the public site)
+# ---------------------------------------------------------------
+
+maintainer:
+  name: "Mike Gifford"
+  github: "mgifford"
+  organization: "CivicActions"

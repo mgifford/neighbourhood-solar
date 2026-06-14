@@ -1,39 +1,33 @@
-<!doctype html>
-<html lang="en-CA">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>For Community Leaders | Neighbourhood Solar</title>
-  <meta name="description" content="A community-led model for scaling solar, battery backup, and home energy upgrades.">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="index.html">Neighbourhood Solar</a>
-  <nav aria-label="Main navigation">
-    <a href="index.html">Residents</a>
-    <a href="contractors.html">Contractors</a>
-    <a href="community-leaders.html" aria-current="page">Community Leaders</a>
-  </nav>
-</header>
+{% extends "base.html" %}
 
-<main>
-  <section class="hero compact">
+{% block title %}For Community Leaders | {{ site.short_title }}{% endblock %}
+{% block description %}A community-led model for scaling solar, battery backup, and home energy upgrades in {{ location.city }}.{% endblock %}
+{% block og_title %}For Community Leaders | {{ site.short_title }}{% endblock %}
+{% block og_description %}A community-led model for scaling solar, battery backup, and home energy upgrades in {{ location.city }}.{% endblock %}
+
+{% block main %}
+
+<section class="hero">
+  <div>
     <p class="eyebrow">For neighbourhood and community leaders</p>
     <h1>Help residents make better home energy decisions together.</h1>
-    <p class="lede">This initiative is designed to help communities organize demand, improve trust, compare options, and accelerate practical climate action at the household level.</p>
-  </section>
+    <p class="lede">This initiative is designed to help communities in {{ location.region_label }} organize demand, improve trust, compare options, and accelerate practical climate action at the household level.</p>
+  </div>
+</section>
 
-  <section>
-    <h2>Why community leadership matters</h2>
-    <p>Most homeowners are not opposed to solar or home electrification. They are overwhelmed. They need trusted information, a clear process, and confidence that they are not being pushed into a bad deal.</p>
-    <p>Community leaders can help create that trust by convening residents, setting expectations, and insisting on transparency.</p>
-  </section>
+<section id="why-leadership">
+  <h2>Why community leadership matters</h2>
+  <p>Most homeowners are not opposed to solar or home electrification. They are overwhelmed. They need trusted information, a clear process, and confidence that they are not being pushed into a bad deal.</p>
+  <p>Community leaders can help create that trust by convening residents, setting expectations, and insisting on transparency.</p>
 
-  <section class="grid three">
+  <div class="grid three">
     <div class="card">
       <h3>Climate</h3>
+      {% if content.local_climate_note %}
+      <p>{{ content.local_climate_note }}</p>
+      {% else %}
       <p>Neighbourhood solar and electrification can reduce emissions while making climate action visible and local.</p>
+      {% endif %}
     </div>
     <div class="card">
       <h3>Resilience</h3>
@@ -43,41 +37,42 @@
       <h3>Trust</h3>
       <p>A transparent process can reduce confusion, pressure tactics, and one-off decision-making.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <h2>How leaders can help</h2>
-    <ul>
-      <li>Share the registration page with residents</li>
-      <li>Host or promote an information session</li>
-      <li>Help identify suitable blocks or clusters of homes</li>
-      <li>Review vendor evaluation criteria</li>
-      <li>Encourage openness, fairness, and no-commission referrals</li>
-      <li>Help document lessons for other communities</li>
-    </ul>
-  </section>
+<section id="how-leaders-help">
+  <h2>How leaders can help</h2>
+  <ul>
+    <li>Share the registration page with residents</li>
+    <li>Host or promote an information session</li>
+    <li>Help identify suitable blocks or clusters of homes</li>
+    <li>Review vendor evaluation criteria</li>
+    <li>Encourage openness, fairness, and no-commission referrals</li>
+    <li>Help document lessons for other communities</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>Principles</h2>
-    <ul>
-      <li>Resident-led</li>
-      <li>Vendor-neutral until proposals are reviewed</li>
-      <li>No hidden commissions or referral fees</li>
-      <li>Transparent criteria and trade-offs</li>
-      <li>Plain-language education</li>
-      <li>Open documentation so other communities can reuse the model</li>
-    </ul>
-  </section>
+<section id="principles">
+  <h2>Principles</h2>
+  <ul>
+    <li>Resident-led</li>
+    <li>Vendor-neutral until proposals are reviewed</li>
+    <li>No hidden commissions or referral fees</li>
+    <li>Transparent criteria and trade-offs</li>
+    <li>Plain-language education</li>
+    <li>Open documentation so other communities can reuse the model</li>
+  </ul>
+</section>
 
-  <section class="cta">
-    <h2>Help start a local cohort</h2>
-    <p>We are looking for trusted local leaders who can help test whether a neighbourhood approach can make home energy upgrades easier and more affordable.</p>
-    <a class="button" href="mailto:hello@example.ca?subject=Community%20Leader%20Interest%20in%20Neighbourhood%20Solar">Contact the organizers</a>
-  </section>
-</main>
+<section id="contact" class="cta">
+  <h2>Help start a local cohort</h2>
+  <p>We are looking for trusted local leaders who can help test whether a neighbourhood approach can make home energy upgrades easier and more affordable in {{ location.city }}.</p>
+  {% if contact.email %}
+  <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.community_leader | urlencode }}">Contact the organizers</a>
+  {% endif %}
+  {% if contact.contact_form_url %}
+  <a class="button secondary" href="{{ contact.contact_form_url }}">Use the contact form</a>
+  {% endif %}
+</section>
 
-<footer>
-  <p>Neighbourhood Solar & Energy Initiative. Resident-led. Open process. No commission.</p>
-</footer>
-</body>
-</html>
+{% endblock %}

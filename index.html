@@ -1,101 +1,118 @@
-<!doctype html>
-<html lang="en-CA">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Neighbourhood Solar & Energy Initiative</title>
-  <meta name="description" content="A resident-led effort to make solar, battery backup, and home energy upgrades easier, cheaper, and more transparent.">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="index.html">Neighbourhood Solar</a>
-  <nav aria-label="Main navigation">
-    <a href="index.html" aria-current="page">Residents</a>
-    <a href="contractors.html">Contractors</a>
-    <a href="community-leaders.html">Community Leaders</a>
-  </nav>
-</header>
+{% extends "base.html" %}
 
-<main>
-  <section class="hero">
-    <div>
-      <p class="eyebrow">A resident-led community energy pilot</p>
-      <h1>Lower energy costs. Backup power. Less confusion.</h1>
-      <p class="lede">Many homeowners are interested in solar panels, batteries, heat pumps, and EV charging. Most do not know where to start. We are exploring whether neighbours can work together to get better information, better pricing, better warranties, and a simpler process.</p>
-      <div class="actions">
-        <a class="button" href="#register">Register interest</a>
-        <a class="button secondary" href="#how-it-works">How it works</a>
-      </div>
+{% block title %}{{ site.title }}{% endblock %}
+{% block description %}{{ site.description }}{% endblock %}
+{% block og_title %}{{ site.title }}{% endblock %}
+{% block og_description %}{{ site.description }}{% endblock %}
+
+{% block main %}
+
+<section class="hero">
+  <div>
+    <p class="eyebrow">A resident-led community energy pilot — {{ location.city }}</p>
+    <h1>Lower energy costs. Backup power. Less confusion.</h1>
+    <p class="lede">Many homeowners are interested in solar panels, batteries, heat pumps, and EV charging. Most do not know where to start. We are exploring whether neighbours can work together to get better information, better pricing, better warranties, and a simpler process.</p>
+    <div class="actions">
+      <a class="button" href="#register">Register interest</a>
+      <a class="button secondary" href="#how-it-works">How it works</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="notice">
-    <h2>No sales pressure. No commission. No obligation.</h2>
-    <p>This project is intended to create a transparent, community-led process. The goal is not to push one vendor or one technology. The goal is to help homeowners make informed decisions together.</p>
-  </section>
+<section class="notice">
+  <h2>No sales pressure. No commission. No obligation.</h2>
+  <p>This project is intended to create a transparent, community-led process. The goal is not to push one vendor or one technology. The goal is to help homeowners make informed decisions together.</p>
+</section>
 
-  <section class="grid two" id="why">
-    <div>
-      <h2>Why this matters</h2>
-      <p>Home energy decisions are becoming more complicated. Solar panels, batteries, heat pumps, EV chargers, financing programs, utility rules, and warranties all matter. Asking every homeowner to figure this out alone is inefficient.</p>
-      <p>A neighbourhood approach could reduce soft costs for contractors and improve outcomes for homeowners.</p>
-    </div>
-    <div class="card">
-      <h3>We are looking for residents interested in:</h3>
-      <ul>
-        <li>Solar panels</li>
-        <li>Battery backup during outages</li>
-        <li>Heat pumps and home electrification</li>
-        <li>EV charging</li>
-        <li>Better financing and warranty options</li>
-        <li>Transparent comparison of contractor proposals</li>
-      </ul>
-    </div>
-  </section>
+<section class="grid two" id="why">
+  <div>
+    <h2>Why this matters</h2>
+    {% if content.local_context %}
+    <p>{{ content.local_context }}</p>
+    {% else %}
+    <p>Home energy decisions are becoming more complicated. Solar panels, batteries, heat pumps, EV chargers, financing programs, utility rules, and warranties all matter. Asking every homeowner to figure this out alone is inefficient.</p>
+    <p>A neighbourhood approach could reduce soft costs for contractors and improve outcomes for homeowners.</p>
+    {% endif %}
+  </div>
+  <div class="card">
+    <h3>We are looking for residents interested in:</h3>
+    <ul>
+      <li>Solar panels</li>
+      <li>Battery backup during outages</li>
+      <li>Heat pumps and home electrification</li>
+      <li>EV charging</li>
+      <li>Better financing and warranty options</li>
+      <li>Transparent comparison of contractor proposals</li>
+    </ul>
+  </div>
+</section>
 
-  <section id="backup">
-    <h2>Battery backup instead of a gas generator</h2>
-    <p>Many households are considering generators because of storms and power outages. A battery backup system can provide quiet, automatic emergency power without gasoline storage, engine maintenance, fumes, or noise.</p>
-    <p>Batteries are not the right answer for every home. They can be expensive. But if several households are already considering generators, a coordinated solar-plus-battery option may be worth comparing clearly and honestly.</p>
-  </section>
+<section id="backup">
+  <h2>Battery backup instead of a gas generator</h2>
+  <p>Many households are considering generators because of storms and power outages. A battery backup system can provide quiet, automatic emergency power without gasoline storage, engine maintenance, fumes, or noise.</p>
+  <p>Batteries are not the right answer for every home. They can be expensive. But if several households are already considering generators, a coordinated solar-plus-battery option may be worth comparing clearly and honestly.</p>
+</section>
 
-  <section id="how-it-works">
-    <h2>How the process could work</h2>
-    <ol class="steps">
-      <li><strong>Register interest.</strong> Share your name, email, and general location. No purchase commitment.</li>
-      <li><strong>Build a local cohort.</strong> Once enough nearby homes are interested, we organize an information session.</li>
-      <li><strong>Invite qualified contractors.</strong> Contractors are asked to provide transparent pricing, equipment options, warranty terms, and group pricing thresholds.</li>
-      <li><strong>Compare options openly.</strong> Residents see the trade-offs before deciding whether to proceed.</li>
-      <li><strong>Sign individual contracts.</strong> Each homeowner makes their own decision and signs directly with the selected contractor.</li>
-      <li><strong>Publish lessons learned.</strong> Results are shared so other neighbourhoods can improve the model.</li>
-    </ol>
-  </section>
+<section id="how-it-works">
+  <h2>How the process could work</h2>
+  <ol class="steps">
+    <li><strong>Register interest.</strong> Share your name, email, and general location. No purchase commitment.</li>
+    <li><strong>Build a local cohort.</strong> Once enough nearby homes are interested, we organize an information session.</li>
+    <li><strong>Invite qualified contractors.</strong> Contractors are asked to provide transparent pricing, equipment options, warranty terms, and group pricing thresholds.</li>
+    <li><strong>Compare options openly.</strong> Residents see the trade-offs before deciding whether to proceed.</li>
+    <li><strong>Sign individual contracts.</strong> Each homeowner makes their own decision and signs directly with the selected contractor.</li>
+    <li><strong>Publish lessons learned.</strong> Results are shared so other neighbourhoods can improve the model.</li>
+  </ol>
+</section>
 
-  <section class="grid three">
-    <div class="card">
-      <h3>Possible group targets</h3>
-      <p>5 homes, 10 homes, and 20 homes. Larger groups may create stronger pricing, scheduling, and procurement advantages.</p>
-    </div>
-    <div class="card">
-      <h3>What we may ask for</h3>
-      <p>Upgraded equipment options, a group price reduction, and a longer workmanship warranty.</p>
-    </div>
-    <div class="card">
-      <h3>What we will avoid</h3>
-      <p>Hidden referral fees, exclusive backroom deals, vague savings claims, and pressure tactics.</p>
-    </div>
-  </section>
+<section class="grid three">
+  <div class="card">
+    <h3>Possible group targets</h3>
+    <p>
+      {% for t in cohort.thresholds %}{{ t }} homes{% if not loop.last %}, {% endif %}{% endfor %}.
+      Larger groups may create stronger pricing, scheduling, and procurement advantages.
+    </p>
+  </div>
+  <div class="card">
+    <h3>What we may ask for</h3>
+    <p>Upgraded equipment options, a group price reduction of around {{ cohort.opening_ask.discount_percent }}%, and a {{ cohort.opening_ask.workmanship_warranty_years }}-year workmanship warranty.</p>
+  </div>
+  <div class="card">
+    <h3>What we will avoid</h3>
+    <p>Hidden referral fees, exclusive backroom deals, vague savings claims, and pressure tactics.</p>
+  </div>
+</section>
 
-  <section id="register" class="cta">
-    <h2>Interested in learning more?</h2>
-    <p>Add your registration form link here. For now, this can point to a Google Form, Airtable form, or GitHub issue template.</p>
-    <a class="button" href="mailto:hello@example.ca?subject=Neighbourhood%20Solar%20Interest">Email to register interest</a>
-  </section>
-</main>
+{% set active_programs = programs | selectattr("active") | list %}
+{% if active_programs %}
+<section id="programs">
+  <h2>Available incentive programs — {{ location.region_label }}</h2>
+  <p>These programs may reduce costs. Verify eligibility directly with each program before relying on them in your planning.</p>
+  <ul class="program-list">
+    {% for program in active_programs %}
+    <li>
+      <a href="{{ program.url }}" rel="noopener">{{ program.name }}</a>
+      <span class="jurisdiction">{{ program.jurisdiction }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if registration.spreadsheet_url %}
+  <p><a href="{{ registration.spreadsheet_url }}">{{ registration.spreadsheet_label }}</a></p>
+  {% endif %}
+</section>
+{% endif %}
 
-<footer>
-  <p>Neighbourhood Solar & Energy Initiative. Resident-led. Open process. No commission.</p>
-</footer>
-</body>
-</html>
+<section id="register" class="cta">
+  <h2>Interested in learning more?</h2>
+  {% if registration.form_url %}
+  <p>Register your interest. No purchase commitment. We will contact you when enough nearby homes have signed up to organize an information session.</p>
+  <a class="button" href="{{ registration.form_url }}">{{ registration.form_label }}</a>
+  {% else %}
+  <p>Registration is not yet open. Contact us to be notified when it opens.</p>
+  {% endif %}
+  {% if contact.email %}
+  <p><a href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.resident | urlencode }}">Email to register interest</a></p>
+  {% endif %}
+</section>
+
+{% endblock %}
