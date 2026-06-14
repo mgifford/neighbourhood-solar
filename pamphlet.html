@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ pamphlet.title | default(site.short_title + " — " + location.city) }}</title>
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --green:  #255c3b;
+      --gold:   #e3b23c;
+      --text:   #1d241f;
+      --muted:  #4f5b52;
+      --bg:     #fbfaf4;
+      --panel:  #ffffff;
+      --line:   #d8d5c8;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 11pt;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    /* ── Screen layout: three equal columns, landscape ── */
+    .pamphlet {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      width: 27.9cm;   /* letter landscape */
+      min-height: 21.6cm;
+      margin: 2rem auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 24px rgba(0,0,0,.10);
+    }
+
+    /* ── Panels ── */
+    .panel {
+      padding: 1.4cm 1.1cm;
+      border-right: 1px dashed var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .panel:last-child { border-right: none; }
+
+    /* ── Front panel (right column when folded) ── */
+    .panel-front {
+      background: var(--green);
+      color: #fff;
+      justify-content: space-between;
+    }
+    .panel-front a { color: var(--gold); }
+
+    /* ── Typography ── */
+    h1 { font-size: 1.7rem; line-height: 1.15; font-weight: 900; }
+    h2 { font-size: 1rem;  font-weight: 800; text-transform: uppercase;
+         letter-spacing: 0.06em; color: var(--green); border-bottom: 2px solid var(--gold);
+         padding-bottom: 0.25rem; }
+    .panel-front h2 { color: var(--gold); border-bottom-color: rgba(255,255,255,.3); }
+    h3 { font-size: 0.95rem; font-weight: 700; }
+    p, li { font-size: 0.9rem; color: var(--muted); }
+    .panel-front p, .panel-front li { color: rgba(255,255,255,.85); }
+    ul { padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+
+    /* ── Eyebrow ── */
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--gold);
+    }
+
+    /* ── Tagline / lede ── */
+    .lede { font-size: 1rem !important; color: rgba(255,255,255,.9) !important; line-height: 1.4; }
+
+    /* ── Callout box ── */
+    .callout {
+      background: rgba(255,255,255,.12);
+      border-left: 3px solid var(--gold);
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.3rem;
+    }
+    .callout p { color: rgba(255,255,255,.9) !important; font-size: 0.85rem !important; }
+
+    /* ── Worry card ── */
+    .worry { display: flex; flex-direction: column; gap: 0.2rem; }
+    .worry-icon { font-size: 1.4rem; line-height: 1; }
+    .worry h3 { font-size: 0.88rem; }
+    .worry p  { font-size: 0.82rem; }
+
+    /* ── Step list ── */
+    ol.steps { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    ol.steps li { font-size: 0.85rem; color: var(--muted); }
+    ol.steps strong { color: var(--text); }
+
+    /* ── CTA block ── */
+    .cta-block {
+      margin-top: auto;
+      background: var(--gold);
+      color: var(--text);
+      border-radius: 0.5rem;
+      padding: 0.7rem 0.9rem;
+      text-align: center;
+    }
+    .cta-block p { color: var(--text) !important; font-weight: 700; font-size: 0.85rem !important; }
+    .cta-block .url { font-size: 0.78rem !important; font-weight: 400; word-break: break-all; }
+
+    /* ── Programs ── */
+    .program-list { list-style: none; padding: 0; }
+    .program-list li {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 0.5rem; padding: 0.25rem 0; border-bottom: 1px solid var(--line);
+      font-size: 0.82rem;
+    }
+    .program-list li:last-child { border-bottom: none; }
+    .jurisdiction { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+
+    /* ── Screen-only helper ── */
+    .screen-only { text-align: center; padding: 1rem; color: var(--muted); font-size: 0.8rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { size: letter landscape; margin: 0; }
+      body { background: white; }
+      .pamphlet {
+        width: 100%; min-height: 100vh;
+        margin: 0; border: none; box-shadow: none;
+      }
+      .panel { border-right-style: dashed; }
+      .screen-only { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<p class="screen-only">
+  Print this page (File → Print, set paper to <strong>Letter, Landscape</strong>, margins <strong>None</strong>).
+  Fold in thirds: the green panel faces out.
+</p>
+
+<div class="pamphlet">
+
+  {# ── Panel 1 (left inside): What people are worried about ── #}
+  <div class="panel panel-worries">
+    <h2>What people are worried about</h2>
+
+    {% set worries = pamphlet.worries | default([
+      {
+        "icon": "⚡",
+        "heading": "Power outages",
+        "body": "Storms are getting worse. A battery system gives you quiet, automatic backup power — no gas, no fumes, no noise."
+      },
+      {
+        "icon": "💸",
+        "heading": "Rising electricity bills",
+        "body": "Solar on your roof can reduce what you pull from the grid and lock in lower costs over the long term."
+      },
+      {
+        "icon": "🌡️",
+        "heading": "Climate and extreme heat",
+        "body": "Heat pumps cool in summer and heat in winter — more efficiently than gas furnaces or window A/C units."
+      },
+      {
+        "icon": "🚗",
+        "heading": "EV charging at home",
+        "body": "A home charger is cheaper and more convenient than public charging. Pair it with solar and the math gets even better."
+      },
+      {
+        "icon": "😵",
+        "heading": "Too complicated to figure out alone",
+        "body": "Incentive programs, contractor quotes, equipment choices — it's a lot. Neighbours comparing notes makes it simpler for everyone."
+      }
+    ]) %}
+
+    {% for w in worries %}
+    <div class="worry">
+      <span class="worry-icon">{{ w.icon }}</span>
+      <h3>{{ w.heading }}</h3>
+      <p>{{ w.body }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {# ── Panel 2 (centre inside): How it works + programs ── #}
+  <div class="panel panel-how">
+    <div>
+      <h2>How it works</h2>
+      <ol class="steps">
+        {% set steps = pamphlet.steps | default([
+          {"label": "Register interest", "detail": "No commitment. Just let us know you're curious."},
+          {"label": "Form a local group", "detail": "Neighbours in the same area sign up together."},
+          {"label": "Invite contractors", "detail": "We ask qualified installers to quote transparently for the group."},
+          {"label": "Compare openly", "detail": "Everyone sees the options before deciding."},
+          {"label": "Sign your own contract", "detail": "Each household decides independently — no pressure."}
+        ]) %}
+        {% for s in steps %}
+        <li><strong>{{ s.label }}.</strong> {{ s.detail }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div>
+      <h2>No hidden fees. Ever.</h2>
+      <p>This is a resident-led process. No sales commission. No referral fees. No obligation to buy anything.</p>
+    </div>
+
+    {% set active_programs = programs | selectattr("active") | list %}
+    {% if active_programs %}
+    <div>
+      <h2>Incentive programs — {{ location.city }}</h2>
+      <ul class="program-list">
+        {% for prog in active_programs %}
+        <li>
+          <span>{{ prog.name }}</span>
+          <span class="jurisdiction">{{ prog.jurisdiction }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <p style="margin-top:.4rem;font-size:.75rem;">Verify eligibility directly with each program.</p>
+    </div>
+    {% endif %}
+  </div>
+
+  {# ── Panel 3 (right / front cover): Headline + CTA ── #}
+  <div class="panel panel-front">
+    <div>
+      <p class="eyebrow">{{ location.city }} — resident-led</p>
+      <h1>{{ pamphlet.headline | default("Solar. Batteries. Less confusion.") }}</h1>
+      <p class="lede">{{ pamphlet.subheadline | default("Your neighbours are thinking about solar panels, battery backup, and heat pumps. Let's figure it out together.") }}</p>
+    </div>
+
+    <div class="callout">
+      <p>{{ pamphlet.callout | default("Group sign-ups mean better prices, better warranties, and a clearer process — with no obligation to buy.") }}</p>
+    </div>
+
+    <div>
+      <h2>What's in it for you</h2>
+      <ul>
+        {% set benefits = pamphlet.benefits | default([
+          "Lower quotes through group purchasing",
+          "Longer workmanship warranties",
+          "Honest comparison of contractor proposals",
+          "Neighbours who've already done the research"
+        ]) %}
+        {% for b in benefits %}
+        <li>{{ b }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="cta-block">
+      <p>Scan or visit to register interest</p>
+      {% if registration.form_url %}
+      <p class="url">{{ registration.form_url }}</p>
+      {% elif contact.email %}
+      <p class="url">{{ contact.email }}</p>
+      {% else %}
+      <p class="url">{{ site.base_url }}</p>
+      {% endif %}
+      <p style="margin-top:.4rem;font-size:.72rem;font-weight:400;">No purchase required. No spam.</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -132,6 +132,66 @@ content:
     make climate action visible at the street level.
 
 # ---------------------------------------------------------------
+# PAMPHLET
+# Controls the printable tri-fold pamphlet (pamphlet.html).
+# All fields are optional — the template provides sensible defaults.
+# ---------------------------------------------------------------
+
+pamphlet:
+  headline: "Solar. Batteries. Less confusion."
+  subheadline: >
+    Your neighbours are thinking about solar panels, battery backup,
+    and heat pumps. Let's figure it out together.
+  callout: >
+    Group sign-ups mean better prices, better warranties, and a clearer
+    process — with no obligation to buy.
+
+  benefits:
+    - "Lower quotes through group purchasing"
+    - "Longer workmanship warranties"
+    - "Honest comparison of contractor proposals"
+    - "Neighbours who've already done the research"
+
+  worries:
+    - icon: "⚡"
+      heading: "Power outages"
+      body: >
+        Storms are getting worse. A battery system gives you quiet,
+        automatic backup power — no gas, no fumes, no noise.
+    - icon: "💸"
+      heading: "Rising electricity bills"
+      body: >
+        Solar on your roof can reduce what you pull from the grid
+        and lock in lower costs over the long term.
+    - icon: "🌡️"
+      heading: "Climate and extreme heat"
+      body: >
+        Heat pumps cool in summer and heat in winter — more efficiently
+        than gas furnaces or window A/C units.
+    - icon: "🚗"
+      heading: "EV charging at home"
+      body: >
+        A home charger is cheaper and more convenient than public charging.
+        Pair it with solar and the math gets even better.
+    - icon: "😵"
+      heading: "Too complicated to figure out alone"
+      body: >
+        Incentive programs, contractor quotes, equipment choices — it's a lot.
+        Neighbours comparing notes makes it simpler for everyone.
+
+  steps:
+    - label: "Register interest"
+      detail: "No commitment. Just let us know you're curious."
+    - label: "Form a local group"
+      detail: "Neighbours in the same area sign up together."
+    - label: "Invite contractors"
+      detail: "We ask qualified installers to quote transparently for the group."
+    - label: "Compare openly"
+      detail: "Everyone sees the options before deciding."
+    - label: "Sign your own contract"
+      detail: "Each household decides independently — no pressure."
+
+# ---------------------------------------------------------------
 # MAINTAINER (not rendered on the public site)
 # ---------------------------------------------------------------
 

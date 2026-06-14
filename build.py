@@ -125,6 +125,12 @@ PAGES = [
         "current_page": "community-leaders",
         "page_file": "community-leaders.html",
     },
+    {
+        "template": "pamphlet.html",
+        "output": "pamphlet.html",
+        "current_page": "pamphlet",
+        "page_file": "pamphlet.html",
+    },
 ]
 
 
