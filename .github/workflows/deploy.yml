@@ -32,9 +32,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build site
-        # Default config is ottawa.yaml. To deploy a different city:
+        # Default config is configs/neighbourhood.yaml. To deploy a different neighbourhood:
         # run: python build.py --config configs/toronto.yaml
-        run: python build.py --config configs/ottawa.yaml --output _site
+        run: python build.py --config configs/neighbourhood.yaml --output _site
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

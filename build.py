@@ -3,9 +3,9 @@
 build.py — Neighbourhood Solar static site builder
 
 Usage:
-    python build.py                              # uses configs/ottawa.yaml by default
+    python build.py                                    # uses configs/neighbourhood.yaml by default
     python build.py --config configs/toronto.yaml
-    python build.py --config configs/ottawa.yaml --output _site
+    python build.py --config configs/neighbourhood.yaml --output _site
 
 Reads a YAML config file, renders Jinja2 HTML templates, and copies static
 assets into the output directory. No JavaScript, no external dependencies
@@ -38,8 +38,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Build neighbourhood-solar static site.")
     parser.add_argument(
         "--config",
-        default="configs/ottawa.yaml",
-        help="Path to YAML config file (default: configs/ottawa.yaml)",
+        default="configs/neighbourhood.yaml",
+        help="Path to YAML config file (default: configs/neighbourhood.yaml)",
     )
     parser.add_argument(
         "--output",
