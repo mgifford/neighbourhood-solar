@@ -48,8 +48,8 @@ def parse_args():
     )
     parser.add_argument(
         "--templates",
-        default=".",
-        help="Path to Jinja2 templates directory (default: . repo root)",
+        default="templates",
+        help="Path to Jinja2 templates directory (default: templates)",
     )
     return parser.parse_args()
 
