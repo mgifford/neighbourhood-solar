@@ -168,6 +168,11 @@ pamphlet:
       body: >
         Heat pumps cool in summer and heat in winter — more efficiently
         than gas furnaces or window A/C units.
+    - icon: "🏠"
+      heading: "Heat escaping through the walls and attic"
+      body: >
+        Insulation and air sealing are often the highest-ROI upgrade —
+        and much cheaper when bundled with a contractor already on site for solar.
     - icon: "🚗"
       heading: "EV charging at home"
       body: >
