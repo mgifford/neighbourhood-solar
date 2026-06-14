@@ -52,6 +52,21 @@
   </ul>
 </section>
 
+{% if city_plans %}
+<section id="city-plans">
+  <h2>This work aligns with {{ location.city }}'s own commitments</h2>
+  <p>Neighbourhood energy pilots are not separate from municipal climate goals — they are a practical way to deliver them at the street level. Community leaders can point to these plans when making the case for local action.</p>
+  <ul class="program-list">
+    {% for plan in city_plans %}
+    <li>
+      <a href="{{ plan.url }}" rel="noopener">{{ plan.name }}</a>
+      {% if plan.description %}<span class="plan-description">{{ plan.description }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
 <section id="principles">
   <h2>Principles</h2>
   <ul>

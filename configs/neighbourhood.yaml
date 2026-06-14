@@ -132,6 +132,26 @@ content:
     make climate action visible at the street level.
 
 # ---------------------------------------------------------------
+# CITY PLANS
+# Optional links to municipal climate, energy, or official plans.
+# Shown on community-leaders.html and contractors.html to connect
+# neighbourhood action to the city's own stated commitments.
+# Add as many entries as relevant. Leave the list empty to hide the section.
+# ---------------------------------------------------------------
+
+city_plans:
+  - name: "Climate Change Master Plan"
+    url: "https://www.ottawa.ca/en/planning-development-and-construction/official-plan-and-master-plans/climate-change-master-plan"
+    description: >
+      Ottawa's framework for reducing community-wide greenhouse gas emissions
+      and building climate resilience across the city.
+  - name: "Energy Evolution: Ottawa's Community Energy Transition Strategy"
+    url: "https://ottawa.ca/en/living-ottawa/environment-conservation-and-climate/reducing-greenhouse-gas-emissions/strategies-and-action-plans/energy-evolution/energy-evolution-ottawas-community-energy-transition-strategy"
+    description: >
+      Ottawa's long-term strategy for transitioning to clean, affordable energy —
+      with a specific focus on buildings, transportation, and local energy systems.
+
+# ---------------------------------------------------------------
 # PAMPHLET
 # Controls the printable tri-fold pamphlet (pamphlet.html).
 # All fields are optional — the template provides sensible defaults.

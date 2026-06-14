@@ -111,6 +111,20 @@
 </section>
 {% endif %}
 
+{% if city_plans %}
+<section id="city-plans">
+  <h2>Building in the direction {{ location.city }} is already heading</h2>
+  <p>Contractors who understand the city's energy transition goals are better positioned to advise clients, win municipal-adjacent work, and grow as policy and incentive programs evolve. These plans set the direction — neighbourhood pilots are one way to get there.</p>
+  <ul class="program-list">
+    {% for plan in city_plans %}
+    <li>
+      <a href="{{ plan.url }}" rel="noopener">{{ plan.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
 <section id="contact" class="cta">
   <h2>Want to be part of this?</h2>
   <p>We are looking for contractors who want to think beyond the individual installation — and who are willing to engage honestly with what homeowners in {{ location.city }} are actually asking for.</p>

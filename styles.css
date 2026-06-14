@@ -149,6 +149,13 @@ footer {
   color: var(--muted);
 }
 
+.plan-description {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
 @media (max-width: 760px) {
   .site-header { align-items: flex-start; flex-direction: column; }
   .grid.two, .grid.three { grid-template-columns: 1fr; }
