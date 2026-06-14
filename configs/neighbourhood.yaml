@@ -42,7 +42,7 @@ location:
 
 contact:
   # REQUIRED before deploying. Shown on all three pages.
-  email: "hello@example.ca"
+  email: "mike.gifford@gmail.com"
   # Pre-filled mailto: subject lines per audience
   mailto_subjects:
     resident: "Neighbourhood Solar Interest"
@@ -57,7 +57,7 @@ contact:
 
 registration:
   # REQUIRED before deploying. Google Form, Airtable, GitHub issue, etc.
-  form_url: ""
+  form_url: "https://forms.gle/aroLsgjxT7izHuCaA"
   form_label: "Register your interest"
   # OPTIONAL: link to a public anonymized spreadsheet of registered interest
   spreadsheet_url: ""
