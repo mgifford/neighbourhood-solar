@@ -22,6 +22,7 @@ site:
   language: "en"       # ISO 639-1
   locale: "en-CA"      # BCP 47; affects lang= attribute on <html>
   base_url: "https://mgifford.github.io/neighbourhood-solar"  # No trailing slash. REQUIRED.
+  github_url: "https://github.com/mgifford/neighbourhood-solar"  # OPTIONAL. Shown in footer.
   output_dir: "_site"  # Where built HTML files go. Relative to repo root.
 
 # ---------------------------------------------------------------
