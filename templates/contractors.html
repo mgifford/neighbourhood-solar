@@ -1,64 +1,97 @@
 {% extends "base.html" %}
 
 {% block title %}For Contractors | {{ site.short_title }}{% endblock %}
-{% block description %}A proposal for contractors interested in a neighbourhood-scale solar and battery deployment pilot in {{ location.city }}.{% endblock %}
+{% block description %}A neighbourhood energy pilot in {{ location.city }} — pre-qualified homeowners, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
 {% block og_title %}For Contractors | {{ site.short_title }}{% endblock %}
-{% block og_description %}A proposal for contractors interested in a neighbourhood-scale solar and battery deployment pilot in {{ location.city }}.{% endblock %}
+{% block og_description %}A neighbourhood energy pilot in {{ location.city }} — pre-qualified homeowners, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
 
 {% block main %}
 
 <section class="hero">
   <div>
     <p class="eyebrow">For solar and home energy contractors</p>
-    <h1>A pilot to reduce acquisition costs and deploy neighbourhood-scale solar faster.</h1>
-    <p class="lede">We are exploring a transparent community procurement model that brings together qualified homeowners in a concentrated geographic area in {{ location.region_label }}.</p>
+    <h1>Your clients want more than panels. Here is a way to deliver it.</h1>
+    <p class="lede">Homeowners in {{ location.region_label }} are thinking about solar, battery backup, heat pumps, insulation, and EV charging — all at once. Most don't know where to start. A neighbourhood pilot can change that, and create a better business model for contractors willing to meet that need.</p>
   </div>
+</section>
+
+<section id="the-real-ask">
+  <h2>What homeowners actually want</h2>
+  <p>When residents register interest in this pilot, they are not just asking for solar panels. They are asking for lower energy bills, backup power during outages, a warmer home in winter and a cooler one in summer, and a process that doesn't feel like a trap.</p>
+  <p>That is a whole-home energy problem. Contractors who can address it — not just install one technology — are the ones who will stand out.</p>
+
+  <div class="grid two">
+    <div class="card">
+      <h3>What residents are interested in</h3>
+      <ul>
+        <li>Solar panels</li>
+        <li>Battery backup as an alternative to gas generators</li>
+        <li>Heat pumps for heating and cooling</li>
+        <li>Roof insulation — particularly when combined with a solar install</li>
+        <li>EV charging at home</li>
+        <li>Transparent guidance on incentive programs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What residents are asking for</h3>
+      <ul>
+        <li>Transparent pricing — clear price per watt, no hidden fees</li>
+        <li>Group pricing thresholds for {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes</li>
+        <li>Premium panel and inverter options</li>
+        <li>Battery backup packages designed around critical loads</li>
+        <li>A {{ cohort.opening_ask.workmanship_warranty_years }}-year workmanship warranty</li>
+        <li>Plain-language support for financing and incentive programs</li>
+        <li>Documented results after installation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="insulation">
+  <h2>A question worth exploring: insulation with solar</h2>
+  <p>One idea residents have raised: when a crew is already on the roof to install solar panels, is it practical to add roof insulation at the same time? We don't know yet whether this is standard practice, how it affects scheduling, or what it would add to the cost.</p>
+  <p>We are asking contractors to tell us. If there is a way to bundle these services that makes sense operationally, it could be a meaningful differentiator — and something homeowners would value highly.</p>
 </section>
 
 <section id="business-case">
   <h2>The business case</h2>
-  <p>Residential solar is often slowed by customer acquisition, education, scheduling, and site-by-site sales work. A neighbourhood cohort can reduce friction before a contractor spends time producing detailed proposals.</p>
-  <p>The intent is not to demand an unrealistic discount. The intent is to identify real operational savings and share part of that value with homeowners.</p>
+  <p>Residential solar is often slowed by customer acquisition, household-by-household education, and site-by-site sales work. A neighbourhood cohort changes that dynamic before a contractor spends time producing detailed proposals.</p>
 
   <div class="grid two">
     <div class="card">
-      <h3>Potential value for contractors</h3>
+      <h3>Operational benefits</h3>
       <ul>
-        <li>Pre-qualified local leads</li>
-        <li>Coordinated information sessions</li>
-        <li>Batch site assessments</li>
-        <li>More efficient scheduling</li>
-        <li>Reduced travel and mobilization</li>
-        <li>Potential procurement efficiencies</li>
-        <li>Community visibility and referrals</li>
+        <li>Pre-qualified leads in a concentrated area</li>
+        <li>Batch site assessments — one mobilization, multiple homes</li>
+        <li>Coordinated scheduling across neighbouring properties</li>
+        <li>Reduced travel and equipment mobilization costs</li>
+        <li>Community visibility and word-of-mouth referrals</li>
       </ul>
     </div>
     <div class="card">
-      <h3>What residents may request</h3>
+      <h3>Longer-term opportunity</h3>
       <ul>
-        <li>Transparent price per watt</li>
-        <li>Group pricing thresholds for {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes</li>
-        <li>Premium panel and inverter options</li>
-        <li>Battery backup package options</li>
-        <li>Longer workmanship warranty</li>
-        <li>Clear production assumptions</li>
-        <li>Plain-language financing support</li>
+        <li>Build a reputation as a whole-home energy contractor</li>
+        <li>Develop bundled service packages residents actually want</li>
+        <li>Establish relationships before the next upgrade cycle</li>
+        <li>Contribute to publicly documented results that build trust</li>
+        <li>Shape what the neighbourhood procurement model looks like</li>
       </ul>
     </div>
   </div>
 </section>
 
-<section id="opening-ask">
-  <h2>Proposed opening ask</h2>
-  <p>For a qualified neighbourhood cohort, we would like contractors to consider:</p>
-  <ul>
-    <li>Upgraded equipment option, such as premium panels and high-quality inverter architecture</li>
-    <li>{{ cohort.opening_ask.discount_percent }}% group discount as an opening position</li>
-    <li>{{ cohort.opening_ask.workmanship_warranty_years }}-year workmanship warranty</li>
-    <li>Battery backup options designed around critical loads</li>
-    <li>Publicly documented aggregate results after installation</li>
-  </ul>
-  <p>The expected compromise may be closer to upgraded equipment, a {{ cohort.expected_compromise.discount_percent }}% reduction, and a {{ cohort.expected_compromise.workmanship_warranty_years }}-year workmanship warranty. Contractors are invited to explain what is operationally realistic.</p>
+<section id="process">
+  <h2>How the pilot works</h2>
+  <p>This is an open process. No contractor is selected in advance. No backroom deals. Contractors who participate are asked to quote transparently for the group — residents see the proposals and make their own decisions.</p>
+  <ol class="steps">
+    <li><strong>Express interest.</strong> Let us know you want to be involved. No commitment at this stage.</li>
+    <li><strong>Review the cohort.</strong> When enough nearby homes have registered, we share the aggregate picture — location, rough system sizes, technologies of interest.</li>
+    <li><strong>Provide a transparent proposal.</strong> Pricing, equipment options, warranty terms, and group pricing thresholds — presented clearly so residents can compare.</li>
+    <li><strong>Participate in an information session.</strong> Answer questions from residents as a group, not one household at a time.</li>
+    <li><strong>Sign individual contracts.</strong> Each homeowner decides independently. No pressure on either side.</li>
+    <li><strong>Share the results.</strong> Aggregate outcomes are published so the model can improve for the next neighbourhood.</li>
+  </ol>
 </section>
 
 {% if contractors %}
@@ -79,10 +112,10 @@
 {% endif %}
 
 <section id="contact" class="cta">
-  <h2>Interested in discussing the pilot?</h2>
-  <p>Contact us to discuss how a neighbourhood deployment model could work for your company and local homeowners in {{ location.city }}.</p>
+  <h2>Want to be part of this?</h2>
+  <p>We are looking for contractors who want to think beyond the individual installation — and who are willing to engage honestly with what homeowners in {{ location.city }} are actually asking for.</p>
   {% if contact.email %}
-  <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.contractor | urlencode }}">Contact the organizers</a>
+  <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.contractor | urlencode }}">Get in touch</a>
   {% endif %}
   {% if contact.contact_form_url %}
   <a class="button secondary" href="{{ contact.contact_form_url }}">Use the contact form</a>
