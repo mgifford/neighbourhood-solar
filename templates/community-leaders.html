@@ -10,52 +10,42 @@
 <section class="hero">
   <div>
     <p class="eyebrow">For neighbourhood and community leaders</p>
-    <h1>Help residents make better home energy decisions together.</h1>
-    <p class="lede">This initiative is designed to help communities in {{ location.region_label }} organize demand, improve trust, compare options, and accelerate practical climate action at the household level.</p>
+    <h1>Help your neighbourhood move from climate concern to practical action.</h1>
+    <p class="lede">Neighbourhood Solar &amp; Energy Initiative is a resident-first framework built for Ottawa. It helps local leaders organize trusted, transparent group-buy opportunities for home energy upgrades without turning community networks into sales channels.</p>
   </div>
 </section>
 
-<section id="why-leadership">
-  <h2>Why community leadership matters</h2>
-  <p>Most homeowners are not opposed to solar or home electrification. They are overwhelmed. They need trusted information, a clear process, and confidence that they are not being pushed into a bad deal.</p>
-  <p>Community leaders can help create that trust by convening residents, setting expectations, and insisting on transparency.</p>
+<section id="challenge">
+  <h2>The challenge: why residents stay stuck</h2>
+  <p>Most households are interested in lower bills, cleaner energy, and better resilience. But the path from interest to action is often confusing. Families are left to compare complex proposals, shifting incentives, and conflicting sales claims on their own.</p>
+  <p>For many residents, the problem is not motivation. It is trust, clarity, and the time required to evaluate options safely.</p>
+</section>
+
+<section id="consumer-protection">
+  <h2>The equity and consumer protection case for group-buying</h2>
+  <p>In discussions highlighted by <a href="https://www.volts.wtf/p/giving-clean-electricity-a-political">Volts</a>, experts point out that fragmented markets often create higher costs and more confusion for everyday households. When each family negotiates alone, it is easier for opaque pricing and aggressive sales tactics to dominate.</p>
+  <p>A neighbourhood cohort changes that balance. Residents compare options together, ask hard questions in public, and evaluate proposals using shared criteria. That collective process helps protect neighbours, improves affordability, and rewards contractors who lead with quality and transparency.</p>
 
   <div class="grid three">
     <div class="card">
-      <h3>Climate</h3>
-      {% if content.local_climate_note %}
-      <p>{{ content.local_climate_note }}</p>
-      {% else %}
-      <p>Neighbourhood solar and electrification can reduce emissions while making climate action visible and local.</p>
-      {% endif %}
+      <h3>Protection</h3>
+      <p>Shared review reduces pressure-based decisions and protects residents from unclear or misleading offers.</p>
     </div>
     <div class="card">
-      <h3>Resilience</h3>
-      <p>Battery backup can help households manage outages without defaulting to gasoline generators.</p>
+      <h3>Affordability</h3>
+      <p>Coordinated demand can lower soft costs and create stronger pricing for Ottawa households.</p>
     </div>
     <div class="card">
       <h3>Trust</h3>
-      <p>A transparent process can reduce confusion, pressure tactics, and one-off decision-making.</p>
+      <p>Open comparison criteria and shared learning improve confidence across the community.</p>
     </div>
   </div>
-</section>
-
-<section id="how-leaders-help">
-  <h2>How leaders can help</h2>
-  <ul>
-    <li>Share the registration page with residents</li>
-    <li>Host or promote an information session</li>
-    <li>Help identify suitable blocks or clusters of homes</li>
-    <li>Review vendor evaluation criteria</li>
-    <li>Encourage openness, fairness, and no-commission referrals</li>
-    <li>Help document lessons for other communities</li>
-  </ul>
 </section>
 
 {% if city_plans %}
 <section id="city-plans">
-  <h2>This work aligns with {{ location.city }}'s own commitments</h2>
-  <p>Neighbourhood energy pilots are not separate from municipal climate goals — they are a practical way to deliver them at the street level. Community leaders can point to these plans when making the case for local action.</p>
+  <h2>Aligned with Ottawa's climate transition plans</h2>
+  <p>This initiative is built for Ottawa's policy and grid context. It directly supports implementation momentum behind the Climate Change Master Plan and Energy Evolution strategy by turning city-level targets into block-level action.</p>
   <ul class="program-list">
     {% for plan in city_plans %}
     <li>
@@ -68,7 +58,7 @@
 {% endif %}
 
 <section id="principles">
-  <h2>Principles</h2>
+  <h2>Principles leaders can stand behind</h2>
   <ul>
     <li>Resident-led</li>
     <li>Vendor-neutral until proposals are reviewed</li>
@@ -79,16 +69,22 @@
   </ul>
 </section>
 
-<section id="why">
-  <h2>Why a neighbourhood approach?</h2>
-  <p>In a recent episode of <a href="https://www.volts.wtf">Volts</a>, clean energy investor Steve McBee argued that residential solar has been made “more difficult by the way that we have organized the market.” High customer acquisition costs, fragmented demand, and inefficient sales models can make rooftop solar more expensive than it needs to be.</p>
-  <p>Neighbourhood Solar is an experiment in reducing those barriers by organizing interested households together, sharing information openly, and creating opportunities for coordinated procurement.</p>  
-  <p>Read or listen: <a href="https://www.volts.wtf/p/giving-clean-electricity-a-political">Giving Clean Electricity a Political Voice of Its Own (Volts.wtf)</a>.</p>
+<section id="turnkey-ask">
+  <h2>A turnkey project for busy local leaders</h2>
+  <p>You do not need to design a new program from scratch. The initiative already includes open-source tools, communication templates, contractor engagement frameworks, and a transparent operating model tested for community trust.</p>
+  <p>Your role is to champion it locally and help residents participate confidently.</p>
+  <ul>
+    <li>Share the resident sign-up page through your association or network</li>
+    <li>Host or co-host one local information session</li>
+    <li>Help identify suitable clusters of homes for a first cohort</li>
+    <li>Reinforce the trust principles: resident-led, vendor-neutral, no commissions</li>
+    <li>Support community feedback so each cohort improves the next</li>
+  </ul>
 </section>
 
 <section id="contact" class="cta">
   <h2>Help start a local cohort</h2>
-  <p>We are looking for trusted local leaders who can help test whether a neighbourhood approach can make home energy upgrades easier and more affordable in {{ location.city }}.</p>
+  <p>If you organize residents in Ottawa, you can help make climate action more affordable, more trusted, and easier to deliver at the neighbourhood level.</p>
   {% if contact.email %}
   <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.community_leader | urlencode }}">Contact the organizers</a>
   {% endif %}
