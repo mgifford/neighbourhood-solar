@@ -71,10 +71,6 @@ registration:
 # ---------------------------------------------------------------
 
 programs:
-  - name: "Canada Greener Homes Grant"
-    url: "https://www.nrcan.gc.ca/energy-efficiency/homes/canada-greener-homes-grant/23441"
-    jurisdiction: "Federal"
-    active: true
   - name: "Ontario Electricity Rebate"
     url: "https://www.ontario.ca/page/electricity-rebates-and-incentives"
     jurisdiction: "Provincial"
