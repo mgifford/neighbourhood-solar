@@ -131,6 +131,12 @@ PAGES = [
         "current_page": "pamphlet",
         "page_file": "pamphlet.html",
     },
+    {
+        "template": "outreach.html",
+        "output": "outreach.html",
+        "current_page": "outreach",
+        "page_file": "outreach.html",
+    },
 ]
 
 

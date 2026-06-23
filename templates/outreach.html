@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Sample Outreach Email — {{ site.title }}{% endblock %}
+{% block description %}A sample email residents can send to invite neighbours into the neighbourhood solar cohort.{% endblock %}
+{% block og_title %}Sample Outreach Email — {{ site.title }}{% endblock %}
+{% block og_description %}A sample email residents can send to invite neighbours into the neighbourhood solar cohort.{% endblock %}
+
+{% block main %}
+
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Resident outreach template — {{ location.city }}</p>
+    <h1>Sample email you can send to neighbours</h1>
+    <p class="lede">Use this draft to invite nearby households into the cohort. Replace the bracketed text, keep the tone local, and send it from your own email account.</p>
+    <div class="actions">
+      <a class="button" href="index.html#register">Register interest</a>
+      <a class="button secondary" href="pamphlet.html">View printable flyer</a>
+    </div>
+  </div>
+</section>
+
+<section class="grid two">
+  <div class="card">
+    <h2>Suggested subject line</h2>
+    <p><strong>Join the {{ location.city }} Neighbourhood Solar &amp; Energy Initiative</strong></p>
+    <p class="plan-description">You can keep the subject short. The goal is to make the message easy to open and read.</p>
+  </div>
+  <div class="card">
+    <h2>How to use it</h2>
+    <p>Replace the bracketed placeholders, add your local signup link, and send it to one neighbor or to the whole street.</p>
+    <p class="plan-description">If you want a softer version, shorten the first paragraph and keep the rest the same.</p>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Email draft</h2>
+  <pre class="sample-email">Hi [Neighbor's Name / Neighbors],
+
+I hope you’re doing well.
+
+A few of us here in [Neighborhood Name] have been looking into upgrading our homes with solar panels, heat pumps, or battery backups. As you know, navigating contractors, quotes, and rebates on your own can be a headache.
+
+Because of that, we are starting a hyper-local Neighbourhood Solar &amp; Energy Initiative.
+
+The idea is simple: strength in numbers. Instead of dealing with contractors individually, we are pooling our homes together as a neighbourhood cohort. By bringing a group of 5, 10, or 20 homes to local, vetted installers at the same time, we can:
+
+- Slash costs through bulk group pricing.
+- Demand better warranties and customer service.
+- Share the homework so no single person has to figure out the technical details alone.
+
+Where we are right now:
+We currently have [Number, e.g., 4] households on our nearby streets interested. Once we hit [Target Number, e.g., 10] homes, we will host a quick, casual info session and start inviting top local contractors to bid for our collective business.
+
+There is absolutely no commitment right now. We are just seeing who else on the block wants to get in on the group discount.
+
+If you are even mildly curious about lowering your energy bills or making your home more climate-resilient, just reply to this email or check out our community page here: [Link to your local signup].
+
+Best,
+[Your Name]
+[Your Street Name]</pre>
+</section>
+
+<section class="notice">
+  <h2>Why this version works</h2>
+  <p>It uses plain language, shows the local threshold, and keeps the message focused on the neighborhood cohort instead of a technical sales pitch.</p>
+</section>
+
+{% endblock %}

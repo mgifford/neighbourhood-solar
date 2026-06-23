@@ -105,6 +105,10 @@ contractors: []
 
 cohort:
   thresholds: [5, 10, 20]
+  progress_registered: 7
+  progress_target: 10
+  progress_discount_percent: 10
+  progress_label: "Ottawa ward"
   opening_ask:
     discount_percent: 10
     workmanship_warranty_years: 10
