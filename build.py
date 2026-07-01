@@ -110,14 +110,16 @@ def qr_code_filter(url: str) -> str:
     qr.add_data(url)
     qr.make(fit=True)
     img = qr.make_image(image_factory=factory)
-    
+
     stream = io.BytesIO()
     img.save(stream)
     svg_string = stream.getvalue().decode('utf-8')
-    
+
     if svg_string.startswith("<?xml"):
-        svg_string = svg_string[svg_string.find("<svg"):]
-    
+        idx = svg_string.find("<svg")
+        if idx != -1:
+            svg_string = svg_string[idx:]
+
     svg_string = svg_string.replace("<svg ", '<svg class="qr-code" ', 1)
     return svg_string
 

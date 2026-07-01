@@ -283,7 +283,9 @@
 
     <h2>No hidden fees. Ever.</h2>
     <p>This is resident-led. No sales commission, no referral fees. Registering is just the first step — you decide if and when to buy.</p>
-    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer | default("This is a neighbour-to-neighbour initiative to get more houses in our neighbourhood connected to solar tied to battery backups. All of this should be tied to Ottawa Hydro to support grid fluctuations, but we're not there yet.") }}</p>
+    {% if content.disclaimer %}
+    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+    {% endif %}
 
     {% set active_programs = programs | selectattr("active") | list %}
     {% if active_programs %}
@@ -319,7 +321,9 @@
  
     <h2>No hidden fees. Ever.</h2>
     <p>This is resident-led. No sales commission, no referral fees. Registering is just the first step — you decide if and when to buy.</p>
-    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer | default("This is a neighbour-to-neighbour initiative to get more houses in our neighbourhood connected to solar tied to battery backups. All of this should be tied to Ottawa Hydro to support grid fluctuations, but we're not there yet.") }}</p>
+    {% if content.disclaimer %}
+    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+    {% endif %}
 
     {% if active_programs %}
     <h2>Incentive programs — {{ location.city }}</h2>
