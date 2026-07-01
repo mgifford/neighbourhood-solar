@@ -136,6 +136,20 @@
     .cta p { color: var(--text) !important; font-weight: 700; font-size: 0.8rem !important; }
     .cta .url { font-size: 0.72rem !important; font-weight: 400; word-break: break-all; }
     .cta .fine { font-size: 0.65rem !important; font-weight: 400; margin-top: 0.2rem; }
+    .qr-code {
+      display: block;
+      margin: 0.35rem auto;
+      max-width: 65px;
+      height: auto;
+      background: white;
+      padding: 3px;
+      border-radius: 0.15rem;
+    }
+    .disclaimer {
+      margin-top: 0.35rem;
+      font-size: 0.74rem;
+      line-height: 1.35;
+    }
 
     /* ── BACK ── */
     .back {
@@ -199,10 +213,12 @@
       <p>Scan or visit to register interest</p>
       {% if registration.form_url %}
       <p class="url">{{ registration.form_url }}</p>
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
       {% elif contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% else %}
       <p class="url">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
       <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
@@ -231,10 +247,12 @@
       <p>Scan or visit to register interest</p>
       {% if registration.form_url %}
       <p class="url">{{ registration.form_url }}</p>
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
       {% elif contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% else %}
       <p class="url">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
       <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
@@ -265,6 +283,9 @@
 
     <h2>No hidden fees. Ever.</h2>
     <p>This is resident-led. No sales commission, no referral fees. Registering is just the first step — you decide if and when to buy.</p>
+    {% if content.disclaimer %}
+    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+    {% endif %}
 
     {% set active_programs = programs | selectattr("active") | list %}
     {% if active_programs %}
@@ -283,22 +304,26 @@
       <p class="url">{{ contact.email }}</p>
       {% endif %}
       <p class="url" style="margin-top:.2rem;">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
     </div>
   </div>
 
   {# Half 2 – back (identical) #}
   <div class="half back">
     <div class="top-bar">{{ site.short_title }} — {{ location.city }}</div>
-
+ 
     <h2>How it works</h2>
     <ul>
       {% for s in steps %}
       <li><strong>{{ loop.index }}. {{ s.label }}.</strong> {{ s.detail }}</li>
       {% endfor %}
     </ul>
-
+ 
     <h2>No hidden fees. Ever.</h2>
     <p>This is resident-led. No sales commission, no referral fees. Registering is just the first step — you decide if and when to buy.</p>
+    {% if content.disclaimer %}
+    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+    {% endif %}
 
     {% if active_programs %}
     <h2>Incentive programs — {{ location.city }}</h2>
@@ -309,13 +334,14 @@
     </ul>
     <p style="font-size:.7rem;margin-top:.15rem;">Verify eligibility directly with each program.</p>
     {% endif %}
-
+ 
     <div class="cta">
       <p>Questions? Get in touch.</p>
       {% if contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% endif %}
       <p class="url" style="margin-top:.2rem;">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
     </div>
   </div>
 

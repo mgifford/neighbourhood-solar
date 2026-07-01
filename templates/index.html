@@ -30,6 +30,9 @@
 <section class="notice">
   <h2>No sales pressure. No commission. Neighbours set the pace.</h2>
   <p>This project is designed to make the local choice visible. The goal is not to push one vendor or one technology. The goal is to help households see that nearby homes are acting together, then make a clear decision with better information and less friction.</p>
+  {% if content.disclaimer %}
+  <p><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+  {% endif %}
 </section>
 
 <section class="cohort-tracker card" id="cohort-tracker" aria-labelledby="cohort-tracker-title">
