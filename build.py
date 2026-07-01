@@ -92,6 +92,36 @@ def validate_config(config: dict):
 # Jinja2 environment
 # ---------------------------------------------------------------------------
 
+def qr_code_filter(url: str) -> str:
+    """Generate a compact SVG QR code for the given URL."""
+    if not url:
+        return ""
+    import io
+    import qrcode
+    import qrcode.image.svg
+
+    factory = qrcode.image.svg.SvgPathImage
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=1,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(image_factory=factory)
+    
+    stream = io.BytesIO()
+    img.save(stream)
+    svg_string = stream.getvalue().decode('utf-8')
+    
+    if svg_string.startswith("<?xml"):
+        svg_string = svg_string[svg_string.find("<svg"):]
+    
+    svg_string = svg_string.replace("<svg ", '<svg class="qr-code" ', 1)
+    return svg_string
+
+
 def build_env(templates_dir: str) -> Environment:
     env = Environment(
         loader=FileSystemLoader(templates_dir),
@@ -99,6 +129,7 @@ def build_env(templates_dir: str) -> Environment:
     )
     # Custom filter: URL-encode a string for use in mailto: subject lines
     env.filters["urlencode"] = lambda s: s.replace(" ", "%20").replace("&", "%26")
+    env.filters["qr_code"] = qr_code_filter
     return env
 
 
