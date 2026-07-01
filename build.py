@@ -110,7 +110,10 @@ def qr_code_filter(url: str, label: str = "QR code") -> str:
     if not url:
         return ""
     try:
-        parsed = urllib.parse.urlparse(url)
+        url_to_parse = url
+        if not url_to_parse.startswith(("http://", "https://")):
+            url_to_parse = "https://" + url_to_parse
+        parsed = urllib.parse.urlparse(url_to_parse)
         if not (parsed.scheme in ("http", "https") and parsed.netloc):
             return ""
     except Exception:
@@ -135,6 +138,8 @@ def qr_code_filter(url: str, label: str = "QR code") -> str:
         idx = svg_string.find("<svg")
         if idx != -1:
             svg_string = svg_string[idx:]
+        else:
+            return ""
 
     escaped_label = html.escape(label)
     svg_string = svg_string.replace("<svg ", f'<svg class="qr-code" aria-label="{escaped_label}" role="img" ', 1)
