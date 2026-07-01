@@ -95,14 +95,16 @@ def validate_config(config: dict):
 # Jinja2 environment
 # ---------------------------------------------------------------------------
 
-def qr_code_filter(url: str) -> str:
+def qr_code_filter(url: str, label: str = "QR code") -> str:
     """Generate a compact SVG QR code for the given URL."""
     if not url:
+        return ""
+    if not (url.startswith("http://") or url.startswith("https://")):
         return ""
 
     factory = qrcode.image.svg.SvgPathImage
     qr = qrcode.QRCode(
-        version=1,
+        version=None,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
         border=1,
@@ -120,7 +122,7 @@ def qr_code_filter(url: str) -> str:
         if idx != -1:
             svg_string = svg_string[idx:]
 
-    svg_string = svg_string.replace("<svg ", '<svg class="qr-code" ', 1)
+    svg_string = svg_string.replace("<svg ", f'<svg class="qr-code" aria-label="{label}" role="img" ', 1)
     return svg_string
 
 

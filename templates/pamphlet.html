@@ -213,12 +213,12 @@
       <p>Scan or visit to register interest</p>
       {% if registration.form_url %}
       <p class="url">{{ registration.form_url }}</p>
-      {{ registration.form_url | qr_code | safe }}
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
       {% elif contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% else %}
       <p class="url">{{ site.base_url }}</p>
-      {{ site.base_url | qr_code | safe }}
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
       <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
@@ -247,12 +247,12 @@
       <p>Scan or visit to register interest</p>
       {% if registration.form_url %}
       <p class="url">{{ registration.form_url }}</p>
-      {{ registration.form_url | qr_code | safe }}
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
       {% elif contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% else %}
       <p class="url">{{ site.base_url }}</p>
-      {{ site.base_url | qr_code | safe }}
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
       <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
@@ -304,7 +304,7 @@
       <p class="url">{{ contact.email }}</p>
       {% endif %}
       <p class="url" style="margin-top:.2rem;">{{ site.base_url }}</p>
-      {{ site.base_url | qr_code | safe }}
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
     </div>
   </div>
 
@@ -341,7 +341,7 @@
       <p class="url">{{ contact.email }}</p>
       {% endif %}
       <p class="url" style="margin-top:.2rem;">{{ site.base_url }}</p>
-      {{ site.base_url | qr_code | safe }}
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
     </div>
   </div>
 
