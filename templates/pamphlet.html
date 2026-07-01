@@ -165,12 +165,50 @@
       font-weight: 800;
     }
 
+    .map-container {
+      margin-top: 0.25rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg);
+      border: 1.5px dashed var(--line);
+      border-radius: 0.25rem;
+      padding: 0.35rem;
+    }
+    .map-vector {
+      max-width: 100%;
+      height: auto;
+      max-height: 85px;
+    }
+
     /* ── Print ── */
     @media print {
+      :root {
+        --green: #000000 !important;
+        --gold:  #000000 !important;
+        --text:  #000000 !important;
+        --muted: #2d2d2d !important;
+        --bg:    #ffffff !important;
+        --line:  #000000 !important;
+      }
       @page { size: letter portrait; margin: 0; }
       body { background: white; }
       .instructions { display: none; }
       .page { margin: 0; width: 100%; height: 100vh; }
+      h2 {
+        color: #000000 !important;
+        font-weight: 900 !important;
+        border-bottom-color: #000000 !important;
+      }
+      li strong, .worry-text h3 {
+        color: #000000 !important;
+        font-weight: 800 !important;
+      }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
     }
   </style>
 </head>
@@ -298,6 +336,12 @@
     <p style="font-size:.7rem;margin-top:.15rem;">Verify eligibility directly with each program.</p>
     {% endif %}
 
+    {% if pamphlet.map_svg %}
+    <div class="map-container">
+      {{ pamphlet.map_svg | safe }}
+    </div>
+    {% endif %}
+
     <div class="cta">
       <p>Questions? Get in touch.</p>
       {% if contact.email %}
@@ -333,6 +377,12 @@
       {% endfor %}
     </ul>
     <p style="font-size:.7rem;margin-top:.15rem;">Verify eligibility directly with each program.</p>
+    {% endif %}
+
+    {% if pamphlet.map_svg %}
+    <div class="map-container">
+      {{ pamphlet.map_svg | safe }}
+    </div>
     {% endif %}
  
     <div class="cta">
