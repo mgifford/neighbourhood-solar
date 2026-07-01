@@ -96,7 +96,15 @@ def validate_config(config: dict):
 # ---------------------------------------------------------------------------
 
 def qr_code_filter(url: str, label: str = "QR code") -> str:
-    """Generate a compact SVG QR code for the given URL."""
+    """Generate a compact SVG QR code for the given URL.
+
+    Args:
+        url (str): The target URL for the QR code.
+        label (str): Optional accessibility description (aria-label).
+
+    Returns:
+        str: Clean inline SVG string with classes and ARIA attributes, or empty string if input is invalid.
+    """
     if not url:
         return ""
     if not (url.startswith("http://") or url.startswith("https://")):
@@ -113,9 +121,9 @@ def qr_code_filter(url: str, label: str = "QR code") -> str:
     qr.make(fit=True)
     img = qr.make_image(image_factory=factory)
 
-    stream = io.BytesIO()
-    img.save(stream)
-    svg_string = stream.getvalue().decode('utf-8')
+    with io.BytesIO() as stream:
+        img.save(stream)
+        svg_string = stream.getvalue().decode('utf-8')
 
     if svg_string.startswith("<?xml"):
         idx = svg_string.find("<svg")
