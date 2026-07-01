@@ -222,6 +222,28 @@ pamphlet:
     - label: "Sign your own contract"
       detail: "Each household decides independently — no pressure."
 
+  # OPTIONAL: A simple, high-contrast SVG representation of the neighbourhood map.
+  # If provided, it will render at the bottom of the pamphlet back page.
+  map_svg: |
+    <svg viewBox="0 0 100 50" class="map-vector" aria-label="Centretown neighbourhood map" role="img">
+      <!-- Centretown boundaries: Wellington (N), Rideau Canal (E), Queensway (S), Bronson (W) -->
+      <rect x="2" y="2" width="96" height="46" rx="2" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2,2" />
+      <!-- Wellington St (North boundary) -->
+      <line x1="2" y1="10" x2="98" y2="10" stroke="var(--green)" stroke-width="1.5" />
+      <text x="50" y="8" font-size="3.5" fill="var(--muted)" text-anchor="middle" font-weight="600">Wellington St (Parliament)</text>
+      <!-- Queensway / Hwy 417 (South boundary) -->
+      <line x1="2" y1="40" x2="98" y2="40" stroke="var(--green)" stroke-width="1.5" />
+      <text x="50" y="46" font-size="3.5" fill="var(--muted)" text-anchor="middle" font-weight="600">Hwy 417 (Queensway)</text>
+      <!-- Bronson Ave (West boundary) -->
+      <line x1="15" y1="10" x2="15" y2="40" stroke="var(--line)" stroke-width="1" />
+      <text x="11" y="26" font-size="3" fill="var(--muted)" text-anchor="middle" writing-mode="vertical-rl">Bronson Ave</text>
+      <!-- Rideau Canal (East boundary) -->
+      <path d="M 85,10 C 82,18 88,28 85,40" fill="none" stroke="var(--line)" stroke-width="1" />
+      <text x="91" y="26" font-size="3" fill="var(--muted)" text-anchor="middle" writing-mode="vertical-rl">Rideau Canal</text>
+      <!-- Center Label -->
+      <text x="50" y="27" font-size="6" font-weight="800" fill="var(--green)" text-anchor="middle" letter-spacing="0.05em">CENTRETOWN</text>
+    </svg>
+
 # ---------------------------------------------------------------
 # MAINTAINER (not rendered on the public site)
 # ---------------------------------------------------------------
