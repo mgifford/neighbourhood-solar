@@ -20,12 +20,14 @@ Sustainability notes:
 """
 
 import argparse
+import html
 import io
 import os
 import re
 import shutil
 import sys
 from pathlib import Path
+import urllib.parse
 
 import qrcode
 import qrcode.image.svg
@@ -107,7 +109,11 @@ def qr_code_filter(url: str, label: str = "QR code") -> str:
     """
     if not url:
         return ""
-    if not (url.startswith("http://") or url.startswith("https://")):
+    try:
+        parsed = urllib.parse.urlparse(url)
+        if not (parsed.scheme in ("http", "https") and parsed.netloc):
+            return ""
+    except Exception:
         return ""
 
     factory = qrcode.image.svg.SvgPathImage
@@ -130,7 +136,8 @@ def qr_code_filter(url: str, label: str = "QR code") -> str:
         if idx != -1:
             svg_string = svg_string[idx:]
 
-    svg_string = svg_string.replace("<svg ", f'<svg class="qr-code" aria-label="{label}" role="img" ', 1)
+    escaped_label = html.escape(label)
+    svg_string = svg_string.replace("<svg ", f'<svg class="qr-code" aria-label="{escaped_label}" role="img" ', 1)
     return svg_string
 
 
