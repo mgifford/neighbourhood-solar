@@ -20,12 +20,15 @@ Sustainability notes:
 """
 
 import argparse
+import io
 import os
 import re
 import shutil
 import sys
 from pathlib import Path
 
+import qrcode
+import qrcode.image.svg
 import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -96,9 +99,6 @@ def qr_code_filter(url: str) -> str:
     """Generate a compact SVG QR code for the given URL."""
     if not url:
         return ""
-    import io
-    import qrcode
-    import qrcode.image.svg
 
     factory = qrcode.image.svg.SvgPathImage
     qr = qrcode.QRCode(
