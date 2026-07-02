@@ -105,6 +105,10 @@ contractors: []
 
 cohort:
   thresholds: [5, 10, 20]
+  progress_registered: 7
+  progress_target: 10
+  progress_discount_percent: 10
+  progress_label: "Ottawa ward"
   opening_ask:
     discount_percent: 10
     workmanship_warranty_years: 10
@@ -127,6 +131,10 @@ content:
     The City of Ottawa has committed to net-zero by 2050. Neighbourhood
     solar and electrification pilots directly support that target and
     make climate action visible at the street level.
+  disclaimer: >
+    This is a neighbour-to-neighbour initiative to get more houses in our
+    neighbourhood connected to solar tied to battery backups. All of this should
+    be tied to Ottawa Hydro to support grid fluctuations, but we're not there yet.
 
 # ---------------------------------------------------------------
 # CITY PLANS
@@ -213,6 +221,29 @@ pamphlet:
       detail: "Everyone sees the options before deciding."
     - label: "Sign your own contract"
       detail: "Each household decides independently — no pressure."
+
+  # OPTIONAL: A simple, high-contrast SVG representation of the neighbourhood map.
+  # If provided, it will render at the bottom of the pamphlet back page.
+  map_svg: |
+    <svg viewBox="0 0 100 50" class="map-vector" aria-labelledby="map-title" role="img">
+      <title id="map-title">Map of Centretown, Ottawa showing neighbourhood boundaries: Wellington Street on the north, Rideau Canal on the east, Highway 417 (Queensway) on the south, and Bronson Avenue on the west.</title>
+      <!-- Centretown boundaries: Wellington (N), Rideau Canal (E), Queensway (S), Bronson (W) -->
+      <rect x="2" y="2" width="96" height="46" rx="2" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2,2" />
+      <!-- Wellington St (North boundary) -->
+      <line x1="2" y1="10" x2="98" y2="10" stroke="var(--green)" stroke-width="1.5" />
+      <text x="50" y="8" font-size="4.5" fill="var(--muted)" text-anchor="middle" font-weight="600" aria-hidden="true">Wellington St (Parliament)</text>
+      <!-- Queensway / Hwy 417 (South boundary) -->
+      <line x1="2" y1="40" x2="98" y2="40" stroke="var(--green)" stroke-width="1.5" />
+      <text x="50" y="46" font-size="4.5" fill="var(--muted)" text-anchor="middle" font-weight="600" aria-hidden="true">Hwy 417 (Queensway)</text>
+      <!-- Bronson Ave (West boundary) -->
+      <line x1="15" y1="10" x2="15" y2="40" stroke="var(--line)" stroke-width="1" />
+      <text x="11" y="25" font-size="4" fill="var(--muted)" text-anchor="middle" writing-mode="vertical-rl" aria-hidden="true">Bronson Ave</text>
+      <!-- Rideau Canal (East boundary) -->
+      <path d="M 85,10 C 82,18 88,28 85,40" fill="none" stroke="var(--line)" stroke-width="1" />
+      <text x="91" y="25" font-size="4" fill="var(--muted)" text-anchor="middle" writing-mode="vertical-rl" aria-hidden="true">Rideau Canal</text>
+      <!-- Center Label -->
+      <text x="50" y="27" font-size="7" font-weight="800" fill="var(--green)" text-anchor="middle" letter-spacing="0.05em" aria-hidden="true">CENTRETOWN</text>
+    </svg>
 
 # ---------------------------------------------------------------
 # MAINTAINER (not rendered on the public site)

@@ -136,6 +136,20 @@
     .cta p { color: var(--text) !important; font-weight: 700; font-size: 0.8rem !important; }
     .cta .url { font-size: 0.72rem !important; font-weight: 400; word-break: break-all; }
     .cta .fine { font-size: 0.65rem !important; font-weight: 400; margin-top: 0.2rem; }
+    .qr-code {
+      display: block;
+      margin: 0.35rem auto;
+      max-width: 65px;
+      height: auto;
+      background: white;
+      padding: 3px;
+      border-radius: 0.15rem;
+    }
+    .disclaimer {
+      margin-top: 0.35rem;
+      font-size: 0.74rem;
+      line-height: 1.35;
+    }
 
     /* ── BACK ── */
     .back {
@@ -151,12 +165,50 @@
       font-weight: 800;
     }
 
+    .map-container {
+      margin-top: 0.25rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg);
+      border: 1.5px dashed var(--line);
+      border-radius: 0.25rem;
+      padding: 0.35rem;
+    }
+    .map-vector {
+      max-width: 100%;
+      height: auto;
+      max-height: 85px;
+    }
+
     /* ── Print ── */
     @media print {
+      :root {
+        --green: #000000 !important;
+        --gold:  #000000 !important;
+        --text:  #000000 !important;
+        --muted: #333333 !important;
+        --bg:    #ffffff !important;
+        --line:  #000000 !important;
+      }
       @page { size: letter portrait; margin: 0; }
       body { background: white; }
       .instructions { display: none; }
       .page { margin: 0; width: 100%; height: 100vh; }
+      h2 {
+        color: #000000 !important;
+        font-weight: 900 !important;
+        border-bottom-color: #000000 !important;
+      }
+      li strong, .worry-text h3 {
+        color: #000000 !important;
+        font-weight: 800 !important;
+      }
+      .front .header, .back .top-bar, .map-container, .qr-code {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
     }
   </style>
 </head>
@@ -199,10 +251,12 @@
       <p>Scan or visit to register interest</p>
       {% if registration.form_url %}
       <p class="url">{{ registration.form_url }}</p>
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
       {% elif contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% else %}
       <p class="url">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
       <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
@@ -231,10 +285,12 @@
       <p>Scan or visit to register interest</p>
       {% if registration.form_url %}
       <p class="url">{{ registration.form_url }}</p>
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
       {% elif contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% else %}
       <p class="url">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
       <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
@@ -265,6 +321,9 @@
 
     <h2>No hidden fees. Ever.</h2>
     <p>This is resident-led. No sales commission, no referral fees. Registering is just the first step — you decide if and when to buy.</p>
+    {% if content.disclaimer %}
+    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+    {% endif %}
 
     {% set active_programs = programs | selectattr("active") | list %}
     {% if active_programs %}
@@ -277,28 +336,38 @@
     <p style="font-size:.7rem;margin-top:.15rem;">Verify eligibility directly with each program.</p>
     {% endif %}
 
+    {% if pamphlet.map_svg %}
+    <div class="map-container">
+      {{ pamphlet.map_svg | safe }}
+    </div>
+    {% endif %}
+
     <div class="cta">
       <p>Questions? Get in touch.</p>
       {% if contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% endif %}
       <p class="url" style="margin-top:.2rem;">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
     </div>
   </div>
 
   {# Half 2 – back (identical) #}
   <div class="half back">
     <div class="top-bar">{{ site.short_title }} — {{ location.city }}</div>
-
+ 
     <h2>How it works</h2>
     <ul>
       {% for s in steps %}
       <li><strong>{{ loop.index }}. {{ s.label }}.</strong> {{ s.detail }}</li>
       {% endfor %}
     </ul>
-
+ 
     <h2>No hidden fees. Ever.</h2>
     <p>This is resident-led. No sales commission, no referral fees. Registering is just the first step — you decide if and when to buy.</p>
+    {% if content.disclaimer %}
+    <p class="disclaimer"><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+    {% endif %}
 
     {% if active_programs %}
     <h2>Incentive programs — {{ location.city }}</h2>
@@ -310,12 +379,19 @@
     <p style="font-size:.7rem;margin-top:.15rem;">Verify eligibility directly with each program.</p>
     {% endif %}
 
+    {% if pamphlet.map_svg %}
+    <div class="map-container">
+      {{ pamphlet.map_svg | safe }}
+    </div>
+    {% endif %}
+ 
     <div class="cta">
       <p>Questions? Get in touch.</p>
       {% if contact.email %}
       <p class="url">{{ contact.email }}</p>
       {% endif %}
       <p class="url" style="margin-top:.2rem;">{{ site.base_url }}</p>
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
     </div>
   </div>
 

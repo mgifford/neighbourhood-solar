@@ -20,12 +20,17 @@ Sustainability notes:
 """
 
 import argparse
+import html
+import io
 import os
 import re
 import shutil
 import sys
 from pathlib import Path
+import urllib.parse
 
+import qrcode
+import qrcode.image.svg
 import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -92,6 +97,55 @@ def validate_config(config: dict):
 # Jinja2 environment
 # ---------------------------------------------------------------------------
 
+def qr_code_filter(url: str, label: str = "QR code") -> str:
+    """Generate a compact SVG QR code for the given URL.
+
+    Args:
+        url (str): The target URL for the QR code.
+        label (str): Optional accessibility description (aria-label).
+
+    Returns:
+        str: Clean inline SVG string with classes and ARIA attributes, or empty string if input is invalid.
+    """
+    if not url:
+        return ""
+    try:
+        url_to_parse = url
+        if not url_to_parse.startswith(("http://", "https://")):
+            url_to_parse = "https://" + url_to_parse
+        parsed = urllib.parse.urlparse(url_to_parse)
+        if not (parsed.scheme in ("http", "https") and parsed.netloc):
+            return ""
+    except Exception:
+        return ""
+
+    factory = qrcode.image.svg.SvgPathImage
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=1,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(image_factory=factory)
+
+    with io.BytesIO() as stream:
+        img.save(stream)
+        svg_string = stream.getvalue().decode('utf-8')
+
+    if svg_string.startswith("<?xml"):
+        idx = svg_string.find("<svg")
+        if idx != -1:
+            svg_string = svg_string[idx:]
+        else:
+            return ""
+
+    escaped_label = html.escape(label)
+    svg_string = svg_string.replace("<svg ", f'<svg class="qr-code" aria-label="{escaped_label}" role="img" ', 1)
+    return svg_string
+
+
 def build_env(templates_dir: str) -> Environment:
     env = Environment(
         loader=FileSystemLoader(templates_dir),
@@ -99,6 +153,7 @@ def build_env(templates_dir: str) -> Environment:
     )
     # Custom filter: URL-encode a string for use in mailto: subject lines
     env.filters["urlencode"] = lambda s: s.replace(" ", "%20").replace("&", "%26")
+    env.filters["qr_code"] = qr_code_filter
     return env
 
 
@@ -130,6 +185,12 @@ PAGES = [
         "output": "pamphlet.html",
         "current_page": "pamphlet",
         "page_file": "pamphlet.html",
+    },
+    {
+        "template": "outreach.html",
+        "output": "outreach.html",
+        "current_page": "outreach",
+        "page_file": "outreach.html",
     },
 ]
 

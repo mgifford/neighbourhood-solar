@@ -7,21 +7,59 @@
 
 {% block main %}
 
+{% set cohort_progress_registered = cohort.progress_registered | default(7) %}
+{% set cohort_progress_target = cohort.progress_target | default(10) %}
+{% set cohort_progress_needed = cohort_progress_target - cohort_progress_registered %}
+{% set cohort_progress_discount = cohort.progress_discount_percent | default(cohort.opening_ask.discount_percent) %}
+{% set cohort_progress_label = cohort.progress_label | default(location.city ~ ' cohort') %}
+
 <section class="hero">
   <div>
     <p class="eyebrow">A resident-led community energy pilot — {{ location.city }}</p>
-    <h1>Lower energy costs. Backup power. Less confusion.</h1>
-    <p class="lede">Many homeowners are interested in solar panels, batteries, heat pumps, insulation, and EV charging. Most do not know where to start. We are exploring whether neighbours can work together to get better information, better pricing, better warranties, and a simpler process.</p>
+    <h1>Join your neighbours in making {{ location.city }} a climate-resilient community.</h1>
+    <p class="lede">Home energy upgrades spread faster when people can see them, hear that local action is normal, and compare options with nearby neighbours. This pilot helps households move together on solar, batteries, heat pumps, insulation, and EV charging.</p>
     <div class="actions">
       <a class="button" href="#register">Register interest</a>
       <a class="button secondary" href="#how-it-works">How it works</a>
+      <a class="button secondary" href="pamphlet.html">View printable flyer</a>
+      <a class="button secondary" href="outreach.html">View sample email</a>
     </div>
   </div>
 </section>
 
 <section class="notice">
-  <h2>No sales pressure. No commission. No surprises.</h2>
-  <p>This project is intended to create a transparent, community-led process. The goal is not to push one vendor or one technology. The goal is to help homeowners make informed decisions together — and eventually, to make it easier to act on those decisions.</p>
+  <h2>No sales pressure. No commission. Neighbours set the pace.</h2>
+  <p>This project is designed to make the local choice visible. The goal is not to push one vendor or one technology. The goal is to help households see that nearby homes are acting together, then make a clear decision with better information and less friction.</p>
+  {% if content.disclaimer %}
+  <p><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+  {% endif %}
+</section>
+
+<section class="cohort-tracker card" id="cohort-tracker" aria-labelledby="cohort-tracker-title">
+  <div class="cohort-tracker__copy">
+    <p class="eyebrow">Local momentum</p>
+    <h2 id="cohort-tracker-title">Cohort Progress Tracker</h2>
+    <p>📍 {{ cohort_progress_label | title }} Progress: <strong>{{ cohort_progress_registered }} neighbors registered</strong>. <strong>{{ cohort_progress_needed }} more needed</strong> to unlock a <strong>{{ cohort_progress_discount }}% group contractor discount</strong>.</p>
+  </div>
+  <div class="cohort-tracker__meter">
+    <label class="plan-description" for="cohort-progress">Progress toward the current {{ cohort_progress_target }}-home target</label>
+    <progress id="cohort-progress" value="{{ cohort_progress_registered }}" max="{{ cohort_progress_target }}">{{ cohort_progress_registered }} of {{ cohort_progress_target }} homes</progress>
+    <div class="cohort-tracker__stats" aria-label="Cohort summary">
+      <div>
+        <span>Registered</span>
+        <strong>{{ cohort_progress_registered }}</strong>
+      </div>
+      <div>
+        <span>Target</span>
+        <strong>{{ cohort_progress_target }}</strong>
+      </div>
+      <div>
+        <span>Discount</span>
+        <strong>{{ cohort_progress_discount }}%</strong>
+      </div>
+    </div>
+  </div>
+  <p class="cohort-tracker__nudge">Already using less energy? Join as a <strong>Neighbourhood Climate Pioneer</strong>. Visible action helps the next household feel that this is normal here.</p>
 </section>
 
 <section class="grid two" id="why">
@@ -31,7 +69,7 @@
     <p>{{ content.local_context }}</p>
     {% else %}
     <p>Home energy decisions are becoming more complicated. Solar panels, batteries, heat pumps, EV chargers, financing programs, utility rules, and warranties all matter. Asking every homeowner to figure this out alone is inefficient.</p>
-    <p>A neighbourhood approach could reduce soft costs for contractors and improve outcomes for homeowners.</p>
+    <p>A neighbourhood approach can make the upgrade visible, reduce soft costs for contractors, and give homeowners a clear way to compare options together.</p>
     {% endif %}
   </div>
   <div class="card">
@@ -51,7 +89,7 @@
 <section id="solar">
   <h2>Solar panels as the first step</h2>
   <p>For many homes, solar is the most attainable place to start. It is often more affordable than adding batteries right away, and it can deliver a strong long-term return by lowering electricity bills over time.</p>
-  <p>That is why we are leading with solar in this pilot. If neighbours move together, installers can often reduce soft costs like sales, travel, and scheduling overhead. That can translate into better group pricing, clearer options, and a simpler process for everyone.</p>
+  <p>That is why we are leading with solar in this pilot. When neighbours move together, installers can often reduce soft costs like sales, travel, and scheduling overhead. That can translate into better group pricing, clearer options, and a simpler process for everyone.</p>
 </section>
 
 <section id="backup">
@@ -67,15 +105,40 @@
 </section>
 
 <section id="how-it-works">
-  <h2>How the process could work</h2>
+  <h2>How neighbours build momentum</h2>
+  <p>People act faster when they see nearby homes moving first. This process is designed to make the choice visible, social, and easy to join.</p>
   <ol class="steps">
     <li><strong>Register interest.</strong> Share your name, email, and general location. No purchase commitment.</li>
-    <li><strong>Build a local cohort.</strong> Once enough nearby homes are interested, we organize an information session.</li>
-    <li><strong>Invite qualified contractors.</strong> Contractors are asked to provide transparent pricing, equipment options, warranty terms, and group pricing thresholds.</li>
-    <li><strong>Compare options openly.</strong> Residents see the trade-offs before deciding whether to proceed.</li>
-    <li><strong>Sign individual contracts.</strong> Each homeowner makes their own decision and signs directly with the selected contractor.</li>
-    <li><strong>Publish lessons learned.</strong> Results are shared so other neighbourhoods can improve the model.</li>
+    <li><strong>Watch the count grow.</strong> The cohort tracker shows how close the neighbourhood is to the next discount threshold.</li>
+    <li><strong>Invite local contractors.</strong> Once the group is large enough, we ask qualified contractors to quote for the cluster of homes.</li>
+    <li><strong>Compare options openly.</strong> Residents see equipment, warranties, timelines, and pricing side by side.</li>
+    <li><strong>Choose individually.</strong> Every household decides on its own. Group momentum makes the process easier, not mandatory.</li>
+    <li><strong>Share what worked.</strong> Yard signs, window decals, and short neighbour stories help the next block move faster.</li>
   </ol>
+  <p class="plan-description">If your home already performs well, you still matter. Climate Pioneers make efficient choices visible, answer questions, and set the local norm.</p>
+</section>
+
+<section id="toolkit">
+  <p class="eyebrow">Open-source outreach kit</p>
+  <h2>The Invisible-to-Visible Toolkit</h2>
+  <p>Solar is easy to spot. Heat pumps, insulation, air sealing, and batteries are not. These open templates help neighbours make the invisible work visible on the street.</p>
+  <div class="grid three">
+    <article class="card asset-card">
+      <h3>Print-ready yard signs and window decals</h3>
+      <p>Use neighbourhood signs and window stickers to show that a home is part of the cohort. Example copy: “This home is upgrading to a heat pump with the {{ location.city }} Cohort. Ask me how.”</p>
+      <p class="plan-description">Suggested repo paths: /assets/signs/yard-sign.svg, /assets/signs/window-decal.svg, /assets/signs/print/.</p>
+    </article>
+    <article class="card asset-card">
+      <h3>Micro-local flyer templates</h3>
+      <p>Use short flyers for each block, lane, or street. Example copy: “Did you know 12 homes on our block are currently pricing out solar panels?” That kind of local proof is often stronger than a savings estimate alone.</p>
+      <p class="plan-description">Suggested repo paths: /assets/flyers/block-flyer.md, /assets/flyers/block-flyer.pdf, /templates/outreach.html.</p>
+    </article>
+    <article class="card asset-card">
+      <h3>Sample outreach email</h3>
+      <p>Use a short, neighbor-to-neighbor email to invite people into the cohort. The template keeps the tone local, simple, and low pressure.</p>
+      <p><a href="outreach.html">Open the sample email template</a></p>
+    </article>
+  </div>
 </section>
 
 <section class="grid three">

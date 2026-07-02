@@ -25,6 +25,31 @@ A static website template for community-led neighbourhood solar and home energy 
 - [Contractors](https://mgifford.github.io/neighbourhood-solar/contractors.html) — how to participate in group bids
 - [Community Leaders](https://mgifford.github.io/neighbourhood-solar/community-leaders.html) — how to run a neighbourhood pilot
 - [Printable flyer](https://mgifford.github.io/neighbourhood-solar/pamphlet.html) — half-sheet you can print, cut, and drop in mailboxes
+- [Sample email](https://mgifford.github.io/neighbourhood-solar/outreach.html) — a resident outreach template you can send to neighbours
+
+## Proposed toolkit layout
+
+If you want to add the visibility and outreach assets described on the homepage, keep them in predictable folders so volunteers can find and reuse them:
+
+```text
+neighbourhood-solar/
+├── assets/
+│   ├── signs/
+│   │   ├── yard-sign.svg
+│   │   ├── window-decal.svg
+│   │   └── print/
+│   └── flyers/
+│       ├── block-flyer.md
+│       └── block-flyer.pdf
+├── templates/
+│   └── outreach.html
+└── content/
+	└── blocks/
+		├── cohort-tracker.md
+		└── how-it-works.md
+```
+
+This keeps the public site simple while giving organizers a clear place for print-ready signs, flyers, and reusable copy.
 
 ## How you can help
 
