@@ -135,4 +135,4 @@ This project is resident-led, vendor-neutral, and commission-free. See `communit
 
 ## Licence
 
-MIT. Fork freely.
+GNU Affero General Public License v3.0 (AGPL v3.0). Fork freely, modify, and distribute under the condition that your modifications remain open source.

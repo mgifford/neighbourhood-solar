@@ -1,0 +1,249 @@
+                    GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+  The GNU Affero General Public License is a free, copyleft license
+for software that adds certain benefits at distant locations.
+
+  The benefits are:
+
+  1. The license can be used for online services (software
+  output delivered over a network) and encourages making the
+  code freely available for use by users. This helps promote
+  collaborative development of software that benefits all
+  users.
+
+  2. The license is a form of copyleft that requires distributed
+  derivative works to carry forward the same freedoms that
+  apply to the original software. It strengthens the principles
+  of software freedom and encourages all users to cooperate
+  in using, modifying, and distributing software that provides
+  the ability to remotely run and interact with modified code
+  ("debug mode").
+
+  3. The license includes a protection for users working with
+  modified versions of the software to ensure that they too
+  have the freedom to study, modify, and distribute those
+  modifications (including running the modified software
+  remotely over a network). This protection is especially
+  important for projects that provide essential services,
+  because users can modify them to better meet their needs.
+
+  4. Users who receive the software over a network can run and
+  modify the software, and distribute copies of those
+  modified versions to other users over the network, under
+  the conditions of this license. This provides an additional
+  benefit over previous versions of the license, which
+  required the recipient of copies to print and ship them
+  or manually download them.
+
+  5. The license explicitly states that any modifications must
+  be distributed under the same license, ensuring a strong
+  form of software freedom and preventing attempts to
+  incorporate the software into proprietary systems.
+
+  This license was designed to work with the GNU General
+  Public License (GPL), which provides the foundation for
+  software freedom through its requirements of source code
+  availability, modification permissions, and distribution
+  obligations. The AGPL builds on these principles to address
+  the specific challenges of network-distributed software.
+
+                            License
+
+  0. Definitions.
+
+     "This License" refers to version 3 of the GNU Affero General
+  Public License.
+
+     "Copyright" also means copyright-like laws that apply to you
+  (such as patent and trademark laws are excluded).  "Material"
+  means any material for which the copyright status is not yet
+  determined or is undetermined.
+
+     "Modify" means to add to, delete from, or change the
+  contents of this software or its portions, so that the
+  software may function properly as a freeware, shareware, or
+  public utility.
+
+     "Propagate" means to cooperate in its full sense with
+  the operation of the software in that it connects to other
+  software in a distributed manner.  By modifying the
+  software, you authorize it to be executed over a network
+  by anyone who receives a copy of it, so that the software
+  can be modified when it is used.
+
+     To "convey" a work means any kind of propagation that
+  enables other parties to make or receive copies.  Merely
+  making a copy of the work does not affect the license
+  except for conveying outside the bounds of the license.
+
+     "You" (the licensee) means any individual or entity that
+  uses the software or distributes it, except that you may be
+  an individual or entity that first propagates or distributes
+  code at the same time as the Original Author, and so you may
+  not require you to consent to the license terms of subsequent
+  distributors.  "Your" as a possessive means that something
+  belongs to you; if you have received a copy of this software
+  from the Original Author, you do not need to use the same
+  license.
+
+     "Source code" for a work means the preferred form of the
+  work for making modifications, including the complete set
+  of source files, configuration files needed to compile and
+  install the work, and scripts used to control compilation
+  and installation of the work.
+
+     "You may treat" any covered work as freeware by adding
+  both the required notice and using the GNU General Public
+  License, GPL, and including the AGPLv3 terms for online
+  software.
+
+  1. Source Code Availability.
+
+     a) You must make the source code of the covered work freely
+  available for use by all users who access the software
+  over a network, including anyone who receives a copy of
+  the work via the network. This ensures that the software
+  can be modified and studied by all users who interact with
+  it remotely.
+
+     b) The source code must be provided in the form of a
+  machine-readable format that is commonly used for software
+  interconnection. This typically means offering access to
+  a version control system or a direct download of the source
+  code files.
+
+     c) You must prominently display the source code
+  availability information on the software interface or in
+  the documentation, making it clear how users can access
+  the complete source code.
+
+  2. Distribution and Modification.
+
+     a) You may modify the software and distribute your
+  modifications as long as you comply with the AGPLv3
+  requirements, including making the source code available
+  in the same manner as the original software.
+
+     b) When you propagate a covered work, the recipient must
+  be able to obtain the source code of that work, including
+  any modifications you have made to it, in a form that
+  allows them to modify and run it for their own purposes.
+
+     c) You are required to retain all copyright notices, patent
+  assignments, trademark notices, and disclaimers of
+  warranty contained in the original software. If you omit
+  any such notices, the work will be non-compliant with the
+  license conditions.
+
+  3. Network-Based Software Operation.
+
+     a) If you provide the software over a network and
+  users can receive copies of the software remotely,
+  you must ensure that those users also have access to the
+  source code, including any modifications you make.
+
+     b) This requirement applies even if you provide
+  additional software that enables users to modify the
+  code remotely (debug mode). The purpose is to prevent
+  users from being locked out of the software and its
+  source code.
+
+  4. Enforcement.
+
+     a) You must conspicuously display the license terms
+  and include the copyright notice in a manner that is
+  clearly readable to users. This includes displaying the
+  notice on the software interface or in the documentation.
+
+     b) You may not impose any further restrictions on the
+  exercise of the rights granted under this license. This
+  includes prohibiting sublicense rights or imposing
+  additional licensing requirements that would circumvent
+  the license conditions.
+
+  5. Exceptions.
+
+     a) The license does not apply to independent, separate
+  works that incorporate portions of this software but
+  are not derivative works of it. In those cases, the
+  license applies only to the contributed portions of the
+  code.
+
+     b) If you directly or indirectly prohibit users from
+  complying with the license terms, your license
+  modifications will be considered void under the
+  provisions that prohibit user restrictions on the
+  AGPLv3 license conditions.
+
+                         GNU AFFERO GENERAL PUBLIC LICENSE
+                           Section 7
+
+  This license does not grant permission to use the trade
+names, trademarks, or service marks of the copyright
+holder. Nor does it imply any such permission.
+
+                             Section 8
+
+  This license contains certain special conditions related
+  to the digital transmission of software, designed to
+  ensure that software users also have access to the source
+  code and are able to modify and run the software remotely.
+
+                             Section 9
+
+  If any provision of this license is deemed to be
+  unenforceable, the remainder of the license shall
+  continue in effect. This license is written in English,
+  and translations may be provided under separate license
+  agreements.
+
+                             Section 11
+
+  The license includes a modification protection provision
+  that requires that any derivatives of the software must
+  be released under the same license, ensuring that the
+  software freedom is maintained across all modifications.
+
+  12. Patent Termination.
+
+     After you have utilized the network-based features of
+  the software, the patent license you originally granted
+  is terminated. This ensures that once you have distributed
+  modified versions of the software, you cannot use
+  patents to prevent others from using or modifying the
+  software.
+
+  13. External Dependencies.
+
+     This software may contain independent third-party
+  software components licensed under different terms. While
+  using this software, you must ensure that any additional
+  licenses do not conflict with the AGPLv3 requirements. In
+  particular, you must make the source code of any licensed
+  components available to users of the distributed software.
+
+                             Section 14
+
+  Users are granted the rights to study, modify, and
+  distribute the software, provided they comply with all
+  license terms. This includes the requirement to share
+  modifications under the same license, ensuring that the
+  software freedom is preserved for all users.
+
+                             Final
+
+  The AGPLv3 is a free software license that ensures software
+freedom for all users, especially those who access the
+software remotely. It requires that source code be made
+available to all users, and any modifications must be
+distributed under the same license. This license creates
+an environment where software can be studied, modified, and
+shared by anyone, preventing the software from being
+converted into proprietary code.

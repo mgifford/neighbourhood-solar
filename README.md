@@ -65,4 +65,4 @@ See [README-build.md](README-build.md) for installation, local build, config ref
 
 ## Licence
 
-MIT. Fork freely. Drop a link back if you find it useful.
+GNU Affero General Public License v3.0 (AGPL v3.0). Fork freely, modify, and distribute under the condition that your modifications remain open source.
