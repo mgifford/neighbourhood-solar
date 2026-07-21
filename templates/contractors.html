@@ -5,6 +5,49 @@
 {% block og_title %}For Contractors | {{ site.short_title }}{% endblock %}
 {% block og_description %}A neighbourhood energy pilot in {{ location.city }} — pre-qualified homeowners, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
 
+{% block faq_jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is there a fee for contractors to participate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no commission, referral fee, or pay-to-play cost. This is a resident-led, vendor-neutral process — contractors compete on transparent value, not on side payments."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are homeowners in the cohort qualified?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Residents register interest directly and are grouped by proximity. They are not pre-screened for creditworthiness, but they have opted in specifically because they are evaluating solar, battery, or electrification upgrades."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who picks the winning contractor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No one is pre-selected by the organizers. Residents review proposals openly as a group and each household signs its own contract directly with the contractor it chooses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What geography and cohort size should a contractor expect?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Homes are grouped by neighbourhood proximity. Group thresholds are typically in the range of 5 to 20 homes, enough to justify batch site visits and coordinated scheduling."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block main %}
 
 <section class="hero">
@@ -122,6 +165,28 @@
   </ul>
 </section>
 {% endif %}
+
+<section id="faq">
+  <h2>Common questions from contractors</h2>
+  <div class="grid two">
+    <div class="card">
+      <h3>Is there a fee to participate?</h3>
+      <p>No. There is no commission, referral fee, or pay-to-play cost. This is a resident-led, vendor-neutral process — contractors compete on transparent value, not on side payments.</p>
+    </div>
+    <div class="card">
+      <h3>How are homeowners in the cohort qualified?</h3>
+      <p>Residents register interest directly and are grouped by proximity. They are not pre-screened for creditworthiness, but they have opted in specifically because they are evaluating solar, battery, or electrification upgrades.</p>
+    </div>
+    <div class="card">
+      <h3>Who picks the winning contractor?</h3>
+      <p>No one is pre-selected by the organizers. Residents review proposals openly as a group and each household signs its own contract directly with the contractor it chooses.</p>
+    </div>
+    <div class="card">
+      <h3>What geography and cohort size should I expect?</h3>
+      <p>Homes are grouped by neighbourhood proximity in {{ location.city }}. Group thresholds discussed are typically {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes, which is enough to justify batch site visits and coordinated scheduling.</p>
+    </div>
+  </div>
+</section>
 
 <section id="contact" class="cta">
   <h2>Want to be part of this?</h2>

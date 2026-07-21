@@ -29,6 +29,9 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
+      - name: Install system dependencies for cairosvg
+        run: sudo apt-get update && sudo apt-get install -y libcairo2
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 

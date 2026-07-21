@@ -5,6 +5,49 @@
 {% block og_title %}{{ site.title }}{% endblock %}
 {% block og_description %}{{ site.description }}{% endblock %}
 
+{% block faq_jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this cost anything to join?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Registering your interest is free and non-binding. There is no commission on any contractor deal, and no fee to be part of the cohort."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Am I obligated to buy anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Every household decides independently whether and when to sign a contract. Group momentum makes the process easier to navigate — it does not commit you to a purchase."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my home already has solar or an efficient setup?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can still register as a Neighbourhood Climate Pioneer. Visible local action helps the next household feel that upgrading is normal here."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does a bigger group help me get a better price?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Contractors save on sales, travel, and scheduling overhead when they can quote for multiple homes at once instead of chasing single leads. That saving is passed on as a group discount and stronger warranty terms."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block main %}
 
 {% set cohort_progress_registered = cohort.progress_registered | default(7) %}
@@ -17,12 +60,11 @@
   <div>
     <p class="eyebrow">A resident-led community energy pilot — {{ location.city }}</p>
     <h1>Join your neighbours in making {{ location.city }} a climate-resilient community.</h1>
-    <p class="lede">Home energy upgrades spread faster when people can see them, hear that local action is normal, and compare options with nearby neighbours. This pilot helps households move together on solar, batteries, heat pumps, insulation, and EV charging.</p>
+    <p class="lede">Home energy upgrades spread faster when people can see them, hear that local action is normal, and compare options with nearby neighbours. This pilot helps households move together on solar, batteries, heat pumps, and EV charging.</p>
     <div class="actions">
       <a class="button" href="#register">Register interest</a>
       <a class="button secondary" href="#how-it-works">How it works</a>
-      <a class="button secondary" href="pamphlet.html">View printable flyer</a>
-      <a class="button secondary" href="outreach.html">View sample email</a>
+      <a class="button secondary" href="#print-materials">Print &amp; share materials</a>
     </div>
   </div>
 </section>
@@ -98,12 +140,6 @@
   <p>Batteries are not the right answer for every home. They can be expensive. But if several households are already considering generators, a coordinated solar-plus-battery option may be worth comparing clearly and honestly.</p>
 </section>
 
-<section id="insulation">
-  <h2>Could roof insulation be added at the same time as solar?</h2>
-  <p>Adding exterior insulation can be a great option for flat roofs, or for homes that are already planning a full re-roofing project. In those cases, coordinating work can sometimes improve comfort and efficiency while crews are already mobilized.</p>
-  <p>For most pitched-roof homes, we will also ask contractors and advisors about interior attic insulation and air sealing options, so residents can compare practical paths for their specific home.</p>
-</section>
-
 <section id="how-it-works">
   <h2>How neighbours build momentum</h2>
   <p>People act faster when they see nearby homes moving first. This process is designed to make the choice visible, social, and easy to join.</p>
@@ -118,20 +154,20 @@
   <p class="plan-description">If your home already performs well, you still matter. Climate Pioneers make efficient choices visible, answer questions, and set the local norm.</p>
 </section>
 
-<section id="toolkit">
+<section id="print-materials">
   <p class="eyebrow">Open-source outreach kit</p>
-  <h2>The Invisible-to-Visible Toolkit</h2>
-  <p>Solar is easy to spot. Heat pumps, insulation, air sealing, and batteries are not. These open templates help neighbours make the invisible work visible on the street.</p>
+  <h2>Print &amp; share materials</h2>
+  <p>Not everyone finds out about the cohort online. These are the offline and email tools for spreading the word door to door, on community boards, and by email — no tracking, no sign-up required to use them.</p>
   <div class="grid three">
     <article class="card asset-card">
-      <h3>Print-ready yard signs and window decals</h3>
-      <p>Use neighbourhood signs and window stickers to show that a home is part of the cohort. Example copy: “This home is upgrading to a heat pump with the {{ location.city }} Cohort. Ask me how.”</p>
-      <p class="plan-description">Suggested repo paths: /assets/signs/yard-sign.svg, /assets/signs/window-decal.svg, /assets/signs/print/.</p>
+      <h3>Two-sided flyer</h3>
+      <p>A half-sheet flyer with a QR code to register. Print, cut, and drop in mailboxes or hand out door to door.</p>
+      <p><a href="pamphlet.html">Open the printable flyer</a></p>
     </article>
     <article class="card asset-card">
-      <h3>Micro-local flyer templates</h3>
-      <p>Use short flyers for each block, lane, or street. Example copy: “Did you know 12 homes on our block are currently pricing out solar panels?” That kind of local proof is often stronger than a savings estimate alone.</p>
-      <p class="plan-description">Suggested repo paths: /assets/flyers/block-flyer.md, /assets/flyers/block-flyer.pdf, /templates/outreach.html.</p>
+      <h3>One-sided poster</h3>
+      <p>A full-page poster with a neighbourhood map and QR code — no email address shown. Good for community boards, storefront windows, and utility poles (check local bylaws first).</p>
+      <p><a href="poster.html">Open the printable poster</a></p>
     </article>
     <article class="card asset-card">
       <h3>Sample outreach email</h3>
@@ -177,6 +213,28 @@
   {% endif %}
 </section>
 {% endif %}
+
+<section id="faq">
+  <h2>Common questions from residents</h2>
+  <div class="grid two">
+    <div class="card">
+      <h3>Does this cost anything to join?</h3>
+      <p>No. Registering your interest is free and non-binding. There is no commission on any contractor deal, and no fee to be part of the cohort.</p>
+    </div>
+    <div class="card">
+      <h3>Am I obligated to buy anything?</h3>
+      <p>No. Every household decides independently whether and when to sign a contract. Group momentum makes the process easier to navigate — it does not commit you to a purchase.</p>
+    </div>
+    <div class="card">
+      <h3>What if my home already has solar or an efficient setup?</h3>
+      <p>You can still register as a Neighbourhood Climate Pioneer. Visible local action helps the next household feel that upgrading is normal here.</p>
+    </div>
+    <div class="card">
+      <h3>How does a bigger group help me get a better price?</h3>
+      <p>Contractors save on sales, travel, and scheduling overhead when they can quote for {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes at once instead of chasing single leads. That saving is passed on as a group discount and stronger warranty terms.</p>
+    </div>
+  </div>
+</section>
 
 <section id="register" class="cta">
   <h2>Interested in learning more?</h2>

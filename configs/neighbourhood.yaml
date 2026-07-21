@@ -193,12 +193,6 @@ pamphlet:
       body: >
         Heat pumps cool in summer and heat in winter — more efficiently
         than gas furnaces or window A/C units.
-    - icon: "🏠"
-      heading: "Could roof insulation be added with solar?"
-      body: >
-        While the crew is on your roof anyway, it may be worth asking
-        whether insulation can be added at the same time. One of the
-        questions we want to put to contractors.
     - icon: "🚗"
       heading: "EV charging at home"
       body: >
@@ -221,6 +215,15 @@ pamphlet:
       detail: "Everyone sees the options before deciding."
     - label: "Sign your own contract"
       detail: "Each household decides independently — no pressure."
+
+  # OPTIONAL: One-sided poster for community boards, storefronts, utility poles.
+  # No email address is shown on the poster — just a QR code to the registration
+  # form (or website). Leave blank to fall back to the pamphlet headline/defaults.
+  poster:
+    headline: "Solar. Batteries. Less confusion."
+    subheadline: >
+      Neighbours on this street are looking into solar panels, battery backup,
+      and heat pumps — together.
 
   # OPTIONAL: A simple, high-contrast SVG representation of the neighbourhood map.
   # If provided, it will render at the bottom of the pamphlet back page.

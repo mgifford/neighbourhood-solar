@@ -11,7 +11,35 @@
   <meta property="og:description" content="{% block og_description %}{{ site.description }}{% endblock %}">
   <meta property="og:url" content="{{ site.base_url }}/{{ page_file }}">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="{{ site.base_url }}/assets/images/solar-home-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Illustration of a row of two-storey houses with driveways between them, one with rooftop solar panels facing the sun">
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": {{ site.title | tojson }},
+    "alternateName": {{ site.short_title | tojson }},
+    "url": {{ site.base_url | tojson }},
+    "description": {{ (site.description | trim ~ " This is an informal, resident-led volunteer initiative, not a registered nonprofit.") | tojson }},
+    "areaServed": {
+      "@type": "City",
+      "name": {{ location.city | tojson }}
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": {{ location.city | tojson }},
+      "addressRegion": {{ location.province_or_state | tojson }},
+      "addressCountry": {{ location.country_code | tojson }}
+    }
+    {%- if contact.email %},
+    "email": {{ contact.email | tojson }}
+    {%- endif %}
+  }
+  </script>
+  {% block faq_jsonld %}{% endblock %}
 </head>
 <body>
 

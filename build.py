@@ -29,6 +29,7 @@ import sys
 from pathlib import Path
 import urllib.parse
 
+import cairosvg
 import qrcode
 import qrcode.image.svg
 import yaml
@@ -187,6 +188,12 @@ PAGES = [
         "page_file": "pamphlet.html",
     },
     {
+        "template": "poster.html",
+        "output": "poster.html",
+        "current_page": "poster",
+        "page_file": "poster.html",
+    },
+    {
         "template": "outreach.html",
         "output": "outreach.html",
         "current_page": "outreach",
@@ -215,6 +222,7 @@ def render_pages(env: Environment, config: dict, output_dir: Path):
 
 STATIC_FILES = [
     "styles.css",
+    "robots.txt",
 ]
 
 
@@ -226,6 +234,38 @@ def copy_static(source_root: Path, output_dir: Path):
             print(f"  copied: {output_dir / filename}")
         else:
             print(f"  warning: static file not found, skipping: {src}")
+
+
+# ---------------------------------------------------------------------------
+# Open Graph image: render the solar-home SVG to PNG for social previews
+# (Facebook, LinkedIn, etc. do not render SVG in link preview cards)
+# ---------------------------------------------------------------------------
+
+OG_IMAGE_SVG = "assets/images/solar-home-og.svg"
+OG_IMAGE_PNG = "assets/images/solar-home-og.png"
+OG_IMAGE_WIDTH = 1200
+OG_IMAGE_HEIGHT = 630
+
+
+def build_og_image(source_root: Path, output_dir: Path):
+    svg_src = source_root / OG_IMAGE_SVG
+    if not svg_src.exists():
+        print(f"  warning: OG image source not found, skipping: {svg_src}")
+        return
+
+    svg_dest = output_dir / OG_IMAGE_SVG
+    svg_dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(svg_src, svg_dest)
+    print(f"  copied: {svg_dest}")
+
+    png_dest = output_dir / OG_IMAGE_PNG
+    cairosvg.svg2png(
+        url=str(svg_src),
+        write_to=str(png_dest),
+        output_width=OG_IMAGE_WIDTH,
+        output_height=OG_IMAGE_HEIGHT,
+    )
+    print(f"  rendered: {png_dest}")
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +298,7 @@ def main():
     env = build_env(str(templates_dir))
     render_pages(env, config, output_dir)
     copy_static(script_dir, output_dir)
+    build_og_image(script_dir, output_dir)
 
     print(f"\nDone. {len(PAGES)} pages built in {output_dir}/")
 

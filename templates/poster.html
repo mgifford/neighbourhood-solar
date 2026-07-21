@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.short_title }} — Poster — {{ location.city }}</title>
+  <style>
+    :root {
+      --green: #255c3b;
+      --gold:  #e3b23c;
+      --text:  #1d241f;
+      --muted: #4f5b52;
+      --bg:    #fbfaf4;
+      --line:  #d8d5c8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #e8e8e8;
+      color: var(--text);
+    }
+
+    /* ── Screen helper ── */
+    .instructions {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: #555;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+    }
+    .instructions strong { color: var(--green); }
+
+    /* ── One full Letter page, one side ── */
+    .page {
+      width: 21.59cm;   /* 8.5 in */
+      height: 27.94cm;  /* 11 in */
+      background: white;
+      margin: 1.5rem auto;
+      padding: 1.6cm 1.5cm;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .header {
+      background: var(--green);
+      color: white;
+      margin: -1.6cm -1.5cm 0;
+      padding: 1.4cm 1.5cm 1.1cm;
+      text-align: center;
+    }
+    .header .eyebrow {
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .header h1 {
+      font-size: 3.1rem;
+      font-weight: 900;
+      line-height: 1.05;
+      color: white;
+    }
+    .header p {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,.9);
+      line-height: 1.4;
+      margin-top: 0.6rem;
+    }
+
+    .worries {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem 1.4rem;
+      align-content: center;
+    }
+    .worry-row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+    .worry-icon { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
+    .worry-text h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .worry-text p  { font-size: 0.95rem; color: var(--muted); line-height: 1.35; margin-top: 0.1rem; }
+
+    .map-container {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg);
+      border: 1.5px dashed var(--line);
+      border-radius: 0.4rem;
+      padding: 0.6rem;
+    }
+    .map-vector {
+      max-width: 100%;
+      height: auto;
+      max-height: 150px;
+    }
+
+    /* ── CTA: the whole point of a poster ── */
+    .cta {
+      background: var(--gold);
+      border-radius: 0.6rem;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .cta-text { text-align: left; }
+    .cta-text .headline {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--text);
+      line-height: 1.15;
+    }
+    .cta-text .sub {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-top: 0.35rem;
+    }
+    .cta-text .fine {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.45rem;
+    }
+    .qr-code {
+      display: block;
+      max-width: 190px;
+      height: auto;
+      background: white;
+      padding: 8px;
+      border-radius: 0.3rem;
+      flex-shrink: 0;
+    }
+
+    .footer-line {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 0.7rem;
+    }
+    .footer-line strong { color: var(--green); }
+
+    /* ── Print ── */
+    @media print {
+      :root {
+        --green: #000000 !important;
+        --gold:  #000000 !important;
+        --text:  #000000 !important;
+        --muted: #333333 !important;
+        --bg:    #ffffff !important;
+        --line:  #000000 !important;
+      }
+      @page { size: letter portrait; margin: 0; }
+      body { background: white; }
+      .instructions { display: none; }
+      .page { margin: 0; width: 100%; height: 100vh; }
+      .worry-text h3 { color: #000000 !important; font-weight: 800 !important; }
+      .header, .qr-code, .cta, .map-container {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="instructions">
+  Print → post on a community board, storefront window, or utility pole (check local bylaws first).<br>
+  <strong>Print settings: Letter, Portrait, Margins: None.</strong>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <p class="eyebrow">{{ location.city }} — resident-led, no commission</p>
+    <h1>{{ pamphlet.poster.headline | default(pamphlet.headline) | default("Solar. Batteries. Less confusion.") }}</h1>
+    <p>{{ pamphlet.poster.subheadline | default("Neighbours on this street are looking into solar panels, battery backup, and heat pumps — together.") }}</p>
+  </div>
+
+  <div class="worries">
+    {% set worries = pamphlet.worries | default([
+      {"icon": "⚡", "heading": "Power outages",            "body": "Storms knock out power for days. A battery keeps your lights, fridge, and heat on — silently."},
+      {"icon": "💸", "heading": "Rising electricity bills", "body": "Solar reduces what you pull from the grid and locks in lower costs long-term."},
+      {"icon": "🌡️", "heading": "Extreme heat & cold",     "body": "Heat pumps cool in summer and heat in winter — more efficiently than gas or window A/C."},
+      {"icon": "😵", "heading": "Too complicated alone",    "body": "Neighbours comparing notes cuts through the incentive program confusion."}
+    ]) %}
+    {% for w in worries[:4] %}
+    <div class="worry-row">
+      <span class="worry-icon">{{ w.icon }}</span>
+      <div class="worry-text">
+        <h3>{{ w.heading }}</h3>
+        <p>{{ w.body }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if pamphlet.map_svg %}
+  <div class="map-container">
+    {{ pamphlet.map_svg | safe }}
+  </div>
+  {% endif %}
+
+  <div class="cta">
+    <div class="cta-text">
+      <p class="headline">Scan to register interest</p>
+      <p class="sub">No purchase required &nbsp;·&nbsp; No spam &nbsp;·&nbsp; No sales pressure</p>
+      <p class="fine">{{ site.base_url }}</p>
+    </div>
+    {% if registration.form_url %}
+      {{ registration.form_url | qr_code("QR code linking to registration form") | safe }}
+    {% else %}
+      {{ site.base_url | qr_code("QR code linking to website") | safe }}
+    {% endif %}
+  </div>
+
+  <p class="footer-line"><strong>{{ site.short_title }}</strong> — a neighbour-to-neighbour initiative. Not a commercial effort.</p>
+
+</div>
+
+</body>
+</html>

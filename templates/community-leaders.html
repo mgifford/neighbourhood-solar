@@ -5,6 +5,49 @@
 {% block og_title %}For Community Leaders | {{ site.short_title }}{% endblock %}
 {% block og_description %}A community-led model for scaling solar, battery backup, and home energy upgrades in {{ location.city }}.{% endblock %}
 
+{% block faq_jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this a product being pushed through my community network?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The initiative is vendor-neutral and takes no commission from any contractor. A community leader's role is to help residents access an open comparison process, not to endorse a specific product or company."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a community leader actually have to do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Share the sign-up page through your association or network, and optionally host an information session once a local cohort forms. There is no requirement to manage contracts, funds, or contractor relationships."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this create liability for the community leader or association?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each household signs its own contract directly with the contractor it chooses. Community leaders are not a party to any resident's purchase decision or agreement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does this connect to municipal climate plans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It turns city-level climate targets into block-level action by making group participation in home energy upgrades visible and easy to join."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block main %}
 
 <section class="hero">
@@ -80,6 +123,28 @@
     <li>Reinforce the trust principles: resident-led, vendor-neutral, no commissions</li>
     <li>Support community feedback so each cohort improves the next</li>
   </ul>
+</section>
+
+<section id="faq">
+  <h2>Common questions from community leaders</h2>
+  <div class="grid two">
+    <div class="card">
+      <h3>Is this a product being pushed through my network?</h3>
+      <p>No. The initiative is vendor-neutral and takes no commission from any contractor. Your role is to help residents access an open comparison process, not to endorse a specific product or company.</p>
+    </div>
+    <div class="card">
+      <h3>What does a community leader actually have to do?</h3>
+      <p>Share the sign-up page through your association or network, and optionally host an information session once a local cohort forms. There is no requirement to manage contracts, funds, or contractor relationships yourself.</p>
+    </div>
+    <div class="card">
+      <h3>Does this create liability for me or my association?</h3>
+      <p>Each household signs its own contract directly with the contractor it chooses. Community leaders are not a party to any resident's purchase decision or agreement.</p>
+    </div>
+    <div class="card">
+      <h3>How does this connect to {{ location.city }}'s climate plans?</h3>
+      <p>It turns city-level climate targets into block-level action by making group participation in home energy upgrades visible and easy to join, directly supporting the plans listed above.</p>
+    </div>
+  </div>
 </section>
 
 <section id="contact" class="cta">
