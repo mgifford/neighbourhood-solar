@@ -205,6 +205,17 @@
         color: #000000 !important;
         font-weight: 800 !important;
       }
+
+      /* Explicitly fix footer / CTA background & text contrast */
+      .cta, .footer, footer {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      .cta *, .footer *, footer * {
+        color: #000000 !important;
+      }
+
       .front .header, .back .top-bar, .map-container, .qr-code {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
