@@ -163,7 +163,7 @@ city_plans:
 # ---------------------------------------------------------------
 
 pamphlet:
-  headline: "Solar. Batteries. Less confusion."
+  headline: "Solar Made Simple, Together."
   subheadline: >
     Your neighbours are thinking about solar panels, battery backup,
     and heat pumps. Let's figure it out together.
@@ -220,7 +220,7 @@ pamphlet:
   # No email address is shown on the poster — just a QR code to the registration
   # form (or website). Leave blank to fall back to the pamphlet headline/defaults.
   poster:
-    headline: "Solar. Batteries. Less confusion."
+    headline: "Solar Made Simple, Together."
     subheadline: >
       Neighbours on this street are looking into solar panels, battery backup,
       and heat pumps — together.
