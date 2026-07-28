@@ -1,0 +1,10 @@
+# Config for the weekly link-check workflow (.github/workflows/link-check.yml).
+#
+# ottawa.ca returns 403 to non-browser/datacenter traffic (confirmed via curl
+# and from GitHub-hosted runners) even for pages that load fine in a real
+# browser. Lychee has no per-domain accepted-status override, so we exclude
+# ottawa.ca from automated checking rather than get weekly false-positive
+# alerts. If ottawa.ca links break, they'll need to be checked manually.
+exclude = [
+  "^https://(www\\.)?ottawa\\.ca",
+]

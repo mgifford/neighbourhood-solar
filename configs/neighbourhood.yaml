@@ -72,16 +72,24 @@ registration:
 
 programs:
   - name: "Ontario Electricity Rebate"
-    url: "https://www.ontario.ca/page/electricity-rebates-and-incentives"
+    url: "https://www.ontario.ca/page/manage-energy-costs-your-home"
     jurisdiction: "Provincial"
     active: true
   - name: "Enbridge Home Efficiency Rebate Plus"
-    url: "https://www.enbridgegas.com/home/rebates-and-savings/home-efficiency-rebate-plus"
+    url: "https://www.enbridgegas.com/ontario/rebates-energy-conservation/home-efficiency-rebate-plus"
     jurisdiction: "Utility"
     active: true
   - name: "Ottawa Community Energy Plan"
-    url: "https://ottawa.ca/en/residents/environment-and-sustainability/community-energy-plan"
+    url: "https://ottawa.ca/en/living-ottawa/environment-conservation-and-climate/reducing-greenhouse-gas-emissions/buildings-and-properties/community-heating-strategy/what-community-energy-plan"
     jurisdiction: "Municipal"
+    active: true
+  - name: "Hydro Ottawa - Types of DERs (Net Metering)"
+    url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy/types-ders"
+    jurisdiction: "Utility"
+    active: true
+  - name: "Home Renovation Savings - Solar"
+    url: "https://www.homerenovationsavings.ca/without-assessment/solar"
+    jurisdiction: "Provincial"
     active: true
 
 # ---------------------------------------------------------------
