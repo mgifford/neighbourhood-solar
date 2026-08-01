@@ -148,7 +148,7 @@
 
 <section id="long-game">
   <h2>The long game</h2>
-  <p>Ottawa's direction is clear: more building decarbonization, more electrification, and higher expectations for resilient, efficient homes. Contractors that build repeatable, whole-home delivery models now will be better positioned for where the market is heading.</p>
+  <p>{{ location.city }}'s direction is clear: more building decarbonization, more electrification, and higher expectations for resilient, efficient homes. Contractors that build repeatable, whole-home delivery models now will be better positioned for where the market is heading.</p>
   <p>This pilot is designed as a practical collaboration between residents and contractors to build that model in the open.</p>
 </section>
 
@@ -190,7 +190,7 @@
 
 <section id="contact" class="cta">
   <h2>Want to be part of this?</h2>
-  <p>We are looking for Ottawa-area contractors who want qualified neighbourhood demand, transparent evaluation, and long-term reputation growth through high-quality work.</p>
+  <p>We are looking for {{ location.city }}-area contractors who want qualified neighbourhood demand, transparent evaluation, and long-term reputation growth through high-quality work.</p>
   {% if contact.email %}
   <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.contractor | urlencode }}">Get in touch</a>
   {% endif %}

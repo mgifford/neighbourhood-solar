@@ -54,7 +54,7 @@
   <div>
     <p class="eyebrow">For neighbourhood and community leaders</p>
     <h1>Help your neighbourhood move from climate concern to practical action.</h1>
-    <p class="lede">Neighbourhood Solar &amp; Energy Initiative is a resident-first framework built for Ottawa. It helps local leaders organize trusted, transparent group-buy opportunities for home energy upgrades without turning community networks into sales channels.</p>
+    <p class="lede">{{ site.short_title }} is a resident-first framework built for {{ location.city }}. It helps local leaders organize trusted, transparent group-buy opportunities for home energy upgrades without turning community networks into sales channels.</p>
   </div>
 </section>
 
@@ -76,7 +76,7 @@
     </div>
     <div class="card">
       <h3>Affordability</h3>
-      <p>Coordinated demand can lower soft costs and create stronger pricing for Ottawa households.</p>
+      <p>Coordinated demand can lower soft costs and create stronger pricing for {{ location.city }} households.</p>
     </div>
     <div class="card">
       <h3>Trust</h3>
@@ -87,8 +87,8 @@
 
 {% if city_plans %}
 <section id="city-plans">
-  <h2>Aligned with Ottawa's climate transition plans</h2>
-  <p>This initiative is built for Ottawa's policy and grid context. It directly supports implementation momentum behind the Climate Change Master Plan and Energy Evolution strategy by turning city-level targets into block-level action.</p>
+  <h2>Aligned with {{ location.city }}'s climate transition plans</h2>
+  <p>This initiative is built for {{ location.city }}'s policy and grid context. It directly supports implementation momentum behind local climate and energy transition plans by turning city-level targets into block-level action.</p>
   <ul class="program-list">
     {% for plan in city_plans %}
     <li>
@@ -149,7 +149,7 @@
 
 <section id="contact" class="cta">
   <h2>Help start a local cohort</h2>
-  <p>If you organize residents in Ottawa, you can help make climate action more affordable, more trusted, and easier to deliver at the neighbourhood level.</p>
+  <p>If you organize residents in {{ location.city }}, you can help make climate action more affordable, more trusted, and easier to deliver at the neighbourhood level.</p>
   {% if contact.email %}
   <a class="button" href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.community_leader | urlencode }}">Contact the organizers</a>
   {% endif %}
