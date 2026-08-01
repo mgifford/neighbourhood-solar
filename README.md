@@ -61,7 +61,7 @@ This keeps the public site simple while giving organizers a clear place for prin
 
 **I'm a developer** — issues and pull requests are welcome. The codebase is small on purpose: Python + Jinja2 + plain HTML/CSS. No framework. No build complexity beyond what's needed.
 
-**I'm a community organizer or councillor** — [read the community leaders page](https://mgifford.github.io/neighbourhood-solar/community-leaders.html) and get in touch.
+**I'm a community organizer or councillor** — [read the community leaders page](https://mgifford.github.io/neighbourhood-solar/community-leaders.html) and get in touch. If you're planning to actually run a cohort — not just fork the site — see the [pilot playbook](docs/playbook/) for outreach, meeting agendas, vendor questions, and evaluation criteria.
 
 ## The problem this solves
 

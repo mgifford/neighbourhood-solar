@@ -59,6 +59,11 @@ Prefer to have an AI assistant do this for you? See
 [FORK-WITH-AI.md](FORK-WITH-AI.md) for a ready-to-use prompt covering the
 same steps below.
 
+This document covers the *technical* setup — the code and config. If
+you're planning to run an actual neighbourhood pilot (recruiting
+households, meeting with vendors, comparing bids), see the
+[pilot playbook](docs/playbook/) for that process.
+
 ### 1. Fork and clone
 
 On GitHub, click **Fork** on [mgifford/neighbourhood-solar](https://github.com/mgifford/neighbourhood-solar),
