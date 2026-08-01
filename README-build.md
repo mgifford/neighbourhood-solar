@@ -55,6 +55,10 @@ This is meant to be forked. Everything visitor-facing is driven by one YAML
 config file — you should not need to touch the Jinja2 templates to launch a
 pilot for your own street or town.
 
+Prefer to have an AI assistant do this for you? See
+[FORK-WITH-AI.md](FORK-WITH-AI.md) for a ready-to-use prompt covering the
+same steps below.
+
 ### 1. Fork and clone
 
 On GitHub, click **Fork** on [mgifford/neighbourhood-solar](https://github.com/mgifford/neighbourhood-solar),
