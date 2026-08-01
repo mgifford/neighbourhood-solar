@@ -57,7 +57,7 @@ This keeps the public site simple while giving organizers a clear place for prin
 
 **I'm a contractor** — [read the contractor page](https://mgifford.github.io/neighbourhood-solar/contractors.html). We're looking for installers willing to quote transparently for groups.
 
-**I want to run this in my city** — fork this repo, copy `configs/neighbourhood.yaml`, update the values for your location, and push to GitHub Pages. See [README-build.md](README-build.md) for step-by-step instructions.
+**I want to run this in my city** — fork this repo, copy `configs/neighbourhood.yaml`, update the values for your location, and push to GitHub Pages. See [README-build.md](README-build.md) for step-by-step instructions, or [FORK-WITH-AI.md](FORK-WITH-AI.md) for a ready-to-use prompt that lets an AI assistant do the setup for you.
 
 **I'm a developer** — issues and pull requests are welcome. The codebase is small on purpose: Python + Jinja2 + plain HTML/CSS. No framework. No build complexity beyond what's needed.
 

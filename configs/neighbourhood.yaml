@@ -1,7 +1,7 @@
 # Neighbourhood Solar & Energy Initiative — Ottawa Configuration
 # ---------------------------------------------------------------
 # To adapt this for another city:
-#   1. Copy this file: cp configs/ottawa.yaml configs/yourcity.yaml
+#   1. Copy this file: cp configs/neighbourhood.yaml configs/yourcity.yaml
 #   2. Edit every value below.
 #   3. Run: python build.py --config configs/yourcity.yaml
 #
