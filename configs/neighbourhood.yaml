@@ -113,8 +113,8 @@ contractors: []
 
 cohort:
   thresholds: [5, 10, 20]
-  progress_registered: 7
-  progress_target: 10
+  progress_registered: 15
+  progress_target: 20
   progress_discount_percent: 10
   progress_label: "Ottawa ward"
   opening_ask:
