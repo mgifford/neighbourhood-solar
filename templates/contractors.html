@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}For Contractors | {{ site.short_title }}{% endblock %}
-{% block description %}A neighbourhood energy pilot in {{ location.city }} — pre-qualified homeowners, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
+{% block description %}A neighbourhood energy pilot in {{ location.city }} — residents who have registered an interest, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
 {% block og_title %}For Contractors | {{ site.short_title }}{% endblock %}
-{% block og_description %}A neighbourhood energy pilot in {{ location.city }} — pre-qualified homeowners, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
+{% block og_description %}A neighbourhood energy pilot in {{ location.city }} — residents who have registered an interest, concentrated geography, and an opportunity to build towards whole-home energy services.{% endblock %}
 
 {% block faq_jsonld %}
 <script type="application/ld+json">
@@ -21,10 +21,10 @@
     },
     {
       "@type": "Question",
-      "name": "How are homeowners in the cohort qualified?",
+      "name": "How are residents in the cohort described?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Residents register interest directly and are grouped by proximity. They are not pre-screened for creditworthiness, but they have opted in specifically because they are evaluating solar, battery, or electrification upgrades."
+        "text": "Residents register an interest directly and are grouped by proximity. They are not pre-screened or pre-qualified, but they have opted in specifically because they are exploring solar, battery, or electrification upgrades."
       }
     },
     {
@@ -55,19 +55,22 @@
     <p class="eyebrow">For solar and home energy contractors</p>
     <h1>Stop chasing scattered one-off jobs. Build a neighbourhood pipeline.</h1>
     <p class="lede">Most residential opportunities arrive one household at a time, across a wide geography, with high sales effort before scope is even clear. This pilot organizes interested homeowners in the same area into one transparent cohort, so contractors can quote and deliver more efficiently.</p>
+  {% if content.independence %}
+  <p class="plan-description">{{ content.independence }} It is being explored as a pilot, not offered as a finished program.</p>
+  {% endif %}
   </div>
 </section>
 
 <section id="business-case">
   <h2>The business case</h2>
   <p><a href="https://www.volts.wtf/p/giving-clean-electricity-a-political">Volts and other industry voices</a> have highlighted a core reality in residential solar: customer acquisition and sales overhead are often among the biggest cost pressures. This pilot addresses that problem directly by grouping motivated homeowners before contractors begin full proposal work.</p>
-  <p>Instead of running separate sales cycles for scattered leads, you engage a pre-qualified local cohort with shared timelines, shared questions, and clearer demand signals.</p>
+  <p>Instead of running separate sales cycles for scattered leads, you engage a local cohort of residents who have registered an interest, with shared timelines, shared questions, and clearer demand signals.</p>
 
   <div class="grid two">
     <div class="card">
       <h3>Operational benefits</h3>
       <ul>
-        <li>Pre-qualified homeowners concentrated in one area</li>
+        <li>Interested residents concentrated in one area</li>
         <li>Batch site assessments instead of isolated truck rolls</li>
         <li>Coordinated scheduling across neighbouring properties</li>
         <li>Lower travel, mobilization, and sales overhead per project</li>
@@ -174,8 +177,8 @@
       <p>No. There is no commission, referral fee, or pay-to-play cost. This is a resident-led, vendor-neutral process — contractors compete on transparent value, not on side payments.</p>
     </div>
     <div class="card">
-      <h3>How are homeowners in the cohort qualified?</h3>
-      <p>Residents register interest directly and are grouped by proximity. They are not pre-screened for creditworthiness, but they have opted in specifically because they are evaluating solar, battery, or electrification upgrades.</p>
+      <h3>How are residents in the cohort described?</h3>
+      <p>Residents register an interest directly and are grouped by proximity. They are not pre-screened or pre-qualified, but they have opted in specifically because they are exploring solar, battery, or electrification upgrades.</p>
     </div>
     <div class="card">
       <h3>Who picks the winning contractor?</h3>

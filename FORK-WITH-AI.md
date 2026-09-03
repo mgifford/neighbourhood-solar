@@ -9,7 +9,9 @@ the config editing for you.
 
 If you'd rather do it by hand, see [README-build.md](README-build.md) —
 this page follows the same steps, just phrased as instructions for an AI
-assistant instead of for you directly.
+assistant instead of for you directly. For a complete list of what needs
+localizing (utility, programs, privacy, cohort targets, and more), see
+[LOCALIZE.md](LOCALIZE.md).
 
 ## Before you start
 

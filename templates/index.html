@@ -40,7 +40,7 @@
       "name": "How does a bigger group help me get a better price?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Contractors save on sales, travel, and scheduling overhead when they can quote for multiple homes at once instead of chasing single leads. That saving is passed on as a group discount and stronger warranty terms."
+        "text": "Grouped site visits, sales and scheduling may reduce contractor costs. The cohort will ask contractors whether they can offer better pricing or warranty terms at different participation levels, and any resident benefit must be shown in the submitted proposals."
       }
     }
   ]
@@ -53,8 +53,8 @@
 {% set cohort_progress_registered = cohort.progress_registered | default(7) %}
 {% set cohort_progress_target = cohort.progress_target | default(10) %}
 {% set cohort_progress_needed = cohort_progress_target - cohort_progress_registered %}
-{% set cohort_progress_discount = cohort.progress_discount_percent | default(cohort.opening_ask.discount_percent) %}
 {% set cohort_progress_label = cohort.progress_label | default(location.city ~ ' cohort') %}
+{% set cohort_progress_is_live = cohort.progress_is_live | default(false) %}
 
 <section class="hero">
   <div>
@@ -71,33 +71,43 @@
 
 <section class="notice">
   <h2>No sales pressure. No commission. Neighbours set the pace.</h2>
-  <p>This project is designed to make the local choice visible. The goal is not to push one vendor or one technology. The goal is to help households see that nearby homes are acting together, then make a clear decision with better information and less friction.</p>
+  {% if content.positioning %}
+  <p>{{ content.positioning }}</p>
+  {% endif %}
+  {% if content.independence %}
+  <p><strong>{{ content.independence }}</strong></p>
+  {% endif %}
   {% if content.disclaimer %}
-  <p><strong>This is not a commercial effort.</strong> {{ content.disclaimer }}</p>
+  <p>{{ content.disclaimer }}</p>
   {% endif %}
 </section>
 
 <section class="cohort-tracker card" id="cohort-tracker" aria-labelledby="cohort-tracker-title">
   <div class="cohort-tracker__copy">
     <p class="eyebrow">Local momentum</p>
-    <h2 id="cohort-tracker-title">Cohort Progress Tracker</h2>
-    <p>📍 {{ cohort_progress_label | title }} Progress: <strong>{{ cohort_progress_registered }} neighbors registered</strong>. <strong>{{ cohort_progress_needed }} more needed</strong> to unlock a <strong>{{ cohort_progress_discount }}% group contractor discount</strong>.</p>
+    {% if cohort_progress_is_live %}
+    <h2 id="cohort-tracker-title">Cohort progress tracker</h2>
+    <p>📍 {{ cohort_progress_label | title }}: <strong>{{ cohort_progress_registered }} neighbours have registered interest</strong>, working toward a group of {{ cohort_progress_target }}. Registering is a non-binding way to say you are interested — it is not a commitment to buy.{% if cohort.progress_updated %} <span class="plan-description">Last updated {{ cohort.progress_updated }}.</span>{% endif %}</p>
+    {% else %}
+    <h2 id="cohort-tracker-title">Cohort progress tracker <span class="tag">Example</span></h2>
+    <p>The numbers below are <strong>illustrative, not live registrations</strong>. When a real cohort forms, the tracker shows how many neighbours have registered non-binding interest toward a group target.</p>
+    {% endif %}
   </div>
   <div class="cohort-tracker__meter">
-    <label class="plan-description" for="cohort-progress">Progress toward the current {{ cohort_progress_target }}-home target</label>
-    <progress id="cohort-progress" value="{{ cohort_progress_registered }}" max="{{ cohort_progress_target }}">{{ cohort_progress_registered }} of {{ cohort_progress_target }} homes</progress>
+    <label class="plan-description" for="cohort-progress">{% if cohort_progress_is_live %}Progress toward the current {{ cohort_progress_target }}-home target{% else %}Example: progress toward a {{ cohort_progress_target }}-home target{% endif %}</label>
+    <progress id="cohort-progress" value="{{ cohort_progress_registered }}" max="{{ cohort_progress_target }}">{{ cohort_progress_registered }} of {{ cohort_progress_target }} homes registered</progress>
     <div class="cohort-tracker__stats" aria-label="Cohort summary">
       <div>
         <span>Registered</span>
-        <strong>{{ cohort_progress_registered }}</strong>
+        <strong>{{ cohort_progress_registered }}<span class="visually-hidden"> of {{ cohort_progress_target }} homes</span></strong>
       </div>
       <div>
         <span>Target</span>
         <strong>{{ cohort_progress_target }}</strong>
       </div>
       <div>
-        <span>Discount</span>
-        <strong>{{ cohort_progress_discount }}%</strong>
+        <span>Still needed</span>
+        <strong>{{ cohort_progress_needed }}</strong>
       </div>
     </div>
   </div>
@@ -129,15 +139,15 @@
 </section>
 
 <section id="solar">
-  <h2>Solar panels as the first step</h2>
-  <p>For many homes, solar is the most attainable place to start. It is often more affordable than adding batteries right away, and it can deliver a strong long-term return by lowering electricity bills over time.</p>
-  <p>That is why we are leading with solar in this pilot. When neighbours move together, installers can often reduce soft costs like sales, travel, and scheduling overhead. That can translate into better group pricing, clearer options, and a simpler process for everyone.</p>
+  <h2>Solar as the first cohort opportunity</h2>
+  <p>Solar is a practical, visible subject for a first group purchase: it is easy to picture, easy to talk about with neighbours, and often more attainable than adding batteries right away. That is why this pilot leads with solar.</p>
+  <p>Solar may not be the first technical improvement every house needs. Roof condition, shading, insulation and electrical capacity — and future heat-pump or EV charging demand — can matter more for some homes. For whole-home planning, talk to <a href="https://betterhomesottawa.ca/" rel="noopener">Better Homes Ottawa</a> or an independent energy advisor before committing.</p>
 </section>
 
 <section id="backup">
   <h2>Battery backup instead of a gas generator</h2>
-  <p>Many households are considering generators because of storms and power outages. A battery backup system can provide quiet, automatic emergency power without gasoline storage, engine maintenance, fumes, or noise.</p>
-  <p>Batteries are not the right answer for every home. They can be expensive. But if several households are already considering generators, a coordinated solar-plus-battery option may be worth comparing clearly and honestly.</p>
+  <p>Many households are considering generators because of storms and power outages. <strong>Solar panels alone do not normally power a home during an outage.</strong> Backup power requires compatible battery, inverter, isolation and electrical equipment.</p>
+  <p>Batteries are not the right answer for every home, and they can be expensive. But if several households are already considering generators, a coordinated solar-plus-battery option may be worth comparing clearly and honestly.</p>
 </section>
 
 <section id="how-it-works">
@@ -145,8 +155,8 @@
   <p>People act faster when they see nearby homes moving first. This process is designed to make the choice visible, social, and easy to join.</p>
   <ol class="steps">
     <li><strong>Register interest.</strong> Share your name, email, and general location. No purchase commitment.</li>
-    <li><strong>Watch the count grow.</strong> The cohort tracker shows how close the neighbourhood is to the next discount threshold.</li>
-    <li><strong>Invite local contractors.</strong> Once the group is large enough, we ask qualified contractors to quote for the cluster of homes.</li>
+    <li><strong>Watch the count grow.</strong> The cohort tracker shows how many nearby homes have registered interest so far.</li>
+    <li><strong>Invite local contractors.</strong> Once enough nearby homes register, we ask contractors to quote for the cluster of homes.</li>
     <li><strong>Compare options openly.</strong> Residents see equipment, warranties, timelines, and pricing side by side.</li>
     <li><strong>Choose individually.</strong> Every household decides on its own. Group momentum makes the process easier, not mandatory.</li>
     <li><strong>Share what worked.</strong> Yard signs, window decals, and short neighbour stories help the next block move faster.</li>
@@ -171,7 +181,7 @@
     </article>
     <article class="card asset-card">
       <h3>Sample outreach email</h3>
-      <p>Use a short, neighbor-to-neighbor email to invite people into the cohort. The template keeps the tone local, simple, and low pressure.</p>
+      <p>Use a short, neighbour-to-neighbour email to invite people into the cohort. The template keeps the tone local, simple, and low pressure.</p>
       <p><a href="outreach.html">Open the sample email template</a></p>
     </article>
   </div>
@@ -187,7 +197,7 @@
   </div>
   <div class="card">
     <h3>What we may ask for</h3>
-    <p>Upgraded equipment options, a group price reduction of around {{ cohort.opening_ask.discount_percent }}%, and a {{ cohort.opening_ask.workmanship_warranty_years }}-year workmanship warranty.</p>
+    <p>The cohort will ask contractors whether they can offer better pricing or warranty terms at different participation levels. Any resident benefit must be shown in the submitted proposals.</p>
   </div>
   <div class="card">
     <h3>What we will avoid</h3>
@@ -198,8 +208,8 @@
 {% set active_programs = programs | selectattr("active") | list %}
 {% if active_programs %}
 <section id="programs">
-  <h2>Available incentive programs — {{ location.region_label }}</h2>
-  <p>These programs may reduce costs. Verify eligibility directly with each program before relying on them in your planning.</p>
+  <h2>Current incentive programs — {{ location.region_label }}</h2>
+  <p>{{ programs_note | default("Programs and eligibility can change. Confirm current requirements before signing a contract or beginning work.") }}</p>
   <ul class="program-list">
     {% for program in active_programs %}
     <li>
@@ -208,10 +218,26 @@
     </li>
     {% endfor %}
   </ul>
+  {% if programs_last_verified %}
+  <p class="plan-description">Last verified {{ programs_last_verified }}.</p>
+  {% endif %}
   {% if registration.spreadsheet_url %}
   <p><a href="{{ registration.spreadsheet_url }}">{{ registration.spreadsheet_label }}</a></p>
   {% endif %}
 </section>
+
+{% if utility and utility.name %}
+<section id="utility">
+  <h2>Working with {{ utility.name }}</h2>
+  <p>{{ site.short_title }} is not a {{ utility.name }} program. Each grid-connected system needs {{ utility.name }} approval, and grid capacity and Electrical Safety Authority requirements apply to every home. GridFlex is currently limited to eligible locations and equipment.</p>
+  <ul class="program-list">
+    {% if utility.ders_url %}<li><a href="{{ utility.ders_url }}" rel="noopener">Distributed energy resources (DERs)</a></li>{% endif %}
+    {% if utility.types_url %}<li><a href="{{ utility.types_url }}" rel="noopener">Net metering and other DER arrangements</a></li>{% endif %}
+    {% if utility.connection_url %}<li><a href="{{ utility.connection_url }}" rel="noopener">Connection process</a></li>{% endif %}
+    {% if utility.gridflex_url %}<li><a href="{{ utility.gridflex_url }}" rel="noopener">GridFlex</a></li>{% endif %}
+  </ul>
+</section>
+{% endif %}
 {% endif %}
 
 <section id="faq">
@@ -231,7 +257,7 @@
     </div>
     <div class="card">
       <h3>How does a bigger group help me get a better price?</h3>
-      <p>Contractors save on sales, travel, and scheduling overhead when they can quote for {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes at once instead of chasing single leads. That saving is passed on as a group discount and stronger warranty terms.</p>
+      <p>Grouped site visits, sales and scheduling may reduce contractor costs when they can quote for {% for t in cohort.thresholds %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %} homes at once instead of chasing single leads. The cohort will ask whether that allows better pricing or warranty terms, and any resident benefit must be shown in the submitted proposals.</p>
     </div>
   </div>
 </section>
@@ -246,6 +272,9 @@
   {% endif %}
   {% if contact.email %}
   <p><a href="mailto:{{ contact.email }}?subject={{ contact.mailto_subjects.resident | urlencode }}">Email to register interest</a></p>
+  {% endif %}
+  {% if content.privacy_note %}
+  <p class="plan-description">{{ content.privacy_note }}{% if contact.email %} To withdraw or ask us to delete your information, email <a href="mailto:{{ contact.email }}?subject=Withdraw%20from%20Neighbourhood%20Solar">{{ contact.email }}</a>.{% endif %}</p>
   {% endif %}
 </section>
 

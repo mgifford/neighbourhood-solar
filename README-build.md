@@ -179,13 +179,24 @@ See `configs/neighbourhood.yaml` for a fully commented example. Key fields:
 | `site.title` | Yes | Full site title including city name |
 | `site.base_url` | Yes | Canonical base URL, no trailing slash |
 | `location.city` | Yes | Used throughout prose and page titles |
+| `utility.name` / `utility.*_url` | Recommended | Local electricity utility and its DER / net-metering / connection / demand-flexibility links |
 | `contact.email` | Yes | Shown on all three pages |
 | `registration.form_url` | Recommended | Google Form, Airtable, etc. |
 | `registration.spreadsheet_url` | Optional | Public anonymized sign-up list |
 | `programs` | Recommended | Incentive programs for your jurisdiction |
+| `programs_last_verified` | Recommended | Date the program links were last confirmed (shown on the site) |
+| `programs_note` | Optional | Short "programs can change" caveat above the list |
 | `contractors` | Optional | Only list after consent is confirmed |
+| `cohort.progress_is_live` | Recommended | `false` labels the homepage tracker as an example; set `true` only for real registrations |
+| `content.positioning` | Optional | Short positioning line near the top of the homepage |
+| `content.independence` | Optional | "Not a city/utility/contractor program" statement shown on each page |
+| `content.privacy_note` | Recommended | Privacy wording shown beside the registration link — must match how you handle data |
 | `content.local_context` | Optional | Override the "why this matters" paragraph |
 | `content.local_climate_note` | Optional | Override the climate paragraph on community-leaders page |
+
+For a full, step-by-step localization checklist (utility rules, permits,
+privacy, cohort targets, spelling, QR codes, and more), see
+[LOCALIZE.md](LOCALIZE.md).
 
 ## Deployment via GitHub Pages
 
