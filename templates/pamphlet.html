@@ -243,7 +243,7 @@
 
     <h2>What people are worried about</h2>
     {% set worries = pamphlet.worries | default([
-      {"icon": "⚡", "heading": "Power outages",            "body": "Storms knock out power for days. A battery keeps your lights, fridge, and heat on — silently."},
+      {"icon": "⚡", "heading": "Power outages",            "body": "Solar alone does not power a home in an outage. With the right battery and equipment, you can add quiet backup — no gas, no fumes."},
       {"icon": "💸", "heading": "Rising electricity bills", "body": "Solar reduces what you pull from the grid and locks in lower costs long-term."},
       {"icon": "🌡️", "heading": "Extreme heat & cold",     "body": "Heat pumps cool in summer and heat in winter — more efficiently than gas or window A/C."},
       {"icon": "😵", "heading": "Too complicated alone",    "body": "Neighbours comparing notes cuts through the incentive program confusion."}
@@ -269,7 +269,7 @@
       <p class="url">{{ site.base_url }}</p>
       {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
-      <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
+      <p class="fine">Non-binding &nbsp;·&nbsp; No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
   </div>
 
@@ -303,7 +303,7 @@
       <p class="url">{{ site.base_url }}</p>
       {{ site.base_url | qr_code("QR code linking to website") | safe }}
       {% endif %}
-      <p class="fine">No purchase required &nbsp;·&nbsp; No spam</p>
+      <p class="fine">Non-binding &nbsp;·&nbsp; No purchase required &nbsp;·&nbsp; No spam</p>
     </div>
   </div>
 
@@ -349,7 +349,7 @@
 
     {% if pamphlet.map_svg %}
     <div class="map-container">
-      {{ pamphlet.map_svg | safe }}
+      {{ pamphlet.map_svg | replace('map-title', 'map-title-a') | safe }}
     </div>
     {% endif %}
 
@@ -392,10 +392,10 @@
 
     {% if pamphlet.map_svg %}
     <div class="map-container">
-      {{ pamphlet.map_svg | safe }}
+      {{ pamphlet.map_svg | replace('map-title', 'map-title-b') | safe }}
     </div>
     {% endif %}
- 
+
     <div class="cta">
       <p>Questions? Get in touch.</p>
       {% if contact.email %}

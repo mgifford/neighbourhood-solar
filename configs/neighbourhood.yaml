@@ -17,8 +17,10 @@ site:
   short_title: "Neighbourhood Solar"
   tagline: "Resident-led. Open process. No commission."
   description: >
-    A resident-led effort to make solar, battery backup, and home energy
-    upgrades easier, cheaper, and more transparent in Ottawa, Ontario.
+    Neighbourhood Solar helps Ottawa residents form local purchasing cohorts
+    for independently owned home-energy upgrades. It complements existing
+    advice, financing and utility programs by making contractor proposals
+    easier to request and compare.
   language: "en"       # ISO 639-1
   locale: "en-CA"      # BCP 47; affects lang= attribute on <html>
   base_url: "https://mgifford.github.io/neighbourhood-solar"  # No trailing slash. REQUIRED.
@@ -36,6 +38,24 @@ location:
   country_code: "CA"
   # Used in prose wherever a longer description is needed
   region_label: "Ottawa–Gatineau region"
+
+# ---------------------------------------------------------------
+# ELECTRICITY UTILITY
+# The local distribution utility that must approve grid-connected
+# systems. Centralized here so every page and the docs stay in sync.
+# When adapting for another community, replace with your own utility.
+# ---------------------------------------------------------------
+
+utility:
+  name: "Hydro Ottawa"
+  # Distributed energy resources (DERs) overview
+  ders_url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy-ders"
+  # Net metering and other DER arrangements
+  types_url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy/types-ders"
+  # Connection process for grid-tied systems
+  connection_url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy/der-connection-process"
+  # Optional demand-flexibility program (limited eligibility)
+  gridflex_url: "https://hydroottawa.com/en/gridflex"
 
 # ---------------------------------------------------------------
 # CONTACT
@@ -68,28 +88,32 @@ registration:
 # INCENTIVE PROGRAMS
 # Listed on index.html to help residents understand available funding.
 # Set active: false to hide a program without deleting the entry.
+# Programs and eligibility change often — update programs_last_verified
+# whenever you re-check these links, and confirm details with the
+# primary source before relying on them.
 # ---------------------------------------------------------------
 
+programs_last_verified: "2026-09-03"
+programs_note: >
+  Programs and eligibility can change. Confirm current requirements before
+  signing a contract or beginning work.
+
 programs:
-  - name: "Ontario Electricity Rebate"
-    url: "https://www.ontario.ca/page/manage-energy-costs-your-home"
+  - name: "Home Renovation Savings"
+    url: "https://saveonenergy.ca/en/For-Your-Home/Home-Renovation-Savings"
     jurisdiction: "Provincial"
     active: true
-  - name: "Enbridge Home Efficiency Rebate Plus"
-    url: "https://www.enbridgegas.com/ontario/rebates-energy-conservation/home-efficiency-rebate-plus"
-    jurisdiction: "Utility"
-    active: true
-  - name: "Hydro Ottawa - Types of DERs (Net Metering)"
-    url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy/types-ders"
-    jurisdiction: "Utility"
-    active: true
-  - name: "Home Renovation Savings - Solar"
-    url: "https://www.homerenovationsavings.ca/without-assessment/solar"
-    jurisdiction: "Provincial"
-    active: true
-  - name: "Better Homes Ottawa - Loan Program"
-    url: "https://ottawa.ca/en/living-ottawa/environment-conservation-and-climate/climate-change-and-energy/better-homes-ottawa"
+  - name: "Better Homes Ottawa"
+    url: "https://betterhomesottawa.ca/"
     jurisdiction: "Municipal"
+    active: true
+  - name: "Better Homes Ottawa Loan Program"
+    url: "https://betterhomesottawa.ca/rebate-and-incentive-programs/better-homes-loan-program/"
+    jurisdiction: "Municipal"
+    active: true
+  - name: "Hydro Ottawa — Distributed energy resources (DERs)"
+    url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy-ders"
+    jurisdiction: "Utility"
     active: true
 
 # ---------------------------------------------------------------
@@ -113,15 +137,18 @@ contractors: []
 
 cohort:
   thresholds: [5, 10, 20]
+  # The progress tracker on the homepage.
+  #   progress_is_live: set to true ONLY when the numbers below reflect real,
+  #   current registrations. While false, the tracker is clearly labelled as an
+  #   example so illustrative figures are never presented as live progress.
+  progress_is_live: false
   progress_registered: 15
   progress_target: 20
-  progress_discount_percent: 10
   progress_label: "Ottawa ward"
+  progress_updated: ""   # e.g. "2026-09-03" — shown as a last-updated date when live
   opening_ask:
-    discount_percent: 10
     workmanship_warranty_years: 10
   expected_compromise:
-    discount_percent: 5
     workmanship_warranty_years: 7
 
 # ---------------------------------------------------------------
@@ -131,18 +158,35 @@ cohort:
 # ---------------------------------------------------------------
 
 content:
+  # Short positioning line used near the top of the homepage.
+  positioning: >
+    Neighbourhood Solar helps Ottawa residents form local purchasing cohorts
+    for independently owned home-energy upgrades. It complements existing
+    advice, financing and utility programs by making contractor proposals
+    easier to request and compare.
+  # Independence statement shown on every audience page.
+  independence: >
+    This is a resident-led initiative, not a City of Ottawa, Hydro Ottawa or
+    contractor program.
+  # Privacy note shown beside the registration link and form.
+  privacy_note: >
+    Registration is non-binding. Your information will be used only to contact
+    you about this initiative and will not be shared with contractors without
+    your permission.
   local_context: >
     Ottawa homeowners face real complexity across federal, provincial,
     and municipal incentive programs. A neighbourhood approach can help
     cut through that confusion and reduce soft costs for contractors.
   local_climate_note: >
-    The City of Ottawa has committed to net-zero by 2050. Neighbourhood
-    solar and electrification pilots directly support that target and
-    make climate action visible at the street level.
+    The pilot supports Ottawa's Energy Evolution goals by helping residents
+    move from interest to practical home-energy projects. Solar and batteries
+    can also contribute to household resilience, but every property requires
+    individual technical and financial assessment.
   disclaimer: >
-    This is a neighbour-to-neighbour initiative to get more houses in our
-    neighbourhood connected to solar tied to battery backups. All of this should
-    be tied to Ottawa Hydro to support grid fluctuations, but we're not there yet.
+    This is a neighbour-to-neighbour initiative to help more homes in our
+    neighbourhood add solar and battery backup. Group purchasing does not mean
+    neighbours share electricity — each home needs its own assessment, approval
+    and contract, and Hydro Ottawa must approve any grid-connected system.
 
 # ---------------------------------------------------------------
 # CITY PLANS
@@ -154,15 +198,20 @@ content:
 
 city_plans:
   - name: "Climate Change Master Plan"
-    url: "https://www.ottawa.ca/en/planning-development-and-construction/official-plan-and-master-plans/climate-change-master-plan"
+    url: "https://ottawa.ca/en/planning-development-and-construction/official-plan-and-master-plans/climate-change-master-plan"
     description: >
       Ottawa's framework for reducing community-wide greenhouse gas emissions
       and building climate resilience across the city.
-  - name: "Energy Evolution: Ottawa's Community Energy Transition Strategy"
-    url: "https://ottawa.ca/en/living-ottawa/environment-conservation-and-climate/reducing-greenhouse-gas-emissions/strategies-and-action-plans/energy-evolution/energy-evolution-ottawas-community-energy-transition-strategy"
+  - name: "Energy Evolution"
+    url: "https://ottawa.ca/en/living-ottawa/environment-conservation-and-climate/reducing-greenhouse-gas-emissions/strategies-and-action-plans/energy-evolution"
     description: >
       Ottawa's long-term strategy for transitioning to clean, affordable energy —
       with a specific focus on buildings, transportation, and local energy systems.
+  - name: "Climate Ready Ottawa"
+    url: "https://ottawa.ca/en/living-ottawa/environment-conservation-and-climate/climate-ready-ottawa/climate-ready-ottawa-overview"
+    description: >
+      Ottawa's current approach to preparing for and adapting to a changing
+      climate.
 
 # ---------------------------------------------------------------
 # PAMPHLET
@@ -189,8 +238,9 @@ pamphlet:
     - icon: "⚡"
       heading: "Power outages"
       body: >
-        Storms are getting worse. A battery system gives you quiet,
-        automatic backup power — no gas, no fumes, no noise.
+        Solar alone does not power a home during an outage. With a compatible
+        battery and the right equipment you can add quiet backup power —
+        no gas, no fumes, no noise.
     - icon: "💸"
       heading: "Rising electricity bills"
       body: >

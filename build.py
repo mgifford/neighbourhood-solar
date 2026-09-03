@@ -142,6 +142,11 @@ def qr_code_filter(url: str, label: str = "QR code") -> str:
         else:
             return ""
 
+    # The library gives every QR path the same id="qr-path". A page can show
+    # several QR codes (the flyer repeats them), which would produce duplicate
+    # ids — an HTML validity error. The id is unreferenced, so drop it.
+    svg_string = svg_string.replace(' id="qr-path"', '')
+
     escaped_label = html.escape(label)
     svg_string = svg_string.replace("<svg ", f'<svg class="qr-code" aria-label="{escaped_label}" role="img" ', 1)
     return svg_string
