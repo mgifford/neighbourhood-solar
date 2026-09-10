@@ -1,0 +1,9 @@
+managed_file_states_test.form:
+  path: '/managed-file-states-test'
+  defaults:
+    _form: '\Drupal\managed_file_states_test\Form\ManagedFileStatesTestForm'
+    _title: 'Managed file #states test (#2847425)'
+  requirements:
+    # 'access content' keeps the route reachable by any authenticated tester
+    # while still requiring a real permission. Adjust as needed.
+    _permission: 'access content'

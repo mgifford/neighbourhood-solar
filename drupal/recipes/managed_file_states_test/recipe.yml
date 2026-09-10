@@ -1,0 +1,13 @@
+name: 'Managed file #states test (#2847425)'
+description: 'Sets up a reproduction form for Drupal core issue #2847425 (#states not affecting visibility/requirement of managed_file). After applying, visit /managed-file-states-test to exercise every failing case by hand.'
+type: 'Testing'
+install:
+  - file
+  - managed_file_states_test
+config:
+  actions:
+    # Make the form reachable for logged-in testers who are not the superuser.
+    # 'access content' is the permission guarding the route.
+    user.role.authenticated:
+      grantPermissions:
+        - 'access content'
