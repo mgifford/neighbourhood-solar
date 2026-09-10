@@ -37,8 +37,7 @@ drupal/
         └── src/Form/ManagedFileStatesTestForm.php
 ```
 
-Targets **Drupal 12 / `main`** (`core_version_requirement: ^12`). If your checkout
-still reports as `11.x-dev`, widen that key to `^11.2 || ^12` in the `.info.yml`.
+Targets **Drupal 11.4+ / 12 / `main`** (`core_version_requirement: ^11.4 || ^12`).
 
 ## Install on your DDEV `drupal-core` checkout
 
@@ -53,7 +52,8 @@ cp -R /path/to/neighbourhood-solar/drupal/recipes/managed_file_states_test \
       recipes/managed_file_states_test
 
 # 2. Apply the recipe (installs the file module + this module, grants access).
-ddev exec php core/scripts/drupal recipe recipes/managed_file_states_test
+#    Use the `dr` script — `drupal` is deprecated in 11.4 and removed in 13.
+ddev exec php core/scripts/dr recipe recipes/managed_file_states_test
 ddev drush cache:rebuild
 ```
 
