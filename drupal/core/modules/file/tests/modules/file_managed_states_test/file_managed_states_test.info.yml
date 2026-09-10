@@ -1,0 +1,7 @@
+name: 'File managed states test'
+type: module
+description: 'Provides a form that exercises #states on managed_file elements, for manually testing and reviewing issue #2847425.'
+package: Testing
+version: VERSION
+dependencies:
+  - drupal:file

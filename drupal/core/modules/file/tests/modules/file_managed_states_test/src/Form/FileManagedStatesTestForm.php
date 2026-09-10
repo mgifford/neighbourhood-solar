@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\managed_file_states_test\Form;
+namespace Drupal\file_managed_states_test\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -13,11 +13,11 @@ use Drupal\Core\Form\FormStateInterface;
  * "#states not affecting visibility/requirement of managed_file"
  * https://www.drupal.org/project/drupal/issues/2847425
  *
- * Unlike core's test-only module (file_test_states, added in MR !7305, reachable
- * only at /file-test-states-form when running JS tests), this module can be
- * enabled on an ordinary site so a reviewer can click through every failing
- * case by hand. Each scenario below is annotated with the behaviour to expect
- * before and after the MR, and with the code path in
+ * A companion to core's file_test_states module (added in MR !7305): where that
+ * module drives a single automated JavaScript test, this form is meant to be
+ * enabled and clicked through by hand so a reviewer can see every failing case.
+ * Each scenario is annotated with the behaviour to expect before and after the
+ * MR, and with the code path in
  * \Drupal\file\Element\ManagedFile::processManagedFile() that it exercises.
  *
  * How to read the results:
@@ -28,20 +28,20 @@ use Drupal\Core\Form\FormStateInterface;
  *   validation. That is documented as "works as designed" (#65, #88); the
  *   server-side gap is the separate follow-up #3513308.
  */
-class ManagedFileStatesTestForm extends FormBase {
+class FileManagedStatesTestForm extends FormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return 'managed_file_states_test_form';
+    return 'file_managed_states_test_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $upload_location = 'public://managed-file-states-test';
+    $upload_location = 'public://file-managed-states-test';
 
     $form['intro'] = [
       '#type' => 'html_tag',
@@ -214,7 +214,7 @@ class ManagedFileStatesTestForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    // Report submitted values so the "required is cosmetic only" behaviour is
+    // Report submission so the "required is cosmetic only" behaviour is
     // observable: the form submits even when a #states-required file is empty.
     $this->messenger()->addStatus($this->t('Form submitted. Note: any file left empty despite a #states "required" marker still passed submission — #states "required" is cosmetic and does not enforce server-side validation (see follow-up #3513308).'));
   }

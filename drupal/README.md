@@ -1,16 +1,19 @@
-# Managed file `#states` test recipe — Drupal core issue [#2847425]
+# Managed file `#states` test harness — Drupal core issue [#2847425]
 
-A Drupal **recipe** plus a tiny reproduction **module** that make it quick to
-manually test and review [#2847425 — *#states not affecting visibility/requirement
-of managed_file*](https://www.drupal.org/project/drupal/issues/2847425)
-(and the current [MR !7305](https://git.drupalcode.org/project/drupal/-/merge_requests/7305)).
+> **Note:** this is **Drupal core** material that only lives in this repo as a
+> transport. It has nothing to do with the neighbourhood-solar project — copy
+> the files into a Drupal checkout (below) and delete the branch afterward.
 
-Core already ships a *test-only* module for this (`file_test_states`, added in the
-MR), but it is only enabled while the JavaScript test suite runs and lives at
-`/file-test-states-form` behind `_access: 'TRUE'`. Reviewers doing a **manual**
-pass (e.g. quietone in comment #54) have had trouble reproducing by hand. This
-recipe installs an equivalent form on an ordinary site so you can click through
-every case, then apply the MR and click through again.
+A reproduction **module** laid out exactly like core's own test modules
+(`core/modules/file/tests/modules/…`), plus an optional **recipe**, for manually
+testing and reviewing [#2847425 — *#states not affecting visibility/requirement
+of managed_file*](https://www.drupal.org/project/drupal/issues/2847425) and
+[MR !7305](https://git.drupalcode.org/project/drupal/-/merge_requests/7305).
+
+The MR already ships a *test-only* module (`file_test_states`) that drives one
+automated JavaScript test. This `file_managed_states_test` module is its manual
+companion: enable it, open one page, and click through every failing case —
+including the ones the JS test does not cover.
 
 ## The bug, in one paragraph
 
@@ -22,55 +25,53 @@ the `managed_file` markup did not carry the `data-drupal-states` attribute that
 `$variables['attributes']`. Swapping `#type => managed_file` for `#type => file`
 has always worked — that contrast is Scenario 1 below.
 
-## Layout
+## Layout (mirrors a Drupal core checkout)
 
 ```text
 drupal/
-├── recipes/
-│   └── managed_file_states_test/
-│       └── recipe.yml
-└── modules/
-    └── managed_file_states_test/
-        ├── managed_file_states_test.info.yml
-        ├── managed_file_states_test.routing.yml
-        ├── managed_file_states_test.links.menu.yml
-        └── src/Form/ManagedFileStatesTestForm.php
+├── core/modules/file/tests/modules/file_managed_states_test/
+│   ├── file_managed_states_test.info.yml          (version: VERSION, package: Testing)
+│   ├── file_managed_states_test.routing.yml       (/file-managed-states-test, _access: TRUE)
+│   └── src/Form/FileManagedStatesTestForm.php
+└── recipes/managed_file_states_test/
+    └── recipe.yml
 ```
 
-Targets **Drupal 11.4+ / 12 / `main`** (`core_version_requirement: ^11.4 || ^12`).
+Because it lives under `core/`, the `.info.yml` follows the core test-module
+convention: `version: VERSION`, `package: Testing`, and **no**
+`core_version_requirement` (core supplies the version). That also sidesteps the
+version-pinning problem from earlier attempts.
 
 ## Install on your DDEV `drupal-core` checkout
 
-From your Drupal root (`/Users/mgifford/drupal-core`, where `core/` sits at the
-top level):
+The paths in `drupal/` mirror the checkout, so this is a straight overlay copy.
+Run from your Mac (paste the block as-is — no inline `#` comments, which zsh
+would treat as commands):
 
 ```bash
-# 1. Copy the module and recipe into the checkout.
-cp -R /path/to/neighbourhood-solar/drupal/modules/managed_file_states_test \
-      modules/custom/managed_file_states_test
-cp -R /path/to/neighbourhood-solar/drupal/recipes/managed_file_states_test \
-      recipes/managed_file_states_test
-
-# 2. Apply the recipe (installs the file module + this module, grants access).
-#    Use the `dr` script — `drupal` is deprecated in 11.4 and removed in 13.
+cp -R /tmp/ns-recipe/drupal/core/modules/file/tests/modules/file_managed_states_test \
+      /Users/mgifford/drupal-core/core/modules/file/tests/modules/
+cp -R /tmp/ns-recipe/drupal/recipes/managed_file_states_test \
+      /Users/mgifford/drupal-core/recipes/
+cd /Users/mgifford/drupal-core
 ddev exec php core/scripts/dr recipe recipes/managed_file_states_test
-ddev drush cache:rebuild
+ddev drush cr
 ```
 
-Then open <https://drupal-core.ddev.site/managed-file-states-test> (also linked
-from the *Tools* menu).
+(`/tmp/ns-recipe` is the temp clone of this branch; adjust if you put it
+elsewhere.) Then open <https://drupal-core.ddev.site/file-managed-states-test>.
 
-**Prefer no recipe?** Just enable the module:
+**Prefer no recipe?** Once the module directory is copied in, just enable it:
 
 ```bash
-ddev drush en managed_file_states_test -y && ddev drush cr
+ddev drush en file_managed_states_test -y && ddev drush cr
 ```
 
 ## What to look at — Steps to Reproduce, mapped
 
-The form is four fieldsets. Toggle the trigger in each and watch the
-`managed_file` elements. Test **twice**: once on plain `main` (you should see the
-bug), once with MR !7305 applied (fixed).
+Four fieldsets. Toggle the trigger in each and watch the `managed_file` elements.
+Test **twice**: once on plain `main` (you should see the bug), once with MR !7305
+applied (fixed).
 
 | Scenario | Trigger | Buggy behaviour (no MR) | Fixed behaviour (MR) |
 |---|---|---|---|

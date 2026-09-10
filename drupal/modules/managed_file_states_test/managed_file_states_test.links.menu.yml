@@ -1,5 +1,0 @@
-managed_file_states_test.form:
-  title: 'Managed file #states test'
-  description: 'Reproduction form for issue #2847425.'
-  route_name: managed_file_states_test.form
-  menu_name: tools
