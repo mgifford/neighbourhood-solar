@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="An accessible sunset viewing quality predictor. Uses your approximate or precise location plus live cloud data to rate tonight's sunset from 0 to 100.">
+  <meta name="description" content="An accessible sunset and sunrise viewing quality predictor. Uses your approximate or precise location plus live cloud data to rate the next sunset or sunrise from 0 to 100.">
   <meta name="color-scheme" content="dark">
-  <title>Sunset Quality Predictor</title>
+  <title>Sunset &amp; Sunrise Quality Predictor</title>
 
-  <!-- SunCalc for accurate solar position / sunset times -->
+  <!-- SunCalc for accurate solar position / sunrise + sunset times -->
   <script src="https://cdn.jsdelivr.net/npm/suncalc@1.9.0/suncalc.js"></script>
 
   <style>
@@ -22,7 +22,7 @@
       --text-main:    #F8FAFC;  /* primary text (>= 4.5:1 on both bg)    */
       --text-strong:  #FFFFFF;  /* maximum-contrast text                 */
       --text-muted:   #94A3B8;  /* secondary text (>= 4.5:1 on --bg-dark)*/
-      --accent-gold:  #F59E0B;  /* sunset accent                         */
+      --accent-gold:  #F59E0B;  /* golden-hour accent                    */
       --focus-ring:   #38BDF8;  /* visible focus outline                 */
       --track:        #475569;  /* radial chart track / slider track     */
 
@@ -72,7 +72,7 @@
       outline-offset: 2px;
       border-radius: 0.25rem;
     }
-    /* Keep a fallback outline for browsers without :focus-visible */
+    /* Fallback outline for browsers without :focus-visible */
     a:focus, button:focus, input:focus, [tabindex]:focus {
       outline: 3px solid var(--focus-ring);
       outline-offset: 2px;
@@ -176,6 +176,47 @@
       background: var(--card-bg);
       color: var(--text-muted);
       border-color: var(--card-border);
+    }
+
+    /* --- Mode toggle (sunset / sunrise) ------------------------------ */
+    .mode-toggle {
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      margin: 0 0 var(--gap);
+      padding: 1rem 1.25rem;
+    }
+    .mode-toggle legend {
+      color: var(--text-strong);
+      font-weight: 600;
+      padding: 0 0.5rem;
+    }
+    .mode-options { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .mode-options label {
+      flex: 1 1 10rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: var(--touch);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    /* Highlight the checked option (redundant with the native radio) */
+    .mode-options input:checked + span {
+      color: var(--accent-gold);
+    }
+    .mode-options label:has(input:checked) {
+      border-color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.12);
+    }
+    .mode-options input[type="radio"] {
+      width: 1.25rem; height: 1.25rem;
+      accent-color: var(--accent-gold);
+      flex: 0 0 auto;
     }
 
     /* --- Cards / sections -------------------------------------------- */
@@ -391,10 +432,10 @@
 
   <header>
     <div class="wrapper">
-      <h1>Sunset Quality Predictor</h1>
+      <h1>Sunset &amp; Sunrise Quality Predictor</h1>
       <p class="tagline">
-        A rating of tonight's sunset from 0&nbsp;to&nbsp;100, based on your location
-        and live cloud data. Fully keyboard-accessible and screen-reader friendly.
+        A rating from 0&nbsp;to&nbsp;100 for the next sunset or sunrise, based on your
+        location and live cloud data. Fully keyboard-accessible and screen-reader friendly.
       </p>
 
       <nav class="location-bar" aria-label="Location controls">
@@ -417,6 +458,23 @@
   <main id="main">
     <div class="wrapper">
 
+      <!-- Sunset / sunrise mode toggle -->
+      <fieldset class="mode-toggle">
+        <legend>What are you planning to watch?</legend>
+        <div class="mode-options">
+          <label>
+            <input type="radio" name="mode" value="sunset" checked>
+            <span aria-hidden="true">🌇</span>
+            <span>Sunset</span>
+          </label>
+          <label>
+            <input type="radio" name="mode" value="sunrise">
+            <span aria-hidden="true">🌅</span>
+            <span>Sunrise</span>
+          </label>
+        </div>
+      </fieldset>
+
       <!-- Global loading / error announcements -->
       <div id="app-alert" class="alert" role="status" aria-live="polite">
         Loading atmospheric data&hellip;
@@ -432,7 +490,7 @@
             role="img"
             id="radial-chart"
             aria-labelledby="radial-title">
-            <title id="radial-title">Sunset quality score: not yet calculated</title>
+            <title id="radial-title">Quality score: not yet calculated</title>
             <circle class="radial-track" cx="60" cy="60" r="52" fill="none" stroke-width="12"></circle>
             <circle
               class="radial-value"
@@ -451,7 +509,7 @@
           <div>
             <p class="badge" id="score-badge">Awaiting data</p>
             <p class="summary-text" id="score-summary" aria-live="polite" aria-atomic="true">
-              We&rsquo;ll summarise tonight&rsquo;s outlook here once the forecast loads.
+              We&rsquo;ll summarise the outlook here once the forecast loads.
             </p>
           </div>
         </div>
@@ -482,8 +540,9 @@
         <div class="slider-row">
           <label class="slider-label" for="terrain-slider">Local Horizon Obscuration</label>
           <p class="card-note" id="terrain-help">
-            How much of your western horizon is blocked by trees, hills, or buildings?
-            More obstruction means the sun disappears from view sooner, so plan to arrive earlier.
+            How much of your horizon is blocked by trees, hills, or buildings?
+            More obstruction shifts the moment the sun disappears or appears, so
+            plan your timing accordingly.
           </p>
           <input
             type="range"
@@ -511,14 +570,14 @@
       <!-- ============ Section 4: Atmospheric Data Grid ============ -->
       <section class="card" id="data-section" aria-labelledby="data-heading" hidden>
         <h2 id="data-heading">Atmospheric Data</h2>
-        <p class="card-note">Measured at the hour of astronomical sunset.</p>
+        <p class="card-note" id="data-note">Measured at the hour of the event.</p>
         <div class="data-grid">
 
           <div class="data-card" role="group" aria-labelledby="wc-title" aria-describedby="wc-desc">
-            <h3 id="wc-title">Western Horizon</h3>
+            <h3 id="wc-title">Horizon</h3>
             <p class="card-note" id="wc-desc">
-              Low cloud roughly 150&nbsp;km to your west, where the sun&rsquo;s light
-              enters the scene. Clear here lets colour through.
+              Low cloud roughly 150&nbsp;km toward the sun, where its light enters
+              the scene. Clear here lets colour through.
             </p>
             <dl>
               <div class="metric"><dt>Low cloud (&lt;2&nbsp;km)</dt><dd id="m-west">–</dd></div>
@@ -575,7 +634,7 @@
     /* ============================================================
        Constants & element handles
     ============================================================ */
-    var WEIGHTS = { western: 0.40, canvas: 0.35, altitude: 0.15, clarity: 0.10 };
+    var WEIGHTS = { horizon: 0.40, canvas: 0.35, altitude: 0.15, clarity: 0.10 };
 
     var el = {
       statusDot:    document.getElementById("status-dot"),
@@ -601,6 +660,9 @@
       terrainReadout: document.getElementById("terrain-readout"),
 
       dataSection: document.getElementById("data-section"),
+      dataNote:   document.getElementById("data-note"),
+      wcTitle:    document.getElementById("wc-title"),
+      wcDesc:     document.getElementById("wc-desc"),
       mWest:      document.getElementById("m-west"),
       mMid:       document.getElementById("m-mid"),
       mHigh:      document.getElementById("m-high"),
@@ -614,13 +676,18 @@
 
     // Shared state
     var state = {
+      mode: "sunset",     // "sunset" | "sunrise"
       lat: null,
       lon: null,
-      sunset: null,       // Date
-      terrainOffset: 0,   // minutes to subtract (0..20)
+      event: null,        // Date of the next sunset/sunrise
+      terrainOffset: 0,   // minutes to shift (0..20)
       countdownTimer: null,
       lastSrMinute: null
     };
+
+    function isSunrise() { return state.mode === "sunrise"; }
+    function eventWord() { return isSunrise() ? "sunrise" : "sunset"; }
+    function horizonWord() { return isSunrise() ? "eastern" : "western"; }
 
     /* ============================================================
        Small helpers
@@ -658,11 +725,12 @@
        Scoring engine (each component returns a 0..1 fraction)
     ============================================================ */
 
-    // Western low cloud: clear west is essential; full credit at <=15%,
-    // then a linear penalty toward 0 at total overcast.
-    function scoreWestern(westLow) {
-      if (westLow <= 15) return 1;
-      return clamp(1 - (westLow - 15) / (100 - 15), 0, 1);
+    // Sunward-horizon low cloud: a clear horizon is essential; full credit at
+    // <=15%, then a linear penalty toward 0 at total overcast. (West for a
+    // sunset, east for a sunrise.)
+    function scoreHorizon(horizonLow) {
+      if (horizonLow <= 15) return 1;
+      return clamp(1 - (horizonLow - 15) / (100 - 15), 0, 1);
     }
 
     // Overhead canvas: mid/high clouds catch the colour. Peak between
@@ -701,21 +769,22 @@
     }
 
     function categoryFor(score) {
+      var kind = isSunrise() ? "Sunrise" : "Sunset";
       if (score >= 90) return { label: "Vivid Burn Expected", cls: "vivid" };
-      if (score >= 70) return { label: "High Quality Sunset", cls: "high" };
+      if (score >= 70) return { label: "High Quality " + kind, cls: "high" };
       if (score >= 45) return { label: "Moderate / Average View", cls: "moderate" };
       return { label: "Low / Obscured (Skip)", cls: "low" };
     }
 
     function computeScore(m) {
       var parts = {
-        western:  scoreWestern(m.westLow),
+        horizon:  scoreHorizon(m.horizonLow),
         canvas:   scoreCanvas(m.mid, m.high),
         altitude: scoreAltitude(m.mid, m.high, m.localLow),
         clarity:  scoreClarity(m.humidity, m.visibilityKm)
       };
       var total =
-        parts.western  * WEIGHTS.western +
+        parts.horizon  * WEIGHTS.horizon +
         parts.canvas   * WEIGHTS.canvas +
         parts.altitude * WEIGHTS.altitude +
         parts.clarity  * WEIGHTS.clarity;
@@ -737,7 +806,8 @@
 
       el.radialNumber.textContent = score;
       el.radialTitle.textContent =
-        "Sunset quality score: " + score + " out of 100 — " + cat.label;
+        eventWord().charAt(0).toUpperCase() + eventWord().slice(1) +
+        " quality score: " + score + " out of 100 — " + cat.label;
 
       el.scoreBadge.textContent = cat.label;
       el.scoreBadge.className = "badge " + cat.cls;
@@ -747,27 +817,32 @@
       var s;
       if (score >= 70) {
         s = "Conditions look promising (" + score + "/100). " +
-            "A " + pct(m.westLow) + " western horizon lets light through, and " +
+            "A " + pct(m.horizonLow) + " " + horizonWord() + " horizon lets light through, and " +
             "partial overhead cloud should catch the colour. Worth heading out.";
       } else if (score >= 45) {
         s = "An average outlook (" + score + "/100). " +
             "Some potential, but " +
-            (m.westLow > 40 ? "cloud to the west may mute the light. "
+            (m.horizonLow > 40 ? "cloud on the " + horizonWord() + " horizon may mute the light. "
                             : "the overhead canvas is less than ideal. ") +
             "Keep expectations modest.";
       } else {
         s = "A low-quality outlook (" + score + "/100). " +
-            (m.westLow > 60 ? "Heavy cloud to the west will likely block the light. "
+            (m.horizonLow > 60 ? "Heavy cloud on the " + horizonWord() + " horizon will likely block the light. "
              : (m.mid + m.high) / 2 > 85 ? "The sky is overcast, hiding the sun. "
              : "There is little cloud to catch any colour. ") +
-            "Probably one to skip tonight.";
+            "Probably one to skip.";
       }
       el.scoreSummary.textContent = s;
     }
 
     function renderData(m) {
       el.dataSection.hidden = false;
-      el.mWest.textContent      = pct(m.westLow);
+      el.dataNote.textContent = "Measured at the hour of astronomical " + eventWord() + ".";
+      el.wcTitle.textContent = isSunrise() ? "Eastern Horizon" : "Western Horizon";
+      el.wcDesc.textContent =
+        "Low cloud roughly 150 km to your " + (isSunrise() ? "east" : "west") +
+        ", where the sun’s light enters the scene. Clear here lets colour through.";
+      el.mWest.textContent      = pct(m.horizonLow);
       el.mMid.textContent       = pct(m.mid);
       el.mHigh.textContent      = pct(m.high);
       el.mTotal.textContent     = pct(m.total);
@@ -778,33 +853,66 @@
           ? m.visibilityKm.toFixed(1) + " km" : "n/a";
     }
 
+    // Chronological phases for the current mode. Terrain shifts the moment the
+    // sun leaves (sunset) or arrives above (sunrise) the local obstruction.
     function timelinePhases() {
-      var sunset = state.sunset;
+      var ev = state.event;
       var t = state.terrainOffset;
+      if (isSunrise()) {
+        return [
+          {
+            time: addMinutes(ev, -45 - t),
+            label: "Target Arrival",
+            desc: "Arrive in the dark and let your eyes adjust before first colour."
+          },
+          {
+            time: addMinutes(ev, -20),
+            endTime: addMinutes(ev, -10),
+            label: "Peak Cloud Burn",
+            desc: "The best colour, as high clouds catch the light before the sun."
+          },
+          {
+            time: ev,
+            label: "Astronomical Sunrise",
+            desc: "The sun crosses the true horizon."
+          },
+          {
+            time: addMinutes(ev, 15 + t),
+            label: "Local Rise",
+            desc: "The sun clears your local tree line or hills."
+          },
+          {
+            time: addMinutes(ev, 25),
+            label: "Give Up / Cutoff",
+            desc: "Colour fades into full daylight."
+          }
+        ];
+      }
+      // sunset
       return [
         {
-          time: addMinutes(sunset, -45 - t),
+          time: addMinutes(ev, -45 - t),
           label: "Target Arrival",
           desc: "Get set up and settled before the light show begins."
         },
         {
-          time: addMinutes(sunset, -15 - t),
+          time: addMinutes(ev, -15 - t),
           label: "Local Dip",
           desc: "The sun drops behind your local tree line or hills."
         },
         {
-          time: sunset,
+          time: ev,
           label: "Astronomical Sunset",
           desc: "The sun crosses the true horizon."
         },
         {
-          time: addMinutes(sunset, 10),
-          endTime: addMinutes(sunset, 20),
+          time: addMinutes(ev, 10),
+          endTime: addMinutes(ev, 20),
           label: "Peak Cloud Burn",
           desc: "The best colour, as clouds light up from below."
         },
         {
-          time: addMinutes(sunset, 25),
+          time: addMinutes(ev, 25),
           label: "Give Up / Cutoff",
           desc: "Civil twilight ends and colour fades to blue."
         }
@@ -812,7 +920,7 @@
     }
 
     function renderTimeline() {
-      if (!state.sunset) return;
+      if (!state.event) return;
       el.timelineSection.hidden = false;
       var phases = timelinePhases();
       var html = "";
@@ -835,7 +943,7 @@
     }
 
     function updateCountdown() {
-      if (!state.sunset) return;
+      if (!state.event) return;
       var phases = timelinePhases();
       var now = Date.now();
       var next = null;
@@ -846,8 +954,8 @@
 
       if (!next) {
         el.countdownValue.textContent = "Ended";
-        el.countdownLabel.textContent = "tonight’s viewing window has passed";
-        announceCountdown("Tonight’s sunset viewing window has passed.");
+        el.countdownLabel.textContent = "this " + eventWord() + " window has passed";
+        announceCountdown("This " + eventWord() + " viewing window has passed.");
         stopCountdown();
         return;
       }
@@ -905,12 +1013,12 @@
       var name = terrainName(v);
       var valueText = v === 0
         ? name + ", no adjustment"
-        : name + ", arrive " + v + " minutes earlier";
+        : name + ", timing shifted by " + v + " minutes";
       el.terrainSlider.setAttribute("aria-valuetext", valueText);
       el.terrainReadout.innerHTML = v === 0
         ? "<strong>" + name + "</strong> selected — no timing adjustment."
-        : "<strong>" + name + "</strong> selected — arrive <strong>" + v +
-          " minutes earlier</strong>.";
+        : "<strong>" + name + "</strong> selected — timing shifted by <strong>" + v +
+          " minutes</strong>.";
       renderTimeline();
     }
 
@@ -921,11 +1029,25 @@
       return (m === null || m === undefined || isNaN(m)) ? null : m / 1000;
     }
 
-    // Match the hourly forecast row nearest the sunset instant.
-    // Open-Meteo returns GMT times like "2026-09-12T18:00"; append seconds
-    // and a Z so they parse as absolute UTC and align with SunCalc's Date.
-    function nearestSunsetIndex(timeArray, sunset) {
-      var target = sunset.getTime();
+    // The next sunset/sunrise: today's if still ahead, otherwise tomorrow's.
+    function nextEvent(lat, lon) {
+      var now = new Date();
+      var pick = function (d) {
+        var t = SunCalc.getTimes(d, lat, lon);
+        return isSunrise() ? t.sunrise : t.sunset;
+      };
+      var ev = pick(now);
+      if (!(ev instanceof Date) || isNaN(ev.getTime()) || ev.getTime() < now.getTime()) {
+        ev = pick(new Date(now.getTime() + 86400000));
+      }
+      return ev;
+    }
+
+    // Match the hourly forecast row nearest an instant. Open-Meteo returns GMT
+    // times like "2026-09-12T18:00"; append seconds and a Z so they parse as
+    // absolute UTC and align with SunCalc's Date.
+    function nearestHourIndex(timeArray, when) {
+      var target = when.getTime();
       var bestIdx = 0, best = Infinity;
       for (var i = 0; i < timeArray.length; i++) {
         var t = new Date(timeArray[i] + ":00Z").getTime();
@@ -936,21 +1058,25 @@
     }
 
     function buildForecastUrls(lat, lon) {
+      // forecast_days=2 so the "next" event can fall on tomorrow (e.g. an
+      // evening visit asking about tomorrow's sunrise).
       var params = "hourly=cloud_cover,cloud_cover_low,cloud_cover_mid," +
-                   "cloud_cover_high,relative_humidity_2m,visibility&forecast_days=1";
+                   "cloud_cover_high,relative_humidity_2m,visibility&forecast_days=2";
       var mainUrl = "https://api.open-meteo.com/v1/forecast?latitude=" +
                     lat + "&longitude=" + lon + "&" + params;
 
-      // Western horizon sample point, ~150 km west.
+      // Sunward horizon sample point, ~150 km toward the sun:
+      // west for a sunset, east for a sunrise.
       var cosLat = Math.cos(lat * Math.PI / 180);
-      var westLon = lon;
+      var horizonLon = lon;
       if (Math.abs(cosLat) > 1e-6) {
-        westLon = lon - (150 / (111.32 * cosLat));
+        var delta = 150 / (111.32 * cosLat);
+        horizonLon = isSunrise() ? lon + delta : lon - delta;
       }
-      var westUrl = "https://api.open-meteo.com/v1/forecast?latitude=" +
-                    lat + "&longitude=" + westLon +
-                    "&hourly=cloud_cover_low&forecast_days=1";
-      return { mainUrl: mainUrl, westUrl: westUrl };
+      var horizonUrl = "https://api.open-meteo.com/v1/forecast?latitude=" +
+                    lat + "&longitude=" + horizonLon +
+                    "&hourly=cloud_cover_low&forecast_days=2";
+      return { mainUrl: mainUrl, horizonUrl: horizonUrl };
     }
 
     function fetchJson(url) {
@@ -970,29 +1096,28 @@
         return;
       }
 
-      var times = SunCalc.getTimes(new Date(), lat, lon);
-      state.sunset = times.sunset;
-      if (!(state.sunset instanceof Date) || isNaN(state.sunset.getTime())) {
-        setAlert("No sunset occurs at this location today (polar day or night), " +
-                 "so a prediction cannot be made.", true);
+      state.event = nextEvent(lat, lon);
+      if (!(state.event instanceof Date) || isNaN(state.event.getTime())) {
+        setAlert("No " + eventWord() + " occurs at this location right now " +
+                 "(polar day or night), so a prediction cannot be made.", true);
         return;
       }
 
-      setAlert("Loading atmospheric data for tonight’s sunset…", false);
+      setAlert("Loading atmospheric data for the next " + eventWord() + "…", false);
 
       var urls = buildForecastUrls(lat, lon);
-      Promise.all([fetchJson(urls.mainUrl), fetchJson(urls.westUrl)])
+      Promise.all([fetchJson(urls.mainUrl), fetchJson(urls.horizonUrl)])
         .then(function (results) {
-          var main = results[0], west = results[1];
+          var main = results[0], horizon = results[1];
           if (!main.hourly || !main.hourly.time) {
             throw new Error("Unexpected weather response.");
           }
-          var idx = nearestSunsetIndex(main.hourly.time, state.sunset);
-          var westIdx = west.hourly && west.hourly.time
-            ? nearestSunsetIndex(west.hourly.time, state.sunset) : idx;
+          var idx = nearestHourIndex(main.hourly.time, state.event);
+          var hIdx = horizon.hourly && horizon.hourly.time
+            ? nearestHourIndex(horizon.hourly.time, state.event) : idx;
 
           var m = {
-            westLow:      num(west.hourly && west.hourly.cloud_cover_low, westIdx),
+            horizonLow:   num(horizon.hourly && horizon.hourly.cloud_cover_low, hIdx),
             localLow:     num(main.hourly.cloud_cover_low, idx),
             mid:          num(main.hourly.cloud_cover_mid, idx),
             high:         num(main.hourly.cloud_cover_high, idx),
@@ -1071,8 +1196,7 @@
                     state.lat ? "approx" : "error");
           setAlert(msg, true);
           if (state.lat != null) {
-            // keep the existing IP-based prediction visible
-            setTimeout(hideAlert, 4000);
+            setTimeout(hideAlert, 4000); // keep the existing prediction visible
           }
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
@@ -1080,14 +1204,29 @@
     }
 
     /* ============================================================
+       Mode toggle (sunset / sunrise)
+    ============================================================ */
+    function onModeChange(e) {
+      state.mode = e.target.value === "sunrise" ? "sunrise" : "sunset";
+      state.lastSrMinute = null;
+      if (state.lat != null && state.lon != null) {
+        runPrediction(state.lat, state.lon); // re-fetch: horizon point differs
+      }
+    }
+
+    /* ============================================================
        Wire up & go
     ============================================================ */
     el.gpsBtn.addEventListener("click", loadByGps);
     el.terrainSlider.addEventListener("input", onTerrainChange);
+    Array.prototype.forEach.call(
+      document.querySelectorAll('input[name="mode"]'),
+      function (r) { r.addEventListener("change", onModeChange); }
+    );
 
     // Refresh the countdown if the tab regains focus after being idle.
     document.addEventListener("visibilitychange", function () {
-      if (!document.hidden && state.sunset) updateCountdown();
+      if (!document.hidden && state.event) updateCountdown();
     });
 
     onTerrainChange(); // initialise readout
