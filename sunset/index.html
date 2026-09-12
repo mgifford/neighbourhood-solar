@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An accessible sunset viewing quality predictor. Uses your approximate or precise location plus live cloud data to rate tonight's sunset from 0 to 100.">
+  <meta name="color-scheme" content="dark">
+  <title>Sunset Quality Predictor</title>
+
+  <!-- SunCalc for accurate solar position / sunset times -->
+  <script src="https://cdn.jsdelivr.net/npm/suncalc@1.9.0/suncalc.js"></script>
+
+  <style>
+    /* ---------------------------------------------------------------
+       Design tokens (WCAG 2.2 AA high-contrast dark theme)
+       All sizing in rem so the layout survives 200% text zoom.
+    --------------------------------------------------------------- */
+    :root {
+      --bg-dark:      #0F172A;  /* deep slate page background            */
+      --card-bg:      #1E293B;  /* card surface                          */
+      --card-border:  #334155;  /* 1px card separators                   */
+      --text-main:    #F8FAFC;  /* primary text (>= 4.5:1 on both bg)    */
+      --text-strong:  #FFFFFF;  /* maximum-contrast text                 */
+      --text-muted:   #94A3B8;  /* secondary text (>= 4.5:1 on --bg-dark)*/
+      --accent-gold:  #F59E0B;  /* sunset accent                         */
+      --focus-ring:   #38BDF8;  /* visible focus outline                 */
+      --track:        #475569;  /* radial chart track / slider track     */
+
+      --good:    #4ADE80;
+      --ok:      #FBBF24;
+      --poor:    #F87171;
+
+      --radius: 0.75rem;
+      --gap: 1.25rem;
+      --touch: 2.75rem; /* 44px minimum touch target */
+      --maxw: 60rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { font-size: 100%; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    /* --- Skip link for keyboard users --------------------------------- */
+    .skip-link {
+      position: absolute;
+      left: 0.5rem;
+      top: -4rem;
+      z-index: 100;
+      background: var(--accent-gold);
+      color: #1A1206;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      text-decoration: none;
+      transition: top 0.15s ease-in-out;
+    }
+    .skip-link:focus { top: 0.5rem; }
+
+    /* --- Visible focus indicator (WCAG 2.4.7 / 2.2 AA) ---------------- */
+    :focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 0.25rem;
+    }
+    /* Keep a fallback outline for browsers without :focus-visible */
+    a:focus, button:focus, input:focus, [tabindex]:focus {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+    a:focus:not(:focus-visible),
+    button:focus:not(:focus-visible),
+    input:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    /* --- Screen-reader-only utility ---------------------------------- */
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .wrapper {
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding-inline: 1rem;
+      padding-block: 1.5rem;
+    }
+
+    /* --- Header ------------------------------------------------------- */
+    header .wrapper { padding-block: 2rem 1rem; }
+
+    h1 {
+      font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
+      line-height: 1.2;
+      margin: 0 0 0.25rem;
+      color: var(--text-strong);
+    }
+    .tagline {
+      color: var(--text-muted);
+      margin: 0 0 1.25rem;
+      font-size: 1rem;
+      max-width: 40rem;
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 1rem + 1vw, 1.5rem);
+      color: var(--text-strong);
+      margin: 0 0 0.75rem;
+    }
+    h3 { font-size: 1.05rem; margin: 0 0 0.35rem; color: var(--text-strong); }
+
+    /* --- Location controls ------------------------------------------- */
+    .location-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--gap);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 2rem;
+      padding: 0.5rem 1rem;
+      min-height: var(--touch);
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+    .status-dot {
+      width: 0.7rem; height: 0.7rem;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex: 0 0 auto;
+    }
+    .status-dot.approx { background: var(--ok); }
+    .status-dot.exact  { background: var(--good); }
+    .status-dot.error  { background: var(--poor); }
+
+    button.btn {
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: var(--touch);
+      min-width: var(--touch);
+      padding: 0.6rem 1.15rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--accent-gold);
+      background: var(--accent-gold);
+      color: #1A1206; /* dark text on gold: ~9:1 contrast */
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    button.btn:hover { background: #FBBF24; border-color: #FBBF24; }
+    button.btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border-color: var(--card-border);
+    }
+
+    /* --- Cards / sections -------------------------------------------- */
+    main .wrapper { display: grid; gap: var(--gap); }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    /* --- Section 1: score dashboard ---------------------------------- */
+    .dashboard {
+      display: grid;
+      grid-template-columns: minmax(0, 14rem) 1fr;
+      gap: var(--gap);
+      align-items: center;
+    }
+    @media (max-width: 40rem) {
+      .dashboard { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    }
+
+    .radial { width: 100%; max-width: 14rem; height: auto; display: block; }
+    .radial-track { stroke: var(--track); }
+    .radial-value { stroke: var(--accent-gold); transition: stroke-dashoffset 0.6s ease; }
+    .radial-number { fill: var(--text-strong); font-size: 3rem; font-weight: 700; }
+    .radial-unit   { fill: var(--text-muted); font-size: 0.9rem; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .radial-value { transition: none; }
+      .skip-link { transition: none; }
+    }
+
+    .badge {
+      display: inline-block;
+      font-weight: 700;
+      padding: 0.4rem 0.9rem;
+      border-radius: 2rem;
+      margin-bottom: 0.75rem;
+      border: 2px solid currentColor;
+      font-size: 1.05rem;
+    }
+    .badge.vivid    { color: var(--good); }
+    .badge.high     { color: var(--good); }
+    .badge.moderate { color: var(--ok); }
+    .badge.low      { color: var(--poor); }
+
+    .summary-text { margin: 0; color: var(--text-main); }
+
+    /* --- Section 2: timeline ----------------------------------------- */
+    ol.timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.25rem;
+    }
+    ol.timeline > li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    ol.timeline > li:last-child { border-bottom: 0; }
+    .tl-marker {
+      position: relative;
+      width: 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+    .tl-marker::before {
+      content: "";
+      width: 0.85rem; height: 0.85rem;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      margin-top: 0.4rem;
+    }
+    .tl-marker::after {
+      content: "";
+      position: absolute;
+      top: 1.4rem; bottom: -1rem;
+      width: 2px;
+      background: var(--card-border);
+    }
+    ol.timeline > li:last-child .tl-marker::after { display: none; }
+    .tl-time {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--accent-gold);
+      font-size: 1.05rem;
+    }
+    .tl-label { color: var(--text-strong); font-weight: 600; }
+    .tl-desc  { color: var(--text-muted); font-size: 0.95rem; }
+
+    .countdown {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      background: var(--bg-dark);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .countdown-value {
+      font-size: clamp(1.5rem, 1rem + 3vw, 2.25rem);
+      font-weight: 700;
+      color: var(--text-strong);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+    }
+    .countdown-label { color: var(--text-muted); display: block; margin-top: 0.25rem; }
+
+    /* --- Section 3: terrain slider ----------------------------------- */
+    .slider-row { display: grid; gap: 0.75rem; }
+    label.slider-label { font-weight: 600; color: var(--text-strong); }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: var(--touch);        /* 44px hit area */
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 0.5rem;
+      background: var(--track);
+      border-radius: 1rem;
+    }
+    input[type="range"]::-moz-range-track {
+      height: 0.5rem;
+      background: var(--track);
+      border-radius: 1rem;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 1.75rem; height: 1.75rem;
+      margin-top: -0.625rem;
+      background: var(--accent-gold);
+      border: 3px solid var(--bg-dark);
+      border-radius: 50%;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 1.75rem; height: 1.75rem;
+      background: var(--accent-gold);
+      border: 3px solid var(--bg-dark);
+      border-radius: 50%;
+    }
+    .ticks {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding-top: 0.25rem;
+    }
+    .ticks span { flex: 1; text-align: center; }
+    .ticks span:first-child { text-align: left; }
+    .ticks span:last-child { text-align: right; }
+    .terrain-readout { color: var(--text-main); font-weight: 600; }
+    .terrain-readout strong { color: var(--accent-gold); }
+
+    /* --- Section 4: atmospheric grid --------------------------------- */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--gap);
+    }
+    .data-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+    }
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px dashed var(--card-border);
+    }
+    .metric:last-child { border-bottom: 0; }
+    .metric dt { color: var(--text-muted); margin: 0; }
+    .metric dd {
+      margin: 0;
+      font-weight: 700;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+    .data-card dl { margin: 0.5rem 0 0; }
+
+    .card-note { color: var(--text-muted); font-size: 0.9rem; margin: 0.75rem 0 0; }
+
+    /* --- Alerts ------------------------------------------------------ */
+    .alert {
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
+    .alert.is-error { border-color: var(--poor); }
+
+    footer .wrapper { color: var(--text-muted); font-size: 0.9rem; padding-block: 1rem 2.5rem; }
+    footer a { color: var(--focus-ring); }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to prediction</a>
+
+  <header>
+    <div class="wrapper">
+      <h1>Sunset Quality Predictor</h1>
+      <p class="tagline">
+        A rating of tonight's sunset from 0&nbsp;to&nbsp;100, based on your location
+        and live cloud data. Fully keyboard-accessible and screen-reader friendly.
+      </p>
+
+      <nav class="location-bar" aria-label="Location controls">
+        <p
+          class="status-pill"
+          id="location-status"
+          aria-live="polite"
+          aria-atomic="true">
+          <span class="status-dot" id="status-dot" aria-hidden="true"></span>
+          <span id="status-text">Detecting your approximate location&hellip;</span>
+        </p>
+        <button type="button" class="btn" id="gps-btn">
+          <span aria-hidden="true">📍</span>
+          <span>Use Precise GPS</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrapper">
+
+      <!-- Global loading / error announcements -->
+      <div id="app-alert" class="alert" role="status" aria-live="polite">
+        Loading atmospheric data&hellip;
+      </div>
+
+      <!-- ============ Section 1: Prediction Score Dashboard ============ -->
+      <section class="card" id="score-section" aria-labelledby="score-heading" hidden>
+        <h2 id="score-heading">Prediction Score</h2>
+        <div class="dashboard">
+          <svg
+            class="radial"
+            viewBox="0 0 120 120"
+            role="img"
+            id="radial-chart"
+            aria-labelledby="radial-title">
+            <title id="radial-title">Sunset quality score: not yet calculated</title>
+            <circle class="radial-track" cx="60" cy="60" r="52" fill="none" stroke-width="12"></circle>
+            <circle
+              class="radial-value"
+              id="radial-value"
+              cx="60" cy="60" r="52" fill="none" stroke-width="12"
+              stroke-linecap="round"
+              transform="rotate(-90 60 60)"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="326.7"></circle>
+            <text class="radial-number" id="radial-number" x="60" y="60"
+                  text-anchor="middle" dominant-baseline="central">–</text>
+            <text class="radial-unit" x="60" y="82"
+                  text-anchor="middle" dominant-baseline="central">out of 100</text>
+          </svg>
+
+          <div>
+            <p class="badge" id="score-badge">Awaiting data</p>
+            <p class="summary-text" id="score-summary" aria-live="polite" aria-atomic="true">
+              We&rsquo;ll summarise tonight&rsquo;s outlook here once the forecast loads.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Section 2: Viewing Timeline ============ -->
+      <section class="card" id="timeline-section" aria-labelledby="timeline-heading" hidden>
+        <h2 id="timeline-heading">Viewing Timeline</h2>
+        <p class="card-note" id="timeline-note">
+          Times are shown in your device&rsquo;s local timezone and update with the
+          terrain slider below.
+        </p>
+
+        <ol class="timeline" id="timeline-list" aria-describedby="timeline-note">
+          <!-- populated by JS -->
+        </ol>
+
+        <div class="countdown" id="countdown" role="timer" aria-live="off">
+          <span class="countdown-value" id="countdown-value">--:--:--</span>
+          <span class="countdown-label" id="countdown-label">until the next phase</span>
+        </div>
+        <p class="visually-hidden" id="countdown-sr" aria-live="polite" aria-atomic="true"></p>
+      </section>
+
+      <!-- ============ Section 3: Terrain Slider ============ -->
+      <section class="card" id="terrain-section" aria-labelledby="terrain-heading" hidden>
+        <h2 id="terrain-heading">Local Horizon</h2>
+        <div class="slider-row">
+          <label class="slider-label" for="terrain-slider">Local Horizon Obscuration</label>
+          <p class="card-note" id="terrain-help">
+            How much of your western horizon is blocked by trees, hills, or buildings?
+            More obstruction means the sun disappears from view sooner, so plan to arrive earlier.
+          </p>
+          <input
+            type="range"
+            id="terrain-slider"
+            min="0" max="20" step="10" value="0"
+            list="terrain-ticks"
+            aria-describedby="terrain-help terrain-readout"
+            aria-valuetext="Flat horizon, no adjustment">
+          <datalist id="terrain-ticks">
+            <option value="0" label="Flat Horizon"></option>
+            <option value="10" label="Light Trees / Forest"></option>
+            <option value="20" label="Heavy Canopy / Hills"></option>
+          </datalist>
+          <div class="ticks" aria-hidden="true">
+            <span>Flat Horizon<br>(0&nbsp;min)</span>
+            <span>Light Trees<br>(&minus;10&nbsp;min)</span>
+            <span>Heavy Canopy<br>(&minus;20&nbsp;min)</span>
+          </div>
+          <p class="terrain-readout" id="terrain-readout" aria-live="polite" aria-atomic="true">
+            <strong>Flat Horizon</strong> selected &mdash; no timing adjustment.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ Section 4: Atmospheric Data Grid ============ -->
+      <section class="card" id="data-section" aria-labelledby="data-heading" hidden>
+        <h2 id="data-heading">Atmospheric Data</h2>
+        <p class="card-note">Measured at the hour of astronomical sunset.</p>
+        <div class="data-grid">
+
+          <div class="data-card" role="group" aria-labelledby="wc-title" aria-describedby="wc-desc">
+            <h3 id="wc-title">Western Horizon</h3>
+            <p class="card-note" id="wc-desc">
+              Low cloud roughly 150&nbsp;km to your west, where the sun&rsquo;s light
+              enters the scene. Clear here lets colour through.
+            </p>
+            <dl>
+              <div class="metric"><dt>Low cloud (&lt;2&nbsp;km)</dt><dd id="m-west">–</dd></div>
+            </dl>
+          </div>
+
+          <div class="data-card" role="group" aria-labelledby="oc-title" aria-describedby="oc-desc">
+            <h3 id="oc-title">Overhead Cloud Canvas</h3>
+            <p class="card-note" id="oc-desc">
+              The mid- and high-altitude clouds above you that catch and reflect
+              colour. A partial canvas paints the best skies.
+            </p>
+            <dl>
+              <div class="metric"><dt>Mid cloud (2&ndash;6&nbsp;km)</dt><dd id="m-mid">–</dd></div>
+              <div class="metric"><dt>High cloud (&gt;6&nbsp;km)</dt><dd id="m-high">–</dd></div>
+              <div class="metric"><dt>Total cover</dt><dd id="m-total">–</dd></div>
+              <div class="metric"><dt>Local low cloud</dt><dd id="m-low">–</dd></div>
+            </dl>
+          </div>
+
+          <div class="data-card" role="group" aria-labelledby="cl-title" aria-describedby="cl-desc">
+            <h3 id="cl-title">Atmospheric Clarity</h3>
+            <p class="card-note" id="cl-desc">
+              Drier air and long visibility keep colours crisp rather than hazy.
+            </p>
+            <dl>
+              <div class="metric"><dt>Relative humidity</dt><dd id="m-humidity">–</dd></div>
+              <div class="metric"><dt>Visibility</dt><dd id="m-visibility">–</dd></div>
+            </dl>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrapper">
+      <p>
+        Location by <a href="https://ipapi.co/">ipapi.co</a> (approximate) or your
+        device GPS (precise). Weather by
+        <a href="https://open-meteo.com/">Open-Meteo</a>. Solar times by
+        <a href="https://github.com/mourner/suncalc">SunCalc</a>.
+        Predictions are a guide, not a guarantee &mdash; skies change fast.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ============================================================
+       Constants & element handles
+    ============================================================ */
+    var WEIGHTS = { western: 0.40, canvas: 0.35, altitude: 0.15, clarity: 0.10 };
+
+    var el = {
+      statusDot:    document.getElementById("status-dot"),
+      statusText:   document.getElementById("status-text"),
+      gpsBtn:       document.getElementById("gps-btn"),
+      alert:        document.getElementById("app-alert"),
+
+      scoreSection: document.getElementById("score-section"),
+      radialValue:  document.getElementById("radial-value"),
+      radialNumber: document.getElementById("radial-number"),
+      radialTitle:  document.getElementById("radial-title"),
+      scoreBadge:   document.getElementById("score-badge"),
+      scoreSummary: document.getElementById("score-summary"),
+
+      timelineSection: document.getElementById("timeline-section"),
+      timelineList:    document.getElementById("timeline-list"),
+      countdownValue:  document.getElementById("countdown-value"),
+      countdownLabel:  document.getElementById("countdown-label"),
+      countdownSr:     document.getElementById("countdown-sr"),
+
+      terrainSection: document.getElementById("terrain-section"),
+      terrainSlider:  document.getElementById("terrain-slider"),
+      terrainReadout: document.getElementById("terrain-readout"),
+
+      dataSection: document.getElementById("data-section"),
+      mWest:      document.getElementById("m-west"),
+      mMid:       document.getElementById("m-mid"),
+      mHigh:      document.getElementById("m-high"),
+      mTotal:     document.getElementById("m-total"),
+      mLow:       document.getElementById("m-low"),
+      mHumidity:  document.getElementById("m-humidity"),
+      mVisibility:document.getElementById("m-visibility")
+    };
+
+    var RADIAL_CIRCUMFERENCE = 2 * Math.PI * 52; // r = 52
+
+    // Shared state
+    var state = {
+      lat: null,
+      lon: null,
+      sunset: null,       // Date
+      terrainOffset: 0,   // minutes to subtract (0..20)
+      countdownTimer: null,
+      lastSrMinute: null
+    };
+
+    /* ============================================================
+       Small helpers
+    ============================================================ */
+    function pct(n) {
+      if (n === null || n === undefined || isNaN(n)) return "n/a";
+      return Math.round(n) + "%";
+    }
+
+    function fmtTime(date) {
+      if (!(date instanceof Date) || isNaN(date.getTime())) return "n/a";
+      return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    }
+
+    function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+    function addMinutes(date, mins) {
+      return new Date(date.getTime() + mins * 60000);
+    }
+
+    function setAlert(message, isError) {
+      el.alert.textContent = message;
+      el.alert.classList.toggle("is-error", !!isError);
+      el.alert.hidden = false;
+    }
+
+    function hideAlert() { el.alert.hidden = true; }
+
+    function setStatus(text, kind) {
+      el.statusText.textContent = text;
+      el.statusDot.className = "status-dot" + (kind ? " " + kind : "");
+    }
+
+    /* ============================================================
+       Scoring engine (each component returns a 0..1 fraction)
+    ============================================================ */
+
+    // Western low cloud: clear west is essential; full credit at <=15%,
+    // then a linear penalty toward 0 at total overcast.
+    function scoreWestern(westLow) {
+      if (westLow <= 15) return 1;
+      return clamp(1 - (westLow - 15) / (100 - 15), 0, 1);
+    }
+
+    // Overhead canvas: mid/high clouds catch the colour. Peak between
+    // 30-70% cover; severe penalty for a bare sky (0%) or overcast (>85%).
+    function scoreCanvas(mid, high) {
+      var canvas = (mid + high) / 2;
+      if (canvas < 30) {
+        // 0% -> 0.10 (nothing to light up); 30% -> 1.0
+        return 0.10 + (canvas / 30) * (1 - 0.10);
+      }
+      if (canvas <= 70) return 1;
+      if (canvas <= 85) {
+        // 70% -> 1.0; 85% -> 0.5
+        return 1 - ((canvas - 70) / (85 - 70)) * (1 - 0.5);
+      }
+      // 85% -> 0.5; 100% -> 0.10 (overcast, sun blocked)
+      return clamp(0.5 - ((canvas - 85) / (100 - 85)) * (0.5 - 0.10), 0.10, 0.5);
+    }
+
+    // Altitude mix: reward high cirrus and mid altocumulus, penalise
+    // heavy local low cloud that blocks the direct view.
+    function scoreAltitude(mid, high, localLow) {
+      var s = 0.3;
+      s += Math.min(high, 60) / 60 * 0.40; // cirrus bonus
+      s += Math.min(mid, 60) / 60 * 0.30;  // altocumulus bonus
+      s -= Math.min(localLow, 100) / 100 * 0.50; // heavy low cloud penalty
+      return clamp(s, 0, 1);
+    }
+
+    // Atmospheric clarity: drier air (<65% RH) and good visibility (>10km).
+    function scoreClarity(humidity, visibilityKm) {
+      var s = 0;
+      s += humidity < 65 ? 0.5 : clamp(0.5 - ((humidity - 65) / 35) * 0.5, 0, 0.5);
+      s += visibilityKm > 10 ? 0.5 : clamp((visibilityKm / 10) * 0.5, 0, 0.5);
+      return clamp(s, 0, 1);
+    }
+
+    function categoryFor(score) {
+      if (score >= 90) return { label: "Vivid Burn Expected", cls: "vivid" };
+      if (score >= 70) return { label: "High Quality Sunset", cls: "high" };
+      if (score >= 45) return { label: "Moderate / Average View", cls: "moderate" };
+      return { label: "Low / Obscured (Skip)", cls: "low" };
+    }
+
+    function computeScore(m) {
+      var parts = {
+        western:  scoreWestern(m.westLow),
+        canvas:   scoreCanvas(m.mid, m.high),
+        altitude: scoreAltitude(m.mid, m.high, m.localLow),
+        clarity:  scoreClarity(m.humidity, m.visibilityKm)
+      };
+      var total =
+        parts.western  * WEIGHTS.western +
+        parts.canvas   * WEIGHTS.canvas +
+        parts.altitude * WEIGHTS.altitude +
+        parts.clarity  * WEIGHTS.clarity;
+      return Math.round(clamp(total, 0, 1) * 100);
+    }
+
+    /* ============================================================
+       Rendering
+    ============================================================ */
+    function renderScore(score, cat) {
+      el.scoreSection.hidden = false;
+
+      var offset = RADIAL_CIRCUMFERENCE * (1 - score / 100);
+      el.radialValue.setAttribute("stroke-dasharray", RADIAL_CIRCUMFERENCE.toFixed(1));
+      el.radialValue.setAttribute("stroke-dashoffset", offset.toFixed(1));
+      // Colour the arc by category for a redundant (non-colour-only) cue.
+      var arcColour = score >= 70 ? "var(--good)" : (score >= 45 ? "var(--ok)" : "var(--poor)");
+      el.radialValue.style.stroke = arcColour;
+
+      el.radialNumber.textContent = score;
+      el.radialTitle.textContent =
+        "Sunset quality score: " + score + " out of 100 — " + cat.label;
+
+      el.scoreBadge.textContent = cat.label;
+      el.scoreBadge.className = "badge " + cat.cls;
+    }
+
+    function renderSummary(score, cat, m) {
+      var s;
+      if (score >= 70) {
+        s = "Conditions look promising (" + score + "/100). " +
+            "A " + pct(m.westLow) + " western horizon lets light through, and " +
+            "partial overhead cloud should catch the colour. Worth heading out.";
+      } else if (score >= 45) {
+        s = "An average outlook (" + score + "/100). " +
+            "Some potential, but " +
+            (m.westLow > 40 ? "cloud to the west may mute the light. "
+                            : "the overhead canvas is less than ideal. ") +
+            "Keep expectations modest.";
+      } else {
+        s = "A low-quality outlook (" + score + "/100). " +
+            (m.westLow > 60 ? "Heavy cloud to the west will likely block the light. "
+             : (m.mid + m.high) / 2 > 85 ? "The sky is overcast, hiding the sun. "
+             : "There is little cloud to catch any colour. ") +
+            "Probably one to skip tonight.";
+      }
+      el.scoreSummary.textContent = s;
+    }
+
+    function renderData(m) {
+      el.dataSection.hidden = false;
+      el.mWest.textContent      = pct(m.westLow);
+      el.mMid.textContent       = pct(m.mid);
+      el.mHigh.textContent      = pct(m.high);
+      el.mTotal.textContent     = pct(m.total);
+      el.mLow.textContent       = pct(m.localLow);
+      el.mHumidity.textContent  = pct(m.humidity);
+      el.mVisibility.textContent =
+        (m.visibilityKm !== null && !isNaN(m.visibilityKm))
+          ? m.visibilityKm.toFixed(1) + " km" : "n/a";
+    }
+
+    function timelinePhases() {
+      var sunset = state.sunset;
+      var t = state.terrainOffset;
+      return [
+        {
+          time: addMinutes(sunset, -45 - t),
+          label: "Target Arrival",
+          desc: "Get set up and settled before the light show begins."
+        },
+        {
+          time: addMinutes(sunset, -15 - t),
+          label: "Local Dip",
+          desc: "The sun drops behind your local tree line or hills."
+        },
+        {
+          time: sunset,
+          label: "Astronomical Sunset",
+          desc: "The sun crosses the true horizon."
+        },
+        {
+          time: addMinutes(sunset, 10),
+          endTime: addMinutes(sunset, 20),
+          label: "Peak Cloud Burn",
+          desc: "The best colour, as clouds light up from below."
+        },
+        {
+          time: addMinutes(sunset, 25),
+          label: "Give Up / Cutoff",
+          desc: "Civil twilight ends and colour fades to blue."
+        }
+      ];
+    }
+
+    function renderTimeline() {
+      if (!state.sunset) return;
+      el.timelineSection.hidden = false;
+      var phases = timelinePhases();
+      var html = "";
+      phases.forEach(function (p) {
+        var timeLabel = p.endTime
+          ? fmtTime(p.time) + "–" + fmtTime(p.endTime)
+          : fmtTime(p.time);
+        html +=
+          '<li>' +
+            '<span class="tl-marker" aria-hidden="true"></span>' +
+            '<span>' +
+              '<span class="tl-time">' + timeLabel + '</span> ' +
+              '<span class="tl-label">' + p.label + '</span>' +
+              '<br><span class="tl-desc">' + p.desc + '</span>' +
+            '</span>' +
+          '</li>';
+      });
+      el.timelineList.innerHTML = html;
+      updateCountdown();
+    }
+
+    function updateCountdown() {
+      if (!state.sunset) return;
+      var phases = timelinePhases();
+      var now = Date.now();
+      var next = null;
+      for (var i = 0; i < phases.length; i++) {
+        var end = phases[i].endTime || phases[i].time;
+        if (end.getTime() > now) { next = phases[i]; break; }
+      }
+
+      if (!next) {
+        el.countdownValue.textContent = "Ended";
+        el.countdownLabel.textContent = "tonight’s viewing window has passed";
+        announceCountdown("Tonight’s sunset viewing window has passed.");
+        stopCountdown();
+        return;
+      }
+
+      var diff = Math.max(0, next.time.getTime() - now);
+      var totalSec = Math.floor(diff / 1000);
+      var h = Math.floor(totalSec / 3600);
+      var mm = Math.floor((totalSec % 3600) / 60);
+      var ss = totalSec % 60;
+      var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+
+      el.countdownValue.textContent =
+        (h > 0 ? pad(h) + ":" : "") + pad(mm) + ":" + pad(ss);
+      el.countdownLabel.textContent = "until " + next.label;
+
+      // Announce to screen readers at most once a minute (avoids per-second spam).
+      var minutesLeft = Math.ceil(diff / 60000);
+      if (minutesLeft !== state.lastSrMinute) {
+        state.lastSrMinute = minutesLeft;
+        announceCountdown(
+          "About " + minutesLeft + " minute" + (minutesLeft === 1 ? "" : "s") +
+          " until " + next.label + "."
+        );
+      }
+    }
+
+    function announceCountdown(text) {
+      if (el.countdownSr) el.countdownSr.textContent = text;
+    }
+
+    function startCountdown() {
+      stopCountdown();
+      updateCountdown();
+      state.countdownTimer = setInterval(updateCountdown, 1000);
+    }
+    function stopCountdown() {
+      if (state.countdownTimer) {
+        clearInterval(state.countdownTimer);
+        state.countdownTimer = null;
+      }
+    }
+
+    /* ============================================================
+       Terrain slider
+    ============================================================ */
+    function terrainName(v) {
+      if (v <= 0) return "Flat Horizon";
+      if (v <= 10) return "Light Trees / Forest";
+      return "Heavy Canopy / Hills";
+    }
+
+    function onTerrainChange() {
+      var v = parseInt(el.terrainSlider.value, 10) || 0;
+      state.terrainOffset = v;
+      var name = terrainName(v);
+      var valueText = v === 0
+        ? name + ", no adjustment"
+        : name + ", arrive " + v + " minutes earlier";
+      el.terrainSlider.setAttribute("aria-valuetext", valueText);
+      el.terrainReadout.innerHTML = v === 0
+        ? "<strong>" + name + "</strong> selected — no timing adjustment."
+        : "<strong>" + name + "</strong> selected — arrive <strong>" + v +
+          " minutes earlier</strong>.";
+      renderTimeline();
+    }
+
+    /* ============================================================
+       Data pipeline
+    ============================================================ */
+    function metersToKm(m) {
+      return (m === null || m === undefined || isNaN(m)) ? null : m / 1000;
+    }
+
+    // Match the hourly forecast row nearest the sunset instant.
+    // Open-Meteo returns GMT times like "2026-09-12T18:00"; append seconds
+    // and a Z so they parse as absolute UTC and align with SunCalc's Date.
+    function nearestSunsetIndex(timeArray, sunset) {
+      var target = sunset.getTime();
+      var bestIdx = 0, best = Infinity;
+      for (var i = 0; i < timeArray.length; i++) {
+        var t = new Date(timeArray[i] + ":00Z").getTime();
+        var d = Math.abs(t - target);
+        if (d < best) { best = d; bestIdx = i; }
+      }
+      return bestIdx;
+    }
+
+    function buildForecastUrls(lat, lon) {
+      var params = "hourly=cloud_cover,cloud_cover_low,cloud_cover_mid," +
+                   "cloud_cover_high,relative_humidity_2m,visibility&forecast_days=1";
+      var mainUrl = "https://api.open-meteo.com/v1/forecast?latitude=" +
+                    lat + "&longitude=" + lon + "&" + params;
+
+      // Western horizon sample point, ~150 km west.
+      var cosLat = Math.cos(lat * Math.PI / 180);
+      var westLon = lon;
+      if (Math.abs(cosLat) > 1e-6) {
+        westLon = lon - (150 / (111.32 * cosLat));
+      }
+      var westUrl = "https://api.open-meteo.com/v1/forecast?latitude=" +
+                    lat + "&longitude=" + westLon +
+                    "&hourly=cloud_cover_low&forecast_days=1";
+      return { mainUrl: mainUrl, westUrl: westUrl };
+    }
+
+    function fetchJson(url) {
+      return fetch(url).then(function (r) {
+        if (!r.ok) throw new Error("Weather request failed (" + r.status + ")");
+        return r.json();
+      });
+    }
+
+    function runPrediction(lat, lon) {
+      state.lat = lat;
+      state.lon = lon;
+
+      if (typeof SunCalc === "undefined") {
+        setAlert("Could not load the SunCalc library, so solar times are " +
+                 "unavailable. Check your connection and reload.", true);
+        return;
+      }
+
+      var times = SunCalc.getTimes(new Date(), lat, lon);
+      state.sunset = times.sunset;
+      if (!(state.sunset instanceof Date) || isNaN(state.sunset.getTime())) {
+        setAlert("No sunset occurs at this location today (polar day or night), " +
+                 "so a prediction cannot be made.", true);
+        return;
+      }
+
+      setAlert("Loading atmospheric data for tonight’s sunset…", false);
+
+      var urls = buildForecastUrls(lat, lon);
+      Promise.all([fetchJson(urls.mainUrl), fetchJson(urls.westUrl)])
+        .then(function (results) {
+          var main = results[0], west = results[1];
+          if (!main.hourly || !main.hourly.time) {
+            throw new Error("Unexpected weather response.");
+          }
+          var idx = nearestSunsetIndex(main.hourly.time, state.sunset);
+          var westIdx = west.hourly && west.hourly.time
+            ? nearestSunsetIndex(west.hourly.time, state.sunset) : idx;
+
+          var m = {
+            westLow:      num(west.hourly && west.hourly.cloud_cover_low, westIdx),
+            localLow:     num(main.hourly.cloud_cover_low, idx),
+            mid:          num(main.hourly.cloud_cover_mid, idx),
+            high:         num(main.hourly.cloud_cover_high, idx),
+            total:        num(main.hourly.cloud_cover, idx),
+            humidity:     num(main.hourly.relative_humidity_2m, idx),
+            visibilityKm: metersToKm(num(main.hourly.visibility, idx))
+          };
+
+          var score = computeScore(m);
+          var cat = categoryFor(score);
+
+          hideAlert();
+          renderScore(score, cat);
+          renderSummary(score, cat, m);
+          renderData(m);
+          renderTimeline();
+          el.terrainSection.hidden = false;
+          startCountdown();
+        })
+        .catch(function (err) {
+          setAlert("Sorry, we couldn’t load the weather forecast: " +
+                   err.message + " You can try the precise GPS button or reload.", true);
+        });
+    }
+
+    function num(arr, i) {
+      if (!arr || i == null || i < 0 || i >= arr.length) return null;
+      var v = arr[i];
+      return (v === null || v === undefined) ? null : v;
+    }
+
+    /* ============================================================
+       Location strategy
+    ============================================================ */
+    function loadByIp() {
+      setStatus("Detecting your approximate location…", null);
+      fetchJson("https://ipapi.co/json/")
+        .then(function (data) {
+          if (data && typeof data.latitude === "number" &&
+              typeof data.longitude === "number") {
+            var place = [data.city, data.region, data.country_name]
+              .filter(Boolean).join(", ");
+            setStatus("Approximate (IP)" + (place ? " — " + place : ""), "approx");
+            runPrediction(data.latitude, data.longitude);
+          } else {
+            throw new Error("no coordinates returned");
+          }
+        })
+        .catch(function () {
+          setStatus("Location unavailable — try precise GPS", "error");
+          setAlert("We couldn’t detect your approximate location automatically. " +
+                   "Use the “Use Precise GPS” button to continue.", true);
+        });
+    }
+
+    function loadByGps() {
+      if (!("geolocation" in navigator)) {
+        setAlert("This browser doesn’t support precise geolocation.", true);
+        return;
+      }
+      el.gpsBtn.disabled = true;
+      setStatus("Requesting precise location…", null);
+
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          el.gpsBtn.disabled = false;
+          setStatus("Exact (GPS)", "exact");
+          runPrediction(pos.coords.latitude, pos.coords.longitude);
+        },
+        function (err) {
+          el.gpsBtn.disabled = false;
+          var msg = err.code === err.PERMISSION_DENIED
+            ? "Precise location was denied. Showing the approximate result instead."
+            : "Couldn’t get a precise fix. Showing the approximate result instead.";
+          setStatus(state.lat ? "Approximate (IP)" : "Location unavailable",
+                    state.lat ? "approx" : "error");
+          setAlert(msg, true);
+          if (state.lat != null) {
+            // keep the existing IP-based prediction visible
+            setTimeout(hideAlert, 4000);
+          }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    /* ============================================================
+       Wire up & go
+    ============================================================ */
+    el.gpsBtn.addEventListener("click", loadByGps);
+    el.terrainSlider.addEventListener("input", onTerrainChange);
+
+    // Refresh the countdown if the tab regains focus after being idle.
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden && state.sunset) updateCountdown();
+    });
+
+    onTerrainChange(); // initialise readout
+    loadByIp();
+  })();
+  </script>
+</body>
+</html>

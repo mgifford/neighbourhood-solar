@@ -241,6 +241,25 @@ def copy_static(source_root: Path, output_dir: Path):
             print(f"  warning: static file not found, skipping: {src}")
 
 
+# Self-contained sub-apps copied verbatim (their own index.html, no templating).
+# Each entry is a directory relative to the repo root that is copied whole into
+# the output so it is served at /<dir>/ on GitHub Pages.
+STATIC_DIRS = [
+    "sunset",
+]
+
+
+def copy_static_dirs(source_root: Path, output_dir: Path):
+    for dirname in STATIC_DIRS:
+        src = source_root / dirname
+        if src.is_dir():
+            dest = output_dir / dirname
+            shutil.copytree(src, dest, dirs_exist_ok=True)
+            print(f"  copied dir: {dest}")
+        else:
+            print(f"  warning: static dir not found, skipping: {src}")
+
+
 # ---------------------------------------------------------------------------
 # Open Graph image: render the solar-home SVG to PNG for social previews
 # (Facebook, LinkedIn, etc. do not render SVG in link preview cards)
@@ -303,6 +322,7 @@ def main():
     env = build_env(str(templates_dir))
     render_pages(env, config, output_dir)
     copy_static(script_dir, output_dir)
+    copy_static_dirs(script_dir, output_dir)
     build_og_image(script_dir, output_dir)
 
     print(f"\nDone. {len(PAGES)} pages built in {output_dir}/")
