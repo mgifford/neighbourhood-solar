@@ -115,6 +115,13 @@ programs:
     url: "https://hydroottawa.com/en/residential/savings-incentives/produce-your-own-energy-ders"
     jurisdiction: "Utility"
     active: true
+  # Announced Oct 8, 2026; not yet open for applications (launch expected
+  # early 2027). Keep inactive until the portal opens and eligibility is
+  # confirmed on the official page.
+  - name: "National Heat Pump Rebate (federal)"
+    url: "https://www.canada.ca/en/environment-climate-change/campaigns/one-million-home-energy-retrofits.html"
+    jurisdiction: "Federal"
+    active: false
 
 # ---------------------------------------------------------------
 # CONTRACTORS
